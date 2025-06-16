@@ -3,7 +3,7 @@ import type { MDXComponents } from "mdx/types";
 import { MDXRemote, type MDXRemoteProps } from "next-mdx-remote/rsc";
 import Image from "next/image";
 import Link from "next/link";
-import { JSX } from "react";
+import type { JSX } from "react";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";

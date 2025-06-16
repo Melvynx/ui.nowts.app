@@ -20,7 +20,6 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useMeasure from "react-use-measure";
@@ -38,8 +37,6 @@ export const SignInWithEmailOTP = (props: {
   callbackUrl?: string;
   email?: string;
 }) => {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
   const [otpEmail, setOtpEmail] = useState<string | null>(null);
   const form = useForm({
     resolver: zodResolver(LoginWithEmailOTPScheme),

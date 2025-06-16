@@ -7,8 +7,6 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ToggleTheme } from "./toggle-theme";
 
-import { useMediaQuery } from "usehooks-ts";
-
 import { cn } from "@/lib/utils";
 import { MenuIcon } from "lucide-react";
 import { Icons } from "./Icons";
@@ -32,7 +30,7 @@ const ITEMS = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const isMobile = useMediaQuery("(max-width: 662px)");
+  // const isMobile = useMediaQuery("(max-width: 662px)");
 
   const pathname = usePathname();
   const isDocsPage = pathname.startsWith("/ui");

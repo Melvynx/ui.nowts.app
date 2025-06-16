@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 import { Sidebar } from "@/app/ui/_components/sidebar/Sidebar";
 import { OnThisPage } from "./_components/OnThisPage";

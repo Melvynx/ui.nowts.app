@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import matter from "gray-matter";
-import { Docs } from "./docs";
+import type { Docs } from "./docs";
 
 function readFile(filePath: string): Docs | null {
   try {

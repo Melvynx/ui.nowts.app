@@ -31,7 +31,7 @@ export function OnThisPage() {
       })
       .map((heading) => ({
         id: heading.id,
-        text: heading.textContent || "",
+        text: heading.textContent ?? "",
         level: heading.tagName.toLowerCase(),
         top: (heading as HTMLElement).offsetTop,
       }));

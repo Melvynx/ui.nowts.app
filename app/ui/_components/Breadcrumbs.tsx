@@ -1,5 +1,5 @@
-import { ChevronRight } from 'lucide-react'
-import Link from 'next/link'
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 type Breadcrumbs = {
   category?: string
@@ -39,5 +39,5 @@ export function Breadcrumbs({
       <ChevronRight size={14} />
       <span className="text-sm font-medium text-primary">{currentPage}</span>
     </div>
-  )
+  );
 }
