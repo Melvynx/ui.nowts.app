@@ -52,7 +52,7 @@ export function CommandBlock({
               <TabsTrigger
                 key={key}
                 value={key}
-                classNameIndicator="-bottom-[1.5px]"
+                // classNameIndicator="-bottom-[1.5px]"
               >
                 {key}
               </TabsTrigger>
