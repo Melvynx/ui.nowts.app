@@ -1,0 +1,427 @@
+---
+title: "Dialog Manager"
+description: "A powerful dialog manager for handling confirm, input, and custom dialogs with global state management."
+slug: "dialog-manager"
+---
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode 
+	code={`import { dialogManager } from "@/lib/dialog-manager/dialog-manager";
+import { Button } from "@/components/ui/button";
+
+export function MyComponent() {
+  const handleDelete = () => {
+    dialogManager.confirm({
+      title: "Delete Item",
+      description: "Are you sure you want to delete this item?",
+      action: {
+        label: "Delete",
+        variant: "destructive",
+        onClick: async () => {
+          await deleteItem();
+        }
+      }
+    });
+  };
+
+  return <Button onClick={handleDelete}>Delete</Button>;
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[500px] flex items-center justify-center">
+
+<DialogManagerExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[400px]" contentClassName="h-full">
+
+```tsx
+import { dialogManager } from "@/lib/dialog-manager/dialog-manager";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
+
+export function MyComponent() {
+  const handleConfirm = () => {
+    dialogManager.confirm({
+      title: "Delete Item",
+      description: "Are you sure you want to delete this item?",
+      action: {
+        label: "Delete",
+        variant: "destructive",
+        onClick: async () => {
+          // Your delete logic here
+          await deleteItem();
+        }
+      }
+    });
+  };
+
+  const handleInput = () => {
+    dialogManager.input({
+      title: "Rename Item",
+      description: "Enter a new name for this item.",
+      input: {
+        label: "Name",
+        placeholder: "Enter new name..."
+      },
+      action: {
+        label: "Rename",
+        onClick: async (value) => {
+          if (!value?.trim()) return;
+          await renameItem(value);
+        }
+      }
+    });
+  };
+
+  const handleCustom = () => {
+    dialogManager.custom({
+      children: (
+        <div className="p-6">
+          <h2 className="text-lg font-semibold mb-4">Custom Dialog</h2>
+          <p className="mb-4">This is a custom dialog with your own content.</p>
+          <Button onClick={() => dialogManager.closeAll()}>
+            Close
+          </Button>
+        </div>
+      )
+    });
+  };
+
+  return (
+    <div className="space-y-4">
+      <Button onClick={handleConfirm} variant="destructive">
+        Delete Item
+      </Button>
+      <Button onClick={handleInput}>
+        Rename Item
+      </Button>
+      <Button onClick={handleCustom} variant="secondary">
+        Custom Dialog
+      </Button>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **Dialog Manager** is a comprehensive dialog management system that provides a simple API for creating confirm dialogs, input dialogs, and custom dialogs with global state management using Zustand.
+
+### Features
+
+- ✅ **Simple API**: Easy-to-use functions for common dialog patterns
+- ✅ **Global State**: Dialogs managed with Zustand for consistent state
+- ✅ **Async Support**: Built-in loading states for async actions
+- ✅ **Queue Support**: Multiple dialogs handled automatically
+- ✅ **Customizable**: Full control over styling and behavior
+- ✅ **TypeScript**: Fully typed for better developer experience
+
+## Installation
+
+<div className="space-y-4">
+
+### 1. Install the component
+
+<CommandBlock 
+	npmCommand="npx nowts-ui@latest add dialog-manager" 
+	pnpmCommand="pnpm dlx nowts-ui@latest add dialog-manager" 
+	yarnCommand="npx nowts-ui@latest add dialog-manager" 
+	bunCommand="bunx --bun nowts-ui@latest add dialog-manager" 
+/>
+
+### 2. Add to your layout
+
+Add the `DialogManagerRenderer` to your root layout:
+
+<CodeBlock contentClassName="h-fit" fileName="app/layout.tsx">
+
+```tsx
+import { DialogManagerRenderer } from "@/components/dialog-manager-renderer";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <DialogManagerRenderer />
+      </body>
+    </html>
+  );
+}
+```
+
+</CodeBlock>
+
+</div>
+
+## Usage
+
+### Basic confirm dialog
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { dialogManager } from "@/lib/dialog-manager/dialog-manager";
+
+export function DeleteButton() {
+  const handleDelete = () => {
+    dialogManager.confirm({
+      title: "Delete Item",
+      description: "Are you sure you want to delete this item?",
+      action: {
+        label: "Delete",
+        variant: "destructive",
+        onClick: async () => {
+          await deleteItem();
+        }
+      }
+    });
+  };
+
+  return (
+    <Button onClick={handleDelete} variant="destructive">
+      Delete
+    </Button>
+  );
+}
+```
+
+</CodeBlock>
+
+### Confirm with text verification
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+dialogManager.confirm({
+  title: "Delete Account",
+  description: "This action is irreversible. All your data will be permanently deleted.",
+  confirmText: "DELETE",
+  action: {
+    label: "Delete Account",
+    variant: "destructive",
+    onClick: async () => {
+      await deleteAccount();
+    }
+  }
+});
+```
+
+</CodeBlock>
+
+### Input dialog
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+dialogManager.input({
+  title: "Create Project",
+  description: "Enter a name for your new project.",
+  input: {
+    label: "Project Name",
+    placeholder: "My awesome project"
+  },
+  action: {
+    label: "Create",
+    onClick: async (projectName) => {
+      if (!projectName?.trim()) return;
+      await createProject(projectName);
+    }
+  }
+});
+```
+
+</CodeBlock>
+
+## API
+
+### dialogManager.confirm(config)
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `title?` | `string` | Dialog title |
+| `description?` | `ReactNode` | Dialog description |
+| `confirmText?` | `string` | Text user must type to confirm |
+| `action` | `DialogAction` | Action button configuration |
+| `cancel?` | `DialogCancel` | Cancel button configuration |
+| `icon?` | `LucideIcon` | Optional icon |
+| `style?` | `"default" \| "centered"` | Layout style |
+
+### dialogManager.input(config)
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `title?` | `string` | Dialog title |
+| `description?` | `ReactNode` | Dialog description |
+| `input` | `InputConfig` | Input field configuration |
+| `action` | `InputAction` | Action with input value callback |
+| `cancel?` | `DialogCancel` | Cancel button configuration |
+
+### dialogManager.custom(config)
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `children` | `ReactNode` | Custom React component to render |
+
+### Error handling
+
+The component automatically handles errors thrown in action callbacks and displays them as toast notifications.
+
+## Advanced Examples
+
+### Dialog with icon and centered layout
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { Trash2 } from "lucide-react";
+
+dialogManager.confirm({
+  title: "Delete Project",
+  description: "This will permanently delete the project and all its data.",
+  icon: Trash2,
+  style: "centered",
+  action: {
+    label: "Delete",
+    variant: "destructive",
+    onClick: async () => {
+      await deleteProject();
+    }
+  }
+});
+```
+
+</CodeBlock>
+
+### Input dialog with validation
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+dialogManager.input({
+  title: "Rename File",
+  description: "Enter a new name for this file.",
+  input: {
+    label: "Filename",
+    placeholder: "document.pdf",
+    defaultValue: currentFilename
+  },
+  action: {
+    label: "Rename",
+    onClick: async (filename) => {
+      if (!filename?.trim()) {
+        throw new Error("Filename cannot be empty");
+      }
+      
+      if (!/^[a-zA-Z0-9._-]+$/.test(filename)) {
+        throw new Error("Invalid filename format");
+      }
+      
+      await renameFile(filename);
+    }
+  }
+});
+```
+
+</CodeBlock>
+
+### Custom dialog with form
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+function CreateUserForm({ onClose }: { onClose: () => void }) {
+  const [formData, setFormData] = useState({ name: "", email: "" });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await createUser(formData);
+    onClose();
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="p-6 space-y-4">
+      <h2 className="text-lg font-semibold">Create New User</h2>
+      <div>
+        <Label htmlFor="name">Name</Label>
+        <Input
+          id="name"
+          value={formData.name}
+          onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+        />
+      </div>
+      <div>
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          value={formData.email}
+          onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+        />
+      </div>
+      <div className="flex justify-end gap-2">
+        <Button type="button" variant="outline" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button type="submit">Create User</Button>
+      </div>
+    </form>
+  );
+}
+
+// Usage
+dialogManager.custom({
+  children: <CreateUserForm onClose={() => dialogManager.closeAll()} />
+});
+```
+
+</CodeBlock>
+
+## Customization
+
+The component uses shadcn/ui components and can be styled via CSS or Tailwind:
+
+<CodeBlock contentClassName="h-fit">
+
+```css
+/* Customize dialog animations */
+.dialog-content {
+  --transition-duration: 0.2s;
+}
+
+/* Customize colors */
+.dialog-header {
+  --header-color: hsl(var(--primary));
+}
+```
+
+</CodeBlock> 

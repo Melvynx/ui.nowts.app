@@ -59,6 +59,53 @@
           "target": "/lib/server-toast/server-toast.client.tsx"
         }
       ]
+    },
+    {
+      "name": "dialog-manager",
+      "type": "registry:block",
+      "title": "Dialog Manager",
+      "description": "A powerful dialog manager for handling confirm, input, and custom dialogs with global state management.",
+      "registryDependencies": [
+        "alert-dialog",
+        "button",
+        "input",
+        "label",
+        "sonner"
+      ],
+      "dependencies": ["zustand"],
+      "docs": "Important: Add <DialogManagerRenderer /> inside app/layout.tsx to render the dialogs.",
+      "files": [
+        {
+          "path": "registry/nowts/blocks/dialog-manager/dialog-types.ts",
+          "type": "registry:lib",
+          "target": "/lib/dialog-manager/dialog-types.ts"
+        },
+        {
+          "path": "registry/nowts/blocks/dialog-manager/dialog-factory.ts",
+          "type": "registry:lib",
+          "target": "/lib/dialog-manager/dialog-factory.ts"
+        },
+        {
+          "path": "registry/nowts/blocks/dialog-manager/dialog-store.ts",
+          "type": "registry:lib",
+          "target": "/lib/dialog-manager/dialog-store.ts"
+        },
+        {
+          "path": "registry/nowts/blocks/dialog-manager/dialog-manager.ts",
+          "type": "registry:lib",
+          "target": "/lib/dialog-manager/dialog-manager.ts"
+        },
+        {
+          "path": "registry/nowts/blocks/dialog-manager/dialog-component.tsx",
+          "type": "registry:lib",
+          "target": "/lib/dialog-manager/dialog-component.tsx"
+        },
+        {
+          "path": "registry/nowts/blocks/dialog-manager/dialog-manager-renderer.tsx",
+          "type": "registry:lib",
+          "target": "/lib/dialog-manager/dialog-manager-renderer.tsx"
+        }
+      ]
     }
   ]
 }

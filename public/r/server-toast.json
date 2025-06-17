@@ -5,7 +5,9 @@
   "title": "Server Toast",
   "description": "A library for server-side toast notifications.",
   "dependencies": [],
-  "registryDependencies": ["sonner"],
+  "registryDependencies": [
+    "sonner"
+  ],
   "files": [
     {
       "path": "registry/nowts/blocks/server-toast/server-toast.type.ts",

@@ -3,6 +3,7 @@ import { fontMono, fontSans } from "@/lib/fonts";
 import { InjectDocs } from "@/lib/inject-docs.store";
 import { getDocs } from "@/lib/mdx/mdx";
 import { cn } from "@/lib/utils";
+import { DialogManagerRenderer } from "@/registry/nowts/blocks/dialog-manager/dialog-manager-renderer";
 import { ServerToaster } from "@/registry/nowts/blocks/server-toast/server-toast.server";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
@@ -110,6 +111,7 @@ export default function RootLayout({
             <Header />
             <Toaster />
             <ServerToaster />
+            <DialogManagerRenderer />
             {children}
             <Suspense>
               <InjectDocsServer />
@@ -122,6 +124,8 @@ export default function RootLayout({
 }
 
 export async function InjectDocsServer() {
-  const docs = getDocs().sort((a, b) => a.title.localeCompare(b.title));
+  const docs = getDocs().sort(
+    (a, b) => a.title?.localeCompare(b.title ?? "") ?? 0
+  );
   return <InjectDocs docs={docs} />;
 }
