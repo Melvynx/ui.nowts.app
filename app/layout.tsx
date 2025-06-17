@@ -1,89 +1,88 @@
 import { Header } from "@/components/header";
 import { fontMono, fontSans } from "@/lib/fonts";
+import { InjectDocs } from "@/lib/inject-docs.store";
+import { getDocs } from "@/lib/mdx/mdx";
 import { cn } from "@/lib/utils";
 import { ServerToaster } from "@/registry/nowts/blocks/server-toast/server-toast.server";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
+import { Suspense } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  authors: [{ name: "Gustavo Rodrigues", url: "https://guhrodrigues.com" }],
+  authors: [{ name: "Melvyn", url: "https://melvynx.dev" }],
   category: "developer",
-  creator: "Gustavo Rodrigues",
+  creator: "Melvyn",
   title: {
-    default: "Luxe: Illuminate your apps.",
-    template: "Luxe: %s",
+    default: "Now.ts: FullStack boilerplate for robust applications.",
+    template: "Now.ts: %s",
   },
   description:
-    "Library of copy and paste components to illuminate your apps with elegance and sophistication.",
-  icons: ["/favicon.svg"],
+    "A boilerplate designed for creating robust FullStack applications. Provides copy-pasteable components ready for use, making the development process seamless.",
+  icons: ["/favicon.ico"],
   keywords: [
-    "Gustavo Rodrigues",
-    "guhrodrigues.com",
-    "luxeui.com",
-    "luxe.guhrodrigues.com",
-    "Motion",
-    "UI Design",
-    "Luxe",
-    "UI Library",
-    "Design Engineer",
-    "Frontend Developer",
-    "Component library",
-    "Frontend",
-    "Copy and Paste",
-    "CLI",
-    "Command Line Interface",
-    "Dark Mode",
-    "Light Mode",
-    "UX Design",
-    "Developer",
-    "Software",
-    "Copy and paste components ready to use. Practical. Customizable.",
-    "Design",
-    "Vercel",
+    "Melvyn",
+    "melvynx.dev",
+    "nowts.app",
+    "Now.ts",
+    "FullStack",
+    "Boilerplate",
     "Next.js",
     "React",
     "TypeScript",
     "TailwindCSS",
-    "Framer Motion",
+    "Better Auth",
     "Server Components",
-    "Client Components",
+    "Server Actions",
+    "FullStack Developer",
+    "Component library",
+    "Copy and Paste",
+    "Ready to use components",
+    "Robust applications",
+    "Development boilerplate",
+    "SaaS",
+    "Web Development",
+    "Authentication",
+    "OTP",
+    "Toast notifications",
+    "Modern UI",
+    "Developer Tools",
   ],
   openGraph: {
     images: [
       {
         width: 1920,
         height: 1080,
-        url: "https://luxeui.com/open-graphs/og-website.png",
-        alt: "Luxe website cover",
+        url: "https://ui.nowts.app/og-image.png",
+        alt: "Now.ts - FullStack boilerplate",
       },
     ],
     locale: "en",
-    siteName: "Gustavo Rodrigues",
-    title: "Luxe",
+    siteName: "Now.ts",
+    title: "Now.ts - FullStack boilerplate for robust applications",
     description:
-      "Copy and paste components ready to use. Practical. Customizable.",
+      "A boilerplate designed for creating robust FullStack applications. Copy-pasteable components ready for use.",
     type: "website",
-    url: "https://luxeui.com",
+    url: "https://ui.nowts.app",
   },
-  publisher: "Gustavo Rodrigues",
+  publisher: "Melvyn",
   twitter: {
     images: [
       {
         width: 1920,
         height: 1080,
-        url: "https://luxeui.com/open-graphs/og-website.png",
-        alt: "Luxe website cover",
+        url: "https://ui.nowts.app/og-image.png",
+        alt: "Now.ts - FullStack boilerplate",
       },
     ],
     card: "summary_large_image",
-    title: "Luxe: Illuminate your apps.",
+    title: "Now.ts: FullStack boilerplate for robust applications.",
     description:
-      "Copy and paste components ready to use. Practical. Customizable.",
-    site: "@guhrodrrigues",
-    creator: "Gustavo Rodrigues",
+      "A boilerplate designed for creating robust FullStack applications. Copy-pasteable components ready for use.",
+    site: "@melvynx",
+    creator: "Melvyn",
   },
 };
 
@@ -112,9 +111,17 @@ export default function RootLayout({
             <Toaster />
             <ServerToaster />
             {children}
+            <Suspense>
+              <InjectDocsServer />
+            </Suspense>
           </ThemeProvider>
         </Providers>
       </body>
     </html>
   );
+}
+
+export async function InjectDocsServer() {
+  const docs = getDocs().sort((a, b) => a.title.localeCompare(b.title));
+  return <InjectDocs docs={docs} />;
 }

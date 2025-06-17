@@ -6,42 +6,42 @@ import { OnThisPage } from "./_components/OnThisPage";
 export const metadata: Metadata = {
   title: {
     default: "Browse Components",
-    template: "Luxe: %s",
+    template: "Now.ts: %s",
   },
   description:
-    "Navigate to all the components that will make your application sophisticated and luxurious.",
+    "Navigate to all the FullStack components that will make your application robust and production-ready.",
   openGraph: {
     images: [
       {
         width: 1920,
         height: 1080,
-        url: "https://luxeui.com/open-graphs/og-browse-components.png",
-        alt: "Luxe's website cover",
+        url: "https://ui.nowts.app/og-components.png",
+        alt: "Now.ts - Browse Components",
       },
     ],
     locale: "en",
-    siteName: "Gustavo Rodrigues",
-    title: "Luxe: Browse Components",
+    siteName: "Now.ts",
+    title: "Now.ts: Browse Components",
     description:
-      "Navigate to all the components that will make your application sophisticated and luxurious.",
+      "Navigate to all the FullStack components that will make your application robust and production-ready.",
     type: "website",
-    url: "https://luxeui.com/ui",
+    url: "https://ui.nowts.app/ui",
   },
   twitter: {
     images: [
       {
         width: 1920,
         height: 1080,
-        url: "https://luxeui.com/open-graphs/og-browse-components.png",
-        alt: "Luxe's website cover",
+        url: "https://ui.nowts.app/og-components.png",
+        alt: "Now.ts - Browse Components",
       },
     ],
     card: "summary_large_image",
-    title: "Luxe: Browse Components",
+    title: "Now.ts: Browse Components",
     description:
-      "Navigate to all the components that will make your application sophisticated and luxurious.",
-    site: "@guhrodrrigues",
-    creator: "Gustavo Rodrigues",
+      "Navigate to all the FullStack components that will make your application robust and production-ready.",
+    site: "@melvynx",
+    creator: "Melvyn",
   },
 };
 

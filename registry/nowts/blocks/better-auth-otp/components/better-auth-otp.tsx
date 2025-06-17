@@ -37,6 +37,7 @@ export function OtpForm({
   const [email, setEmail] = useState(defaultEmail);
   const [isLoading, setIsLoading] = useState(false);
   const [otpResetKey, setOtpResetKey] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [ref, bounds] = useMeasure();
 
   const handleSendOtp = async (data: { email: string }) => {
@@ -44,6 +45,7 @@ export function OtpForm({
     try {
       await sendOtp(data.email);
       setEmail(data.email);
+      setDirection(1); // Forward direction
       setStep("otp");
     } catch (error) {
       onError?.(error instanceof Error ? error.message : "Failed to send OTP");
@@ -80,20 +82,23 @@ export function OtpForm({
   };
 
   const handleBack = () => {
+    setDirection(-1); // Backward direction
     setStep("email");
   };
 
   return (
     <motion.div animate={{ height: bounds.height }}>
       <div ref={ref}>
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" custom={direction}>
           {step === "email" ? (
             <motion.div
               key="email-step"
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -20, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              variants={variants}
+              initial="initial"
+              animate="active"
+              exit="exit"
+              transition={{ duration: 0.3 }}
+              custom={direction}
             >
               <form
                 onSubmit={(e) => {
@@ -119,10 +124,12 @@ export function OtpForm({
           ) : (
             <motion.div
               key="otp-step"
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: 20, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              variants={variants}
+              initial="initial"
+              animate="active"
+              exit="exit"
+              transition={{ duration: 0.3 }}
+              custom={direction}
             >
               <div className="flex flex-col items-center gap-4 w-full">
                 <p className="text-muted-foreground text-sm">
@@ -159,6 +166,16 @@ export function OtpForm({
     </motion.div>
   );
 }
+
+const variants = {
+  initial: (direction: number) => {
+    return { x: `${100 * direction}px`, opacity: 0 };
+  },
+  active: { x: "0%", opacity: 1 },
+  exit: (direction: number) => {
+    return { x: `${-100 * direction}px`, opacity: 0 };
+  },
+};
 
 type OtpStepProps = {
   onVerify: (otp: string) => Promise<void>;

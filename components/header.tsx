@@ -7,23 +7,20 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ToggleTheme } from "./toggle-theme";
 
+import { CommandMenu } from "@/components/command-menu";
 import { cn } from "@/lib/utils";
 import { MenuIcon } from "lucide-react";
 import { Icons } from "./Icons";
-import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
+import { Drawer } from "./ui/drawer";
 
 const ITEMS = [
   {
     name: "Get Started",
-    slug: "/ui/installation",
+    slug: "/ui/get-started",
   },
   {
     name: "Components",
-    slug: "/ui/accordion",
-  },
-  {
-    name: "Updates",
-    slug: "/updates",
+    slug: "/ui/better-auth-otp",
   },
 ];
 
@@ -91,12 +88,12 @@ export function Header() {
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              {/* <CommandMenu /> */}
+              <CommandMenu />
               <ToggleTheme />
             </div>
             <div aria-hidden className="h-[21px] w-px bg-border" />
             <a
-              href="https://github.com/guhrodrrigues/luxe"
+              href="https://github.com/Melvynx/registry-nowts"
               target="_blank"
               rel="noopener noreferrer"
               className="group rounded-md p-0.5 outline-none focus-visible:ring-1 focus-visible:ring-neutral-300/80 dark:focus-visible:ring-neutral-800"
@@ -107,17 +104,12 @@ export function Header() {
         </div>
         <div className="[@media(min-width:663px)]:hidden">
           <Drawer>
-            <DrawerTrigger>
-              <button className="flex items-center justify-center lg:hidden">
-                <MenuIcon
-                  size={24}
-                  className="stroke-1 text-neutral-600 dark:text-neutral-400"
-                />
-              </button>
-            </DrawerTrigger>
-            <DrawerContent>
-              <p>Nothing</p>
-            </DrawerContent>
+            <button className="flex items-center justify-center lg:hidden">
+              <MenuIcon
+                size={24}
+                className="stroke-1 text-neutral-600 dark:text-neutral-400"
+              />
+            </button>
           </Drawer>
         </div>
       </nav>

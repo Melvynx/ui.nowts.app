@@ -37,29 +37,29 @@ export async function generateMetadata({
     title,
     description,
     openGraph: {
-      title: `Luxe: ${title}`,
+      title: `Now.ts: ${title}`,
       description,
       type: "website",
-      url: `https://luxeui.com/ui/${slugDocs}`,
+      url: `https://ui.nowts.app/ui/${slugDocs}`,
       images: [
         {
           width: 1920,
           height: 1080,
-          url: "https://luxeui.com/open-graphs/og-browse-components.png",
-          alt: "Luxe's website cover",
+          url: "https://ui.nowts.app/og-components.png",
+          alt: "Now.ts - FullStack Components",
         },
       ],
     },
     twitter: {
-      title: `Luxe: ${title}`,
+      title: `Now.ts: ${title}`,
       description,
       card: "summary_large_image",
       images: [
         {
           width: 1920,
           height: 1080,
-          url: "https://luxeui.com/open-graphs/og-browse-components.png",
-          alt: "Luxe's website cover",
+          url: "https://ui.nowts.app/og-components.png",
+          alt: "Now.ts - FullStack Components",
         },
       ],
     },
