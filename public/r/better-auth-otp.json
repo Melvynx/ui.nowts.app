@@ -7,7 +7,8 @@
   "dependencies": [
     "motion",
     "react-use-measure",
-    "@hookform/resolvers"
+    "@hookform/resolvers",
+    "@tanstack/react-query"
   ],
   "registryDependencies": [
     "button",
@@ -16,7 +17,8 @@
     "textarea",
     "card",
     "input-otp",
-    "sonner"
+    "sonner",
+    "form"
   ],
   "files": [
     {

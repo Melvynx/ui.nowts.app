@@ -5,7 +5,7 @@
   "items": [
     {
       "name": "better-auth-otp",
-      "type": "registry:component",
+      "type": "registry:block",
       "title": "Better Auth OTP",
       "description": "A component for signing in with email OTP.",
       "registryDependencies": [
@@ -26,6 +26,36 @@
         {
           "path": "registry/nowts/blocks/better-auth-otp/hooks/use-countdown.ts",
           "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "server-toast",
+      "type": "registry:block",
+      "title": "Server Toast",
+      "description": "A library for server-side toast notifications.",
+      "registryDependencies": ["sonner"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/nowts/blocks/server-toast/server-toast.type.ts",
+          "type": "registry:lib",
+          "target": "@lib/server-toast"
+        },
+        {
+          "path": "registry/nowts/blocks/server-toast/server-toast.ts",
+          "type": "registry:lib",
+          "target": "@lib/server-toast"
+        },
+        {
+          "path": "registry/nowts/blocks/server-toast/server-toast.server.tsx",
+          "type": "registry:lib",
+          "target": "@lib/server-toast"
+        },
+        {
+          "path": "registry/nowts/blocks/server-toast/server-toast.client.tsx",
+          "type": "registry:lib",
+          "target": "@lib/server-toast"
         }
       ]
     }
