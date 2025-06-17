@@ -7,13 +7,7 @@ import { toast } from "sonner";
 // Mock authClient for demo
 const mockAuthClient = {
   emailOtp: {
-    sendVerificationOtp: async ({
-      email,
-      type,
-    }: {
-      email: string;
-      type: string;
-    }) => {
+    sendVerificationOtp: async ({ email }: { email: string; type: string }) => {
       // Simulate network delay
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
