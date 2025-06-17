@@ -48,5 +48,6 @@ export function getDocs(directory?: string): Docs[] {
         )
       )
     )
-    .filter((docs): docs is Docs => docs !== null);
+    .filter((docs): docs is Docs => docs !== null)
+    .filter((docs) => !docs.skip);
 }

@@ -11,4 +11,5 @@ export type Docs = {
   banner?: string;
   author?: string;
   isNew?: boolean;
+  skip?: boolean;
 };
