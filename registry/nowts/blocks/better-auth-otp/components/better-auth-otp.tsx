@@ -1,281 +1,229 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { authClient } from "@/lib/auth-client";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import useMeasure from "react-use-measure";
-import { toast } from "sonner";
-import { z } from "zod";
 import { useCountdown } from "../hooks/use-countdown";
 
-const LoginWithEmailOTPScheme = z.object({
-  email: z.string().email(),
-});
+export type OtpFormProps = {
+  sendOtp: (email: string) => Promise<void>;
+  verifyOtp: (email: string, otp: string) => Promise<void>;
+  defaultEmail?: string;
+  resendCooldown?: number;
+  onSuccess?: () => void;
+  onError?: (error: string) => void;
+};
 
-type LoginWithEmailOTPType = z.infer<typeof LoginWithEmailOTPScheme>;
+type Step = "email" | "otp";
 
-export const SignInWithEmailOTP = (props: {
-  callbackUrl?: string;
-  email?: string;
-}) => {
-  const [otpEmail, setOtpEmail] = useState<string | null>(null);
-  const form = useForm({
-    resolver: zodResolver(LoginWithEmailOTPScheme),
-    defaultValues: {
-      email: props.email ?? "",
-    },
-  });
+export function OtpForm({
+  sendOtp,
+  verifyOtp,
+  defaultEmail = "",
+  resendCooldown = 60,
+  onSuccess,
+  onError,
+}: OtpFormProps) {
+  const [step, setStep] = useState<Step>("email");
+  const [email, setEmail] = useState(defaultEmail);
+  const [isLoading, setIsLoading] = useState(false);
+  const [otpResetKey, setOtpResetKey] = useState(0);
   const [ref, bounds] = useMeasure();
-  const [direction, setDirection] = useState(1);
 
-  const signInMutation = useMutation({
-    mutationFn: async (values: LoginWithEmailOTPType) => {
-      const result = await authClient.emailOtp.sendVerificationOtp({
-        email: values.email,
-        type: "sign-in",
-      });
-      if (result.error) {
-        throw new Error(result.error.message);
-      }
-      return result.data;
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (_, values) => {
-      setOtpEmail(values.email);
-      setDirection(1);
-    },
-  });
+  const handleSendOtp = async (data: { email: string }) => {
+    setIsLoading(true);
+    try {
+      await sendOtp(data.email);
+      setEmail(data.email);
+      setStep("otp");
+    } catch (error) {
+      onError?.(error instanceof Error ? error.message : "Failed to send OTP");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  const verifyOtpMutation = useMutation({
-    mutationFn: async (otp: string) => {
-      if (!otpEmail) {
-        throw new Error("Email is required");
-      }
+  const handleVerifyOtp = async (otp: string) => {
+    setIsLoading(true);
+    try {
+      await verifyOtp(email, otp);
+      onSuccess?.();
+    } catch (error) {
+      onError?.(error instanceof Error ? error.message : "Invalid OTP");
+      // Reset the OTP input on error
+      setOtpResetKey((prev) => prev + 1);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-      const result = await authClient.signIn.emailOtp({
-        email: otpEmail,
-        otp: otp,
-      });
+  const handleResendOtp = async () => {
+    setIsLoading(true);
+    try {
+      await sendOtp(email);
+    } catch (error) {
+      onError?.(
+        error instanceof Error ? error.message : "Failed to resend OTP"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-      if (result.error) {
-        throw new Error(result.error.message);
-      }
-
-      return result.data;
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-    onSuccess: () => {
-      toast.success("Signed in successfully");
-      const cb = props.callbackUrl ?? "/home";
-      window.location.href = cb;
-    },
-  });
+  const handleBack = () => {
+    setStep("email");
+  };
 
   return (
     <motion.div animate={{ height: bounds.height }}>
       <div ref={ref}>
-        <AnimatePresence mode="wait" custom={direction}>
-          {otpEmail ? (
+        <AnimatePresence mode="wait">
+          {step === "email" ? (
             <motion.div
-              key="otp-verification-form"
-              variants={variants}
-              initial="initial"
-              animate="active"
-              exit="exit"
-              transition={{ duration: 0.3 }}
-              custom={direction}
+              key="email-step"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -20, opacity: 0 }}
+              transition={{ duration: 0.2 }}
             >
-              <OtpVerificationForm
-                email={otpEmail}
-                onVerify={verifyOtpMutation.mutate}
-                onResend={() => signInMutation.mutate({ email: otpEmail })}
-                isResendPending={signInMutation.isPending}
-                isVerifyPending={verifyOtpMutation.isPending}
-                onBack={() => {
-                  setDirection(-1);
-                  setOtpEmail(null);
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  void handleSendOtp({ email });
                 }}
-              />
+                className="space-y-4"
+              >
+                <div className="space-y-2">
+                  <Label>Email</Label>
+                  <Input placeholder="john@doe.com" disabled={isLoading} />
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full ring-offset-2 ring-offset-card"
+                >
+                  {isLoading ? "Sending..." : "Sign in"}
+                </Button>
+              </form>
             </motion.div>
           ) : (
             <motion.div
-              key="otp-email-form"
-              variants={variants}
-              // initial="initial"
-              animate="active"
-              exit="exit"
-              transition={{ duration: 0.3 }}
-              custom={direction}
+              key="otp-step"
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 20, opacity: 0 }}
+              transition={{ duration: 0.2 }}
             >
-              <OtpEmailForm
-                onSubmit={(email) => signInMutation.mutate({ email })}
-                defaultEmail={form.getValues("email")}
-                isPending={signInMutation.isPending}
-              />
+              <div className="flex flex-col items-center gap-4 w-full">
+                <p className="text-muted-foreground text-sm">
+                  Enter the code sent to your email{" "}
+                  <span className="font-bold">{email}</span>
+                </p>
+
+                <OtpInput
+                  key={otpResetKey}
+                  onVerify={handleVerifyOtp}
+                  isLoading={isLoading}
+                />
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleBack}
+                    className="underline text-muted-foreground text-sm hover:text-foreground"
+                    disabled={isLoading}
+                  >
+                    Edit email
+                  </button>
+
+                  <ResendButton
+                    onResend={handleResendOtp}
+                    isLoading={isLoading}
+                    cooldown={resendCooldown}
+                  />
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
     </motion.div>
   );
+}
+
+type OtpStepProps = {
+  onVerify: (otp: string) => Promise<void>;
+  isLoading: boolean;
 };
 
-const variants = {
-  initial: (direction: number) => {
-    return { x: `${100 * direction}px`, opacity: 0 };
-  },
-  active: { x: "0%", opacity: 1 },
-  exit: (direction: number) => {
-    return { x: `${-100 * direction}px`, opacity: 0 };
-  },
-};
+function OtpInput({ onVerify, isLoading }: OtpStepProps) {
+  const [otpValue, setOtpValue] = useState("");
 
-export const OtpEmailForm = (props: {
-  onSubmit: (email: string) => void;
-  defaultEmail?: string;
-  isPending: boolean;
-}) => {
-  const form = useForm({
-    resolver: zodResolver(LoginWithEmailOTPScheme),
-    defaultValues: {
-      email: props.defaultEmail ?? "",
-    },
-  });
-
-  function onSubmit(values: LoginWithEmailOTPType) {
-    props.onSubmit(values.email);
-  }
-
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="john@doe.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button
-          disabled={form.formState.isSubmitting}
-          type="submit"
-          className="w-full ring-offset-2 ring-offset-card"
-        >
-          Sign in
-        </Button>
-      </form>
-    </Form>
-  );
-};
-
-export const OtpVerificationForm = (props: {
-  onVerify: (otp: string) => void;
-  onResend: () => void;
-  isResendPending: boolean;
-  isVerifyPending: boolean;
-  email: string;
-  onBack: () => void;
-}) => {
-  const [value, setValue] = useState("");
-
-  const setOtpValue = (otp: string) => {
-    setValue(otp);
-    if (otp.length === 6) {
-      props.onVerify(otp);
+  const handleOtpChange = (value: string) => {
+    setOtpValue(value);
+    if (value.length === 6) {
+      void onVerify(value);
     }
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full">
-      <p className="text-muted-foreground text-sm">
-        Enter the code sent to your email{" "}
-        <span className="font-bold">{props.email}</span>
-      </p>
-      <InputOTP
-        maxLength={6}
-        value={value}
-        onChange={setOtpValue}
-        className={cn({
-          "animate-pulse": props.isVerifyPending,
-        })}
-      >
-        <InputOTPGroup>
-          <InputOTPSlot index={0} />
-          <InputOTPSlot index={1} />
-          <InputOTPSlot index={2} />
-          <InputOTPSlot index={3} />
-          <InputOTPSlot index={4} />
-          <InputOTPSlot index={5} />
-        </InputOTPGroup>
-      </InputOTP>
-      <div className="flex items-center gap-2">
-        <button
-          onClick={props.onBack}
-          className={cn("underline", "text-muted-foreground text-sm")}
-        >
-          Edit email
-        </button>
-        <ResendOtpButton
-          isPending={props.isResendPending}
-          onResend={props.onResend}
-        />
-      </div>
-    </div>
+    <InputOTP
+      maxLength={6}
+      value={otpValue}
+      onChange={handleOtpChange}
+      disabled={isLoading}
+      className={cn({
+        "animate-pulse": isLoading,
+      })}
+    >
+      <InputOTPGroup>
+        <InputOTPSlot index={0} />
+        <InputOTPSlot index={1} />
+        <InputOTPSlot index={2} />
+        <InputOTPSlot index={3} />
+        <InputOTPSlot index={4} />
+        <InputOTPSlot index={5} />
+      </InputOTPGroup>
+    </InputOTP>
   );
+}
+
+type ResendButtonProps = {
+  onResend: () => void;
+  isLoading: boolean;
+  cooldown: number;
 };
 
-const ResendOtpButton = (props: {
-  isPending: boolean;
-  onResend: () => void;
-}) => {
-  const countdown = useCountdown(60);
+function ResendButton({ onResend, isLoading, cooldown }: ResendButtonProps) {
+  const countdown = useCountdown(cooldown);
+
+  const handleResend = () => {
+    countdown.reset();
+    onResend();
+  };
 
   return (
     <button
-      onClick={() => {
-        countdown.reset();
-        props.onResend();
-      }}
-      disabled={props.isPending || !countdown.isCountdownFinished}
+      onClick={handleResend}
+      disabled={isLoading || !countdown.isCountdownFinished}
       className={cn(
-        "underline text-muted-foreground text-sm",
+        "underline text-muted-foreground text-sm hover:text-foreground",
+        "disabled:opacity-50 disabled:cursor-not-allowed",
         {
-          "animate-pulse": props.isPending,
-        },
-        "disabled:opacity-50"
+          "animate-pulse": isLoading,
+        }
       )}
     >
       Resend {countdown.count > 0 ? `(${countdown.count})` : ""}
     </button>
   );
-};
+}

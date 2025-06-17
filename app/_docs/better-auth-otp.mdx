@@ -1,0 +1,397 @@
+---
+title: "Better Auth OTP"
+description: "A clean, animated OTP authentication component for Better Auth's email OTP plugin."
+slug: "better-auth-otp"
+externalDocs: "https://www.better-auth.com/docs/plugins/email-otp"
+---
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode 
+	code={`import { OtpForm } from "@/components/better-auth-otp";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+
+export function LoginPage() {
+  return (
+    <OtpForm
+      sendOtp={async (email) => {
+        const result = await authClient.emailOtp.sendVerificationOtp({
+          email,
+          type: "sign-in"
+        });
+        if (result.error) throw new Error(result.error.message);
+      }}
+      verifyOtp={async (email, otp) => {
+        const result = await authClient.signIn.emailOtp({ email, otp });
+        if (result.error) throw new Error(result.error.message);
+      }}
+      onSuccess={() => {
+        toast.success("Signed in successfully!");
+        window.location.href = "/dashboard";
+      }}
+      onError={(error) => toast.error(error)}
+      defaultEmail="user@example.com"
+      resendCooldown={60}
+    />
+  );
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[500px] flex items-center justify-center">
+
+<BetterAuthOtpDemo />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[400px]" contentClassName="h-full">
+
+```tsx
+import { OtpForm } from "@/components/better-auth-otp";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+
+export function LoginPage() {
+  return (
+    <div className="max-w-md mx-auto">
+      <div className="text-center space-y-2 mb-6">
+        <h1 className="text-2xl font-bold">Sign in</h1>
+        <p className="text-muted-foreground">
+          Enter your email to receive a verification code
+        </p>
+      </div>
+
+      <OtpForm
+        sendOtp={async (email) => {
+          const result = await authClient.emailOtp.sendVerificationOtp({
+            email,
+            type: "sign-in"
+          });
+          if (result.error) throw new Error(result.error.message);
+        }}
+        verifyOtp={async (email, otp) => {
+          const result = await authClient.signIn.emailOtp({ email, otp });
+          if (result.error) throw new Error(result.error.message);
+        }}
+        onSuccess={() => {
+          toast.success("Signed in successfully!");
+          window.location.href = "/dashboard";
+        }}
+        onError={(error) => toast.error(error)}
+        defaultEmail="user@example.com"
+        resendCooldown={60}
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **Better Auth OTP** component is a modern and animated user interface for email OTP authentication, specially designed to work with [Better Auth's Email OTP plugin](https://www.better-auth.com/docs/plugins/email-otp).
+
+### Features
+
+- ✅ **2-step interface**: Email input → OTP verification
+- ✅ **Smooth animations** with Framer Motion
+- ✅ **Auto-validation** when all 6 digits are entered
+- ✅ **Cooldown system** for code resending
+- ✅ **Built-in error handling**
+- ✅ **Simple props API** and flexible
+- ✅ **Full TypeScript** support
+
+## Installation
+
+<div className="space-y-4">
+
+### 1. Install the component
+
+<CommandBlock 
+	npmCommand="npx shadcn@latest add https://registry-nowts.vercel.app/r/better-auth-otp.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://registry-nowts.vercel.app/r/better-auth-otp.json" 
+	yarnCommand="npx shadcn@latest add https://registry-nowts.vercel.app/r/better-auth-otp.json" 
+	bunCommand="bunx --bun shadcn@latest add https://registry-nowts.vercel.app/r/better-auth-otp.json" 
+/>
+
+### 2. Configure Better Auth
+
+First, configure Better Auth with the Email OTP plugin:
+
+<CodeBlock contentClassName="h-fit" fileName="auth.ts">
+
+```ts
+import { betterAuth } from "better-auth"
+import { emailOTP } from "better-auth/plugins"
+
+export const auth = betterAuth({
+  // ... other options
+  plugins: [
+    emailOTP({
+      async sendVerificationOTP({ email, otp, type }) {
+        // Implement email sending here
+        // Example with Resend, Nodemailer, etc.
+        await sendEmail({
+          to: email,
+          subject: "Your verification code",
+          html: `Your OTP code is: <strong>${otp}</strong>`
+        });
+      },
+      otpLength: 6,
+      expiresIn: 300, // 5 minutes
+      resendCooldown: 60 // 1 minute
+    })
+  ]
+})
+```
+
+</CodeBlock>
+
+### 3. Configure the client
+
+<CodeBlock contentClassName="h-fit" fileName="auth-client.ts">
+
+```ts
+import { createAuthClient } from "better-auth/client"
+import { emailOTPClient } from "better-auth/client/plugins"
+
+export const authClient = createAuthClient({
+  baseURL: "http://localhost:3000",
+  plugins: [
+    emailOTPClient()
+  ]
+})
+```
+
+</CodeBlock>
+
+</div>
+
+## Usage
+
+### Basic usage
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { OtpForm } from "@/components/better-auth-otp"
+import { authClient } from "@/lib/auth-client"
+import { toast } from "sonner"
+
+export function SignInForm() {
+  return (
+    <OtpForm
+      sendOtp={async (email) => {
+        const result = await authClient.emailOtp.sendVerificationOtp({
+          email,
+          type: "sign-in"
+        });
+        if (result.error) throw new Error(result.error.message);
+      }}
+      verifyOtp={async (email, otp) => {
+        const result = await authClient.signIn.emailOtp({ email, otp });
+        if (result.error) throw new Error(result.error.message);
+      }}
+      onSuccess={() => {
+        toast.success("Successfully signed in!");
+        window.location.href = "/dashboard";
+      }}
+      onError={(error) => toast.error(error)}
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+### Email verification
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+<OtpForm
+  sendOtp={async (email) => {
+    const result = await authClient.emailOtp.sendVerificationOtp({
+      email,
+      type: "email-verification"
+    });
+    if (result.error) throw new Error(result.error.message);
+  }}
+  verifyOtp={async (email, otp) => {
+    const result = await authClient.emailOtp.verifyEmail({
+      email,
+      otp
+    });
+    if (result.error) throw new Error(result.error.message);
+  }}
+  onSuccess={() => {
+    toast.success("Email verified successfully!");
+  }}
+  onError={(error) => toast.error(error)}
+/>
+```
+
+</CodeBlock>
+
+### Password reset
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+<OtpForm
+  sendOtp={async (email) => {
+    const result = await authClient.emailOtp.sendVerificationOtp({
+      email,
+      type: "forget-password"
+    });
+    if (result.error) throw new Error(result.error.message);
+  }}
+  verifyOtp={async (email, otp) => {
+    const result = await authClient.emailOtp.resetPassword({
+      email,
+      otp,
+      password: newPassword // Get the new password from a form
+    });
+    if (result.error) throw new Error(result.error.message);
+  }}
+  onSuccess={() => {
+    toast.success("Password reset successfully!");
+  }}
+  onError={(error) => toast.error(error)}
+/>
+```
+
+</CodeBlock>
+
+## API
+
+### Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `sendOtp` | `(email: string) => Promise<void>` | Function to send the OTP |
+| `verifyOtp` | `(email: string, otp: string) => Promise<void>` | Function to verify the OTP |
+| `onSuccess?` | `() => void` | Callback called after successful verification |
+| `onError?` | `(error: string) => void` | Callback called on error |
+| `defaultEmail?` | `string` | Pre-filled email |
+| `resendCooldown?` | `number` | Cooldown in seconds before being able to resend (default: 60) |
+
+### Error handling
+
+The component automatically handles errors and passes them via `onError`. Common errors include:
+
+- Invalid email
+- Incorrect OTP
+- Expired OTP  
+- Maximum attempts exceeded
+- Network errors
+
+### Better Auth Integration
+
+This component is specially designed for [Better Auth's Email OTP plugin](https://www.better-auth.com/docs/plugins/email-otp). It supports all OTP types:
+
+- **`sign-in`**: Sign in with OTP
+- **`email-verification`**: Email verification
+- **`forget-password`**: Password reset
+
+## Advanced Examples
+
+### With custom router
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useRouter } from "next/navigation"
+
+export function SignInForm() {
+  const router = useRouter();
+  
+  return (
+    <OtpForm
+      sendOtp={...}
+      verifyOtp={...}
+      onSuccess={() => {
+        router.push("/dashboard");
+      }}
+      onError={(error) => {
+        // Log error or send to monitoring service
+        console.error("OTP Error:", error);
+        toast.error(error);
+      }}
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+### With state management
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useAuthStore } from "@/store/auth"
+
+export function SignInForm() {
+  const { setUser } = useAuthStore();
+  
+  return (
+    <OtpForm
+      sendOtp={...}
+      verifyOtp={async (email, otp) => {
+        const result = await authClient.signIn.emailOtp({ email, otp });
+        if (result.error) throw new Error(result.error.message);
+        
+        // Update store with user data
+        setUser(result.data.user);
+      }}
+      onSuccess={() => {
+        toast.success("Successfully signed in!");
+      }}
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+## Customization
+
+The component uses shadcn/ui CSS classes and can be styled via CSS or Tailwind:
+
+<CodeBlock contentClassName="h-fit">
+
+```css
+/* Customize animation */
+.otp-form {
+  --transition-duration: 0.3s;
+}
+
+/* Customize colors */
+.otp-input {
+  --border-color: hsl(var(--primary));
+}
+```
+
+</CodeBlock>

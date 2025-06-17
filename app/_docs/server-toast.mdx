@@ -1,0 +1,445 @@
+---
+title: "Server Toast"
+description: "A server-side toast notification component for Next.js server actions."
+slug: "server-toast"
+externalDocs: "https://buildui.com/posts/toast-messages-in-react-server-components"
+---
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode 
+	code={`import { serverToast } from "@/components/server-toast";
+import { ServerToaster } from "@/components/server-toast/server-toast.server";
+
+// In your server action
+export async function savePost() {
+  "use server";
+  // ... save logic
+  await serverToast("Post saved successfully!", "success");
+}
+
+// In your layout
+export default function Layout({ children }) {
+  return (
+    <div>
+      {children}
+      <Suspense>
+        <ServerToaster />
+      </Suspense>
+    </div>
+  );
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[400px] flex items-center justify-center">
+
+<ServerToastExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[400px]" contentClassName="h-full">
+
+```tsx
+async function handleInfo() {
+  "use server";
+  await serverToast("Here's some helpful information for you.", "info");
+  revalidatePath("/ui/server-toast");
+}
+
+export function ServerToastExamples() {
+  return (
+    <form>
+      <Button formAction={handleInfo} className="w-full" variant="default">
+        Info
+      </Button>
+    </form>
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **Server Toast** component is a complete notification system for React Server Components that uses cookies, `useOptimistic`, and Sonner to display toast messages from Server Actions.
+
+### Features
+
+- ✅ **Toast from Server Actions**: Trigger toasts directly from your server actions
+- ✅ **Four toast types**: success, error, warning, info
+- ✅ **Cookie persistence**: Toasts survive redirects and page reloads
+- ✅ **Instant dismissal** with useOptimistic
+- ✅ **Modern Sonner interface** that's accessible
+- ✅ **Complete TypeScript** support
+- ✅ **Zod validation** for data security
+
+## Installation
+
+<div className="space-y-4">
+
+### 1. Install the component
+
+<CommandBlock 
+	npmCommand="npx shadcn@latest add https://registry-nowts.vercel.app/r/server-toast.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://registry-nowts.vercel.app/r/server-toast.json" 
+	yarnCommand="npx shadcn@latest add https://registry-nowts.vercel.app/r/server-toast.json" 
+	bunCommand="bunx --bun shadcn@latest add https://registry-nowts.vercel.app/r/server-toast.json" 
+/>
+
+### 2. Install dependencies
+
+<CommandBlock 
+	npmCommand="npm install sonner zod" 
+	pnpmCommand="pnpm add sonner zod" 
+	yarnCommand="yarn add sonner zod" 
+	bunCommand="bun add sonner zod" 
+/>
+
+### 3. Add the Toaster to your layout
+
+<CodeBlock contentClassName="h-fit" fileName="app/layout.tsx">
+
+```tsx
+import { ServerToaster } from "@/components/server-toast/server-toast.server";
+import { Suspense } from "react";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        
+        <Suspense>
+          <ServerToaster />
+        </Suspense>
+      </body>
+    </html>
+  );
+}
+```
+
+</CodeBlock>
+
+</div>
+
+## Usage
+
+### Basic usage
+
+<CodeBlock contentClassName="h-fit" fileName="actions.ts">
+
+```tsx
+import { serverToast } from "@/components/server-toast";
+
+export async function saveUserAction(formData: FormData) {
+  "use server";
+  
+  try {
+    // Your save logic
+    const user = await saveUser(formData);
+    
+    await serverToast("User saved successfully!", "success");
+  } catch (error) {
+    await serverToast("Failed to save user", "error");
+  }
+}
+```
+
+</CodeBlock>
+
+### All toast types
+
+<CodeBlock contentClassName="h-fit" fileName="actions.ts">
+
+```tsx
+import { serverToast } from "@/components/server-toast";
+
+// Success toast
+await serverToast("Operation completed!", "success");
+
+// Error toast
+await serverToast("Something went wrong!", "error");
+
+// Warning toast
+await serverToast("Please check your input", "warning");
+
+// Info toast (default)
+await serverToast("Here's some information", "info");
+// or simply
+await serverToast("Here's some information");
+```
+
+</CodeBlock>
+
+### With forms
+
+<CodeBlock contentClassName="h-fit" fileName="components/CreatePostForm.tsx">
+
+```tsx
+import { serverToast } from "@/components/server-toast";
+import { redirect } from "next/navigation";
+
+async function createPostAction(formData: FormData) {
+  "use server";
+  
+  const title = formData.get("title") as string;
+  const content = formData.get("content") as string;
+  
+  if (!title || !content) {
+    await serverToast("Title and content are required", "warning");
+    return;
+  }
+  
+  try {
+    await createPost({ title, content });
+    await serverToast("Post created successfully!", "success");
+    redirect("/posts");
+  } catch (error) {
+    await serverToast("Failed to create post", "error");
+  }
+}
+
+export function CreatePostForm() {
+  return (
+    <form action={createPostAction} className="space-y-4">
+      <input name="title" placeholder="Post title" required />
+      <textarea name="content" placeholder="Post content" required />
+      <button type="submit">Create Post</button>
+    </form>
+  );
+}
+```
+
+</CodeBlock>
+
+### With API Routes
+
+<CodeBlock contentClassName="h-fit" fileName="app/api/data/route.ts">
+
+```tsx
+import { serverToast } from "@/components/server-toast";
+import { NextRequest } from "next/server";
+
+export async function POST(request: NextRequest) {
+  try {
+    const data = await request.json();
+    
+    // Your API logic
+    await processData(data);
+    
+    await serverToast("Data processed successfully!", "success");
+    
+    return Response.json({ success: true });
+  } catch (error) {
+    await serverToast("Failed to process data", "error");
+    return Response.json({ error: "Failed" }, { status: 500 });
+  }
+}
+```
+
+</CodeBlock>
+
+## API
+
+### serverToast
+
+```tsx
+function serverToast(
+  message: string,
+  type?: "success" | "error" | "warning" | "info"
+): Promise<void>
+```
+
+| Parameter | Type | Description | Default |
+|-----------|------|-------------|---------|
+| `message` | `string` | The message to display | - |
+| `type` | `"success" \| "error" \| "warning" \| "info"` | The toast type | `"info"` |
+
+### ServerToaster
+
+Server component that reads toast cookies and displays them. Must be placed within a `<Suspense>` boundary.
+
+```tsx
+<Suspense>
+  <ServerToaster />
+</Suspense>
+```
+
+## Architecture
+
+The Server Toast system works in 3 parts:
+
+### 1. Toast creation (Server)
+- `serverToast()` creates a cookie with a unique ID
+- Message and type are serialized to JSON
+- Cookie expires after 24h
+
+### 2. Toast reading (Server)
+- `ServerToaster` reads all cookies starting with "toast-"
+- Validates data with Zod
+- Creates server actions to delete each toast
+
+### 3. Optimistic display (Client)
+- `ClientToasts` uses `useOptimistic` for instant dismissal
+- Integrates with Sonner for UI
+- Dismissing a toast triggers server action in background
+
+## Benefits
+
+### Cross-navigation persistence
+Toasts survive:
+- Server redirects
+- Page reloads
+- Tab navigation
+- Browser close/reopen
+
+### Optimal performance
+- **Server-side rendering**: No content flash
+- **Instant dismissal**: `useOptimistic` for UX
+- **Lazy loading**: Toaster in `<Suspense>`
+
+### Security
+- **HTTP-only cookies** optional
+- **Zod validation** of data
+- **No JS exposure** of sensitive data
+
+## Advanced examples
+
+### With custom middleware
+
+<CodeBlock contentClassName="h-fit" fileName="actions.ts">
+
+```tsx
+import { serverToast } from "@/components/server-toast";
+import { auth } from "@/lib/auth";
+
+export async function authenticatedAction(formData: FormData) {
+  "use server";
+  
+  const user = await auth.getUser();
+  
+  if (!user) {
+    await serverToast("Please sign in to continue", "warning");
+    redirect("/login");
+    return;
+  }
+  
+  // Authenticated action...
+  await serverToast(`Welcome ${user.name}!`, "success");
+}
+```
+
+</CodeBlock>
+
+### Conditional toast
+
+<CodeBlock contentClassName="h-fit" fileName="actions.ts">
+
+```tsx
+import { serverToast } from "@/components/server-toast";
+
+export async function updateUserAction(formData: FormData) {
+  "use server";
+  
+  const changes = getChanges(formData);
+  
+  if (changes.length === 0) {
+    await serverToast("No changes to save", "info");
+    return;
+  }
+  
+  const result = await updateUser(changes);
+  
+  if (result.warnings.length > 0) {
+    await serverToast(
+      `Saved with ${result.warnings.length} warnings`, 
+      "warning"
+    );
+  } else {
+    await serverToast("All changes saved successfully!", "success");
+  }
+}
+```
+
+</CodeBlock>
+
+### Complex notification system
+
+<CodeBlock contentClassName="h-fit" fileName="actions.ts">
+
+```tsx
+import { serverToast } from "@/components/server-toast";
+
+export async function bulkImportAction(formData: FormData) {
+  "use server";
+  
+  const file = formData.get("file") as File;
+  const results = await processBulkImport(file);
+  
+  // Multiple messages based on result
+  if (results.errors.length > 0) {
+    await serverToast(
+      `${results.errors.length} items failed to import`, 
+      "error"
+    );
+  }
+  
+  if (results.warnings.length > 0) {
+    await serverToast(
+      `${results.warnings.length} items imported with warnings`, 
+      "warning"
+    );
+  }
+  
+  await serverToast(
+    `${results.success.length} items imported successfully!`, 
+    "success"
+  );
+}
+```
+
+</CodeBlock>
+
+## Troubleshooting
+
+### Toasts don't appear
+- Check that `<ServerToaster />` is in your layout
+- Make sure it's within a `<Suspense>` boundary
+- Verify that cookies are enabled
+
+### Duplicate toasts
+- Toasts use unique IDs to prevent duplicates
+- If you see duplicates, check that `<ServerToaster />` is only rendered once
+
+### Slow performance
+- Toasts use `useOptimistic` for instant dismissal
+- Server-side deletion happens in the background
+- If slow, check your cookie configuration
+
+## Source
+
+Based on the excellent article by [Build UI](https://buildui.com/posts/toast-messages-in-react-server-components) about toast messages in React Server Components. 

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "shadcn-prose";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -146,5 +147,11 @@ html {
     code span {
       color: var(--shiki-dark);
     }
+  }
+}
+
+.prose {
+  code {
+    font-size: 0.9rem !important;
   }
 }

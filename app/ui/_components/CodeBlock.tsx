@@ -24,7 +24,7 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        "relative rounded-xl border border-neutral-300/50 bg-neutral-200/30 dark:border-neutral-800/60 dark:bg-neutral-900/40",
+        "relative rounded-xl border border-neutral-300/50 bg-neutral-200/30 dark:border-neutral-800/60 dark:bg-neutral-900/40 not-prose mt-8",
         className
       )}
     >
@@ -46,15 +46,17 @@ export function CodeBlock({
               {fileName}
             </span>
           </div>
-          <CopyCode
-            code={
-              customFilePath
-                ? getFileContent(customFilePath, "")
-                : simpleCode
-                ? simpleCode
-                : getFileContent("app/_components/ui", fileName)
-            }
-          />
+          {customFilePath ? (
+            <CopyCode
+              code={
+                customFilePath
+                  ? getFileContent(customFilePath, "")
+                  : simpleCode
+                  ? simpleCode
+                  : getFileContent("app/_components/ui", fileName)
+              }
+            />
+          ) : null}
         </div>
       )}
       <div className={cn("relative h-[350px] overflow-auto", contentClassName)}>

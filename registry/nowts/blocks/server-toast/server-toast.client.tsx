@@ -23,6 +23,8 @@ export function ClientToasts({ toasts }: { toasts: Toast[] }) {
     },
   }));
 
+  console.log({ localToasts, toasts });
+
   const [sentToSonner, setSentToSonner] = useState<string[]>([]);
 
   useEffect(() => {
@@ -30,6 +32,7 @@ export function ClientToasts({ toasts }: { toasts: Toast[] }) {
       .filter((toast) => !sentToSonner.includes(toast.id))
       .forEach((toast) => {
         setSentToSonner((prev) => [...prev, toast.id]);
+        console.log({ toast });
         sonnerToast(toast.message, {
           id: toast.id,
           // @ts-expect-error - Sonner API doesn't include type in TypeScript definition but it's work

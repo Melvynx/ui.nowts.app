@@ -1,8 +1,10 @@
 import { Header } from "@/components/header";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
+import { ServerToaster } from "@/registry/nowts/blocks/server-toast/server-toast.server";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -107,6 +109,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
+            <Toaster />
+            <ServerToaster />
             {children}
           </ThemeProvider>
         </Providers>

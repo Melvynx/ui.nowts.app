@@ -117,7 +117,9 @@ export default async function ComponentPage({
             </div>
           )}
         </div>
-        <MDX source={content} />
+        <article className="prose">
+          <MDX source={content} />
+        </article>
         <Pagination
           back={{
             href: previousComponent ? `/ui/${previousComponent.slug}` : "",

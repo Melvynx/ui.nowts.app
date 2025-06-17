@@ -36,6 +36,7 @@
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "shadcn": "^2.4.1",
+    "shadcn-prose": "^1.0.9",
     "shiki": "^3.6.0",
     "sonner": "^2.0.5",
     "tailwind-merge": "^3.2.0",

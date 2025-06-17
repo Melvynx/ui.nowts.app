@@ -14,6 +14,8 @@ import { CommandBlock } from "../CommandBlock";
 import { ComponentView } from "../ComponentView";
 import { CopyCode } from "../CopyCode";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Tabs";
+import { BetterAuthOtpDemo } from "../examples/better-auth-otp-examples";
+import { ServerToastExamples } from "../examples/server-toast-examples";
 
 const components: MDXComponents = {
   ComponentView: ({ children, isReloadAnimation, ...props }) => (
@@ -25,34 +27,9 @@ const components: MDXComponents = {
       {children}
     </ComponentView>
   ),
-  p: ({ children, ...props }) => (
-    <p
-      className="font-normal leading-relaxed text-black/80 dark:text-white/90"
-      {...props}
-    >
-      {children}
-    </p>
-  ),
-  h1: ({ children, ...props }) => (
-    <h1 className="text-3xl font-bold -tracking-wide text-primary" {...props}>
-      {children}
-    </h1>
-  ),
-  h2: ({ children, ...props }) => (
-    <h2 className="text-xl font-bold -tracking-wide text-primary" {...props}>
-      {children}
-    </h2>
-  ),
-  h3: ({ children, ...props }) => (
-    <h3 className="text-xl font-bold -tracking-wide text-primary" {...props}>
-      {children}
-    </h3>
-  ),
-  h4: ({ children, ...props }) => (
-    <h4 className="font-medium text-primary tracking-tight text-lg" {...props}>
-      {children}
-    </h4>
-  ),
+  BetterAuthOtpDemo: ({ ...props }) => <BetterAuthOtpDemo {...props} />,
+  ServerToastExamples: ({ ...props }) => <ServerToastExamples {...props} />,
+
   CommandBlock: ({
     children,
     npmCommand,
