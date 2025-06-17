@@ -36,26 +36,27 @@
       "description": "A library for server-side toast notifications.",
       "registryDependencies": ["sonner"],
       "dependencies": [],
+      "docs": "Important : Add <ServerToaster /> inside app/layout.tsx to render the toast notifications.",
       "files": [
         {
           "path": "registry/nowts/blocks/server-toast/server-toast.type.ts",
           "type": "registry:lib",
-          "target": "@lib/server-toast"
+          "target": "/lib/server-toast/server-toast.type.ts"
         },
         {
           "path": "registry/nowts/blocks/server-toast/server-toast.ts",
           "type": "registry:lib",
-          "target": "@lib/server-toast"
+          "target": "/lib/server-toast/server-toast.ts"
         },
         {
           "path": "registry/nowts/blocks/server-toast/server-toast.server.tsx",
           "type": "registry:lib",
-          "target": "@lib/server-toast"
+          "target": "/lib/server-toast/server-toast.server.tsx"
         },
         {
           "path": "registry/nowts/blocks/server-toast/server-toast.client.tsx",
           "type": "registry:lib",
-          "target": "@lib/server-toast"
+          "target": "/lib/server-toast/server-toast.client.tsx"
         }
       ]
     }

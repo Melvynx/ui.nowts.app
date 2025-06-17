@@ -1,6 +1,5 @@
 "use client";
 
-// Source : https://buildui.com/posts/toast-messages-in-react-server-components
 import { startTransition, useEffect, useOptimistic, useState } from "react";
 import { toast as sonnerToast } from "sonner";
 import type { ServerToastType } from "./server-toast.type";
@@ -10,6 +9,7 @@ type Toast = {
   dismiss: () => Promise<void>;
 } & ServerToastType;
 
+// Source : https://buildui.com/posts/toast-messages-in-react-server-components
 export function ClientToasts({ toasts }: { toasts: Toast[] }) {
   const [optimisticToasts, remove] = useOptimistic(toasts, (current, id) =>
     current.filter((toast) => toast.id !== id)
@@ -23,8 +23,6 @@ export function ClientToasts({ toasts }: { toasts: Toast[] }) {
     },
   }));
 
-  console.log({ localToasts, toasts });
-
   const [sentToSonner, setSentToSonner] = useState<string[]>([]);
 
   useEffect(() => {
@@ -32,10 +30,9 @@ export function ClientToasts({ toasts }: { toasts: Toast[] }) {
       .filter((toast) => !sentToSonner.includes(toast.id))
       .forEach((toast) => {
         setSentToSonner((prev) => [...prev, toast.id]);
-        console.log({ toast });
         sonnerToast(toast.message, {
           id: toast.id,
-          // @ts-expect-error - Sonner API doesn't include type in TypeScript definition but it's work
+          // @ts-expect-error - Sonner API currently HAVE a `type` property but it's not typed.
           type: toast.type,
           onDismiss: () => startTransition(toast.dismiss),
           onAutoClose: () => startTransition(toast.dismiss),

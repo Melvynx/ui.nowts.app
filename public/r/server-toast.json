@@ -4,32 +4,33 @@
   "type": "registry:block",
   "title": "Server Toast",
   "description": "A library for server-side toast notifications.",
-  "dependencies": ["zod"],
+  "dependencies": [],
   "registryDependencies": ["sonner"],
   "files": [
     {
       "path": "registry/nowts/blocks/server-toast/server-toast.type.ts",
       "content": "import { z } from \"zod\";\n\nexport const ServerToastEnum = z.enum([\"success\", \"error\", \"warning\", \"info\"]);\n\nexport type ServerToastEnum = z.infer<typeof ServerToastEnum>;\n\nexport const ServerToastSchema = z.object({\n  message: z.string(),\n  type: ServerToastEnum,\n});\n\nexport type ServerToastType = z.infer<typeof ServerToastSchema>;\n",
       "type": "registry:lib",
-      "target": "@lib/server-toast"
+      "target": "/lib/server-toast/server-toast.type.ts"
     },
     {
       "path": "registry/nowts/blocks/server-toast/server-toast.ts",
       "content": "import { cookies } from \"next/headers\";\nimport type { ServerToastEnum } from \"./server-toast.type\";\n\nexport async function serverToast(\n  message: string,\n  type: ServerToastEnum = \"info\"\n) {\n  const cookieStore = await cookies();\n  const id = crypto.randomUUID();\n  cookieStore.set(`toast-${id}`, JSON.stringify({ message, type }), {\n    path: \"/\",\n    maxAge: 60 * 60 * 24, // 1 day\n  });\n}\n",
       "type": "registry:lib",
-      "target": "@lib/server-toast"
+      "target": "/lib/server-toast/server-toast.ts"
     },
     {
       "path": "registry/nowts/blocks/server-toast/server-toast.server.tsx",
       "content": "import { cookies } from \"next/headers\";\nimport { ClientToasts } from \"./server-toast.client\";\nimport { ServerToastSchema } from \"./server-toast.type\";\n\nexport async function ServerToaster() {\n  const cookieStore = await cookies();\n  const toasts = cookieStore\n    .getAll()\n    .filter((cookie) => cookie.name.startsWith(\"toast-\") && cookie.value)\n    .map((cookie) => {\n      try {\n        const parsed = ServerToastSchema.safeParse(JSON.parse(cookie.value));\n\n        if (!parsed.success) {\n          return undefined;\n        }\n\n        return {\n          id: cookie.name,\n          ...parsed.data,\n          dismiss: async () => {\n            \"use server\";\n            const cookieStore = await cookies();\n            cookieStore.delete(cookie.name);\n          },\n        };\n      } catch {\n        return undefined;\n      }\n    })\n    .filter((toast) => toast !== undefined);\n\n  return <ClientToasts toasts={toasts} />;\n}\n",
       "type": "registry:lib",
-      "target": "@lib/server-toast"
+      "target": "/lib/server-toast/server-toast.server.tsx"
     },
     {
       "path": "registry/nowts/blocks/server-toast/server-toast.client.tsx",
-      "content": "\"use client\";\n\n// Source : https://buildui.com/posts/toast-messages-in-react-server-components\nimport { startTransition, useEffect, useOptimistic, useState } from \"react\";\nimport { toast as sonnerToast } from \"sonner\";\nimport type { ServerToastType } from \"./server-toast.type\";\n\ntype Toast = {\n  id: string;\n  dismiss: () => Promise<void>;\n} & ServerToastType;\n\nexport function ClientToasts({ toasts }: { toasts: Toast[] }) {\n  const [optimisticToasts, remove] = useOptimistic(toasts, (current, id) =>\n    current.filter((toast) => toast.id !== id)\n  );\n\n  const localToasts = optimisticToasts.map((toast) => ({\n    ...toast,\n    dismiss: async () => {\n      remove(toast.id);\n      await toast.dismiss();\n    },\n  }));\n\n  console.log({ localToasts, toasts });\n\n  const [sentToSonner, setSentToSonner] = useState<string[]>([]);\n\n  useEffect(() => {\n    localToasts\n      .filter((toast) => !sentToSonner.includes(toast.id))\n      .forEach((toast) => {\n        setSentToSonner((prev) => [...prev, toast.id]);\n        console.log({ toast });\n        sonnerToast(toast.message, {\n          id: toast.id,\n          // @ts-expect-error - Sonner API doesn't include type in TypeScript definition but it's work\n          type: toast.type,\n          onDismiss: () => startTransition(toast.dismiss),\n          onAutoClose: () => startTransition(toast.dismiss),\n        });\n      });\n  }, [localToasts, sentToSonner]);\n\n  return null;\n}\n",
+      "content": "\"use client\";\n\nimport { startTransition, useEffect, useOptimistic, useState } from \"react\";\nimport { toast as sonnerToast } from \"sonner\";\nimport type { ServerToastType } from \"./server-toast.type\";\n\ntype Toast = {\n  id: string;\n  dismiss: () => Promise<void>;\n} & ServerToastType;\n\n// Source : https://buildui.com/posts/toast-messages-in-react-server-components\nexport function ClientToasts({ toasts }: { toasts: Toast[] }) {\n  const [optimisticToasts, remove] = useOptimistic(toasts, (current, id) =>\n    current.filter((toast) => toast.id !== id)\n  );\n\n  const localToasts = optimisticToasts.map((toast) => ({\n    ...toast,\n    dismiss: async () => {\n      remove(toast.id);\n      await toast.dismiss();\n    },\n  }));\n\n  const [sentToSonner, setSentToSonner] = useState<string[]>([]);\n\n  useEffect(() => {\n    localToasts\n      .filter((toast) => !sentToSonner.includes(toast.id))\n      .forEach((toast) => {\n        setSentToSonner((prev) => [...prev, toast.id]);\n        sonnerToast(toast.message, {\n          id: toast.id,\n          // @ts-expect-error - Sonner API currently HAVE a `type` property but it's not typed.\n          type: toast.type,\n          onDismiss: () => startTransition(toast.dismiss),\n          onAutoClose: () => startTransition(toast.dismiss),\n        });\n      });\n  }, [localToasts, sentToSonner]);\n\n  return null;\n}\n",
       "type": "registry:lib",
-      "target": "@lib/server-toast"
+      "target": "/lib/server-toast/server-toast.client.tsx"
     }
-  ]
+  ],
+  "docs": "Important : Add <ServerToaster /> inside app/layout.tsx to render the toast notifications."
 }
