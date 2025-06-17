@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "acme",
-  "homepage": "https://acme.com",
+  "name": "Now.ts UI",
+  "homepage": "https://ui.nowts.app",
   "items": [
     {
       "name": "better-auth-otp",
