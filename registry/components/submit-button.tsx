@@ -2,10 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Loader } from "lucide-react";
 import { motion } from "motion/react";
 import type { ComponentProps } from "react";
 import { useFormStatus } from "react-dom";
+import { Spinner } from "./spinner";
 
 export const SubmitButton = (props: ComponentProps<typeof Button>) => {
   const { pending } = useFormStatus();
@@ -52,7 +52,7 @@ export const LoadingButton = ({
         }}
         className="absolute inset-0 flex items-center justify-center"
       >
-        <Loader size={20} />
+        <Spinner size={20} />
       </motion.span>
     </Button>
   );

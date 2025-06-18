@@ -1,0 +1,353 @@
+---
+title: "Form Management"
+description: "A comprehensive form management system with auto-save, unsaved changes warning, and sticky action bar for enhanced UX."
+slug: "form-management"
+type: "block"
+---
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode 
+	code={`import { FormAutoSave, FormAutoSaveStickyBar } from "@/lib/form-management/form-management";
+import { useForm } from "react-hook-form";
+
+export function MyForm() {
+  const form = useForm();
+
+  const onSubmit = async (data) => {
+    await saveData(data);
+  };
+
+  return (
+    <FormAutoSave form={form} onSubmit={onSubmit}>
+      <div className="space-y-4">
+        <Input {...form.register("name")} placeholder="Name" />
+        <Input {...form.register("email")} placeholder="Email" />
+      </div>
+      <FormAutoSaveStickyBar />
+    </FormAutoSave>
+  );}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[500px] flex items-center justify-center">
+
+<FormManagementExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[400px]" contentClassName="h-full">
+
+```tsx
+import { FormAutoSave, FormAutoSaveWatch } from "@/lib/form-management/form-management";
+import { FormAutoSaveStickyBar } from "@/lib/form-management/form-management-sticky-bar";
+import { useZodForm } from "@/components/extended-form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import * as z from "zod";
+
+const schema = z.object({
+  name: z.string().min(1, "Name is required"),
+});
+
+export function MyForm() {
+  const form = useZodForm({
+    schema,
+    defaultValues: {
+      name: ""
+    }
+  });
+
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log("Form submitted:", data);
+  };
+
+  return (
+    <div className="max-w-sm mx-auto space-y-6">
+      <FormAutoSave form={form} onSubmit={onSubmit}>
+        <div>
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            {...form.register("name")}
+            placeholder="Enter your name"
+          />
+        </div>
+        
+        {/* Auto-save every 2 seconds when form changes */}
+        <FormAutoSaveWatch form={form} autoSaveMs={2000} />
+        
+        {/* Sticky bar appears when form has unsaved changes */}
+        <FormAutoSaveStickyBar />
+      </FormAutoSave>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **Form Management** system provides a comprehensive solution for handling forms with auto-save functionality, unsaved changes warnings, and a sticky action bar that appears when there are pending changes.
+
+### Features
+
+- ✅ **Auto-save**: Automatically save form changes with configurable debounce
+- ✅ **Sticky Action Bar**: Beautiful floating action bar for unsaved changes
+- ✅ **Unsaved Changes Warning**: Warns users before leaving with unsaved changes
+- ✅ **Keyboard Shortcuts**: CMD/Ctrl+S to save changes
+- ✅ **Loading States**: Built-in loading indicators during submission
+- ✅ **React Hook Form**: Full integration with react-hook-form
+- ✅ **TypeScript**: Fully typed for better developer experience
+
+## Installation
+
+### 1. Install the component
+
+<CommandBlock 
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/form-management.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/form-management.json" 
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/form-management.json" 
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/form-management.json" 
+/>
+
+### 2. Install additional dependencies
+
+The form management system requires some additional components:
+
+<CommandBlock 
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json https://ui.nowts.app/r/use-warn-if-unsaved-changes.json https://ui.nowts.app/r/use-is-client.json https://ui.nowts.app/r/submit-button.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json https://ui.nowts.app/r/use-warn-if-unsaved-changes.json https://ui.nowts.app/r/use-is-client.json https://ui.nowts.app/r/submit-button.json" 
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json https://ui.nowts.app/r/use-warn-if-unsaved-changes.json https://ui.nowts.app/r/use-is-client.json https://ui.nowts.app/r/submit-button.json" 
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json https://ui.nowts.app/r/use-warn-if-unsaved-changes.json https://ui.nowts.app/r/use-is-client.json https://ui.nowts.app/r/submit-button.json" 
+/>
+
+## Usage
+
+### Basic form with sticky bar
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { FormAutoSave, FormAutoSaveStickyBar } from "@/lib/form-management/form-management";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+
+export function BasicForm() {
+  const form = useForm({
+    defaultValues: { name: "", email: "" }
+  });
+
+  const onSubmit = async (data: any) => {
+    await saveUserData(data);
+  };
+
+  return (
+    <FormAutoSave form={form} onSubmit={onSubmit}>
+      <div className="space-y-4">
+        <Input {...form.register("name")} placeholder="Name" />
+        <Input {...form.register("email")} placeholder="Email" />
+      </div>
+      <FormAutoSaveStickyBar />
+    </FormAutoSave>
+  );
+}
+```
+
+</CodeBlock>
+
+### Form with auto-save
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { FormAutoSave, FormAutoSaveWatch } from "@/lib/form-management/form-management";
+
+export function AutoSaveForm() {
+  const form = useForm();
+
+  const onSubmit = async (data: any) => {
+    await autosaveData(data);
+  };
+
+  return (
+    <FormAutoSave form={form} onSubmit={onSubmit}>
+      <div className="space-y-4">
+        <Input {...form.register("title")} placeholder="Document title" />
+        <Textarea {...form.register("content")} placeholder="Document content" />
+      </div>
+      
+      {/* Auto-save every 3 seconds */}
+      <FormAutoSaveWatch form={form} autoSaveMs={3000} />
+    </FormAutoSave>
+  );
+}
+```
+
+</CodeBlock>
+
+### Custom sticky bar labels
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+<FormAutoSaveStickyBar 
+  actionLabel="Publish Changes"
+  cancelLabel="Discard"
+/>
+```
+
+</CodeBlock>
+
+### Form with validation
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const schema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+});
+
+export function ValidatedForm() {
+  const form = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: { name: "", email: "" }
+  });
+
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    await createUser(data);
+  };
+
+  return (
+    <FormAutoSave form={form} onSubmit={onSubmit}>
+      <div className="space-y-4">
+        <div>
+          <Input {...form.register("name")} placeholder="Name" />
+          {form.formState.errors.name && (
+            <p className="text-sm text-red-500">
+              {form.formState.errors.name.message}
+            </p>
+          )}
+        </div>
+        
+        <div>
+          <Input {...form.register("email")} placeholder="Email" />
+          {form.formState.errors.email && (
+            <p className="text-sm text-red-500">
+              {form.formState.errors.email.message}
+            </p>
+          )}
+        </div>
+      </div>
+      <FormAutoSaveStickyBar />
+    </FormAutoSave>
+  );
+}
+```
+
+</CodeBlock>
+
+### Manual form actions
+
+You can access form actions using the context:
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useFormAutoSave } from "@/lib/form-management/form-management";
+
+function CustomActions() {
+  const { isDirty, isLoading, submit, cancel } = useFormAutoSave();
+
+  return (
+    <div className="flex gap-2">
+      <Button 
+        onClick={cancel} 
+        variant="outline"
+        disabled={!isDirty}
+      >
+        Reset
+      </Button>
+      <Button 
+        onClick={submit}
+        disabled={!isDirty}
+        loading={isLoading}
+      >
+        Save Now
+      </Button>
+    </div>
+  );
+}
+
+// Use inside FormAutoSave
+<FormAutoSave form={form} onSubmit={onSubmit}>
+  {/* form fields */}
+  <CustomActions />
+</FormAutoSave>
+```
+
+</CodeBlock>
+
+## API Reference
+
+### FormAutoSave
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `form` | `UseFormReturn` | React Hook Form instance |
+| `onSubmit` | `(data: T) => Promise<void>` | Form submission handler |
+| `autoSaveMs` | `number` | Auto-save debounce in milliseconds |
+| `action` | `string` | Form action attribute |
+
+### FormAutoSaveStickyBar
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `actionLabel` | `string` | `"Save"` | Save button label |
+| `cancelLabel` | `string` | `"Reset"` | Cancel button label |
+
+### FormAutoSaveWatch
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `form` | `UseFormReturn` | React Hook Form instance |
+| `autoSaveMs` | `number` | Auto-save debounce in milliseconds |
+
+### useFormAutoSave
+
+Returns form management context:
+
+```tsx
+{
+  isDirty: boolean;     // Form has unsaved changes
+  isLoading: boolean;   // Form is submitting
+  submit: () => void;   // Trigger form submission
+  cancel: () => void;   // Reset form to initial state
+}
+``` 

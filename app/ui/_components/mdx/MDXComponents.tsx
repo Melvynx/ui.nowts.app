@@ -16,6 +16,7 @@ import { CopyCode } from "../CopyCode";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Tabs";
 import { BetterAuthOtpDemo } from "../examples/better-auth-otp-examples";
 import { DialogManagerExamples } from "../examples/dialog-manager-examples";
+import { FormManagementExamples } from "../examples/form-management-examples";
 import { ServerToastExamples } from "../examples/server-toast-examples";
 import { SubmitButtonExamples } from "../examples/submit-button-examples";
 import { UseDebounceFnExamples } from "../examples/use-debounce-fn-examples";
@@ -34,6 +35,9 @@ const components: MDXComponents = {
   ),
   BetterAuthOtpDemo: ({ ...props }) => <BetterAuthOtpDemo {...props} />,
   DialogManagerExamples: ({ ...props }) => <DialogManagerExamples {...props} />,
+  FormManagementExamples: ({ ...props }) => (
+    <FormManagementExamples {...props} />
+  ),
   ServerToastExamples: ({ ...props }) => <ServerToastExamples {...props} />,
   SubmitButtonExamples: ({ ...props }) => <SubmitButtonExamples {...props} />,
   UseIsClientExamples: ({ ...props }) => <UseIsClientExamples {...props} />,

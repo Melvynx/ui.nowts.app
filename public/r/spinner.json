@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "type": "registry:component",
+  "title": "Spinner",
+  "description": "A simple loading spinner component using Lucide's Loader2 icon with spin animation.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/components/spinner.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport type { LucideProps } from \"lucide-react\";\nimport { Loader2 } from \"lucide-react\";\n\nexport const Spinner = ({ className, ...props }: LucideProps) => {\n  return <Loader2 {...props} className={cn(className, \"animate-spin\")} />;\n};\n",
+      "type": "registry:component"
+    }
+  ]
+}

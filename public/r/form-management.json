@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "form-management",
+  "type": "registry:block",
+  "title": "Form Management",
+  "description": "A comprehensive form management system with auto-save, unsaved changes warning, and sticky action bar for enhanced UX.",
+  "dependencies": [
+    "motion",
+    "react-hotkeys-hook",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "tooltip",
+    "https://ui.nowts.app/r/submit-button.json",
+    "https://ui.nowts.app/r/extended-form.json",
+    "https://ui.nowts.app/r/use-debounce-fn.json",
+    "https://ui.nowts.app/r/use-warn-if-unsaved-changes.json",
+    "https://ui.nowts.app/r/use-is-client.json"
+  ],
+  "files": [
+    {
+      "path": "registry/nowts/blocks/form-management/form-management.tsx",
+      "content": "\"use client\";\n\nimport { createContext, Fragment, use, useEffect, useRef } from \"react\";\nimport type { FieldValues } from \"react-hook-form\";\nimport { useHotkeys } from \"react-hotkeys-hook\";\nimport { useDebounceFn } from \"../../hooks/use-debounce-fn\";\nimport { useWarnIfUnsavedChanges } from \"../../hooks/use-warn-if-unsaved-changes\";\nimport type { FormProps } from \"../../../components/extended-form\";\nimport { ExtendedForm } from \"../../../components/extended-form\";\n\nconst FormAutoSaveContext = createContext<{\n  isDirty: boolean;\n  isLoading: boolean;\n  cancel: () => void;\n  submit: () => void;\n} | null>(null);\n\nexport const useFormAutoSave = () => {\n  const ctx = use(FormAutoSaveContext);\n\n  if (!ctx) {\n    throw new Error(\"FormUnsavedBarContext is not provided\");\n  }\n\n  return ctx;\n};\n\nexport const FormAutoSave = <T extends FieldValues>({\n  children,\n  autoSaveMs,\n  action,\n  ...props\n}: FormProps<T> & { autoSaveMs?: number; action?: string }) => {\n  const buttonRef = useRef<HTMLButtonElement>(null);\n\n  const submit = () => buttonRef.current?.click();\n  const cancel = () => props.form.reset();\n\n  const isDirty = props.form.formState.isDirty;\n\n  useHotkeys(\"mod+s\", submit, {\n    enabled: isDirty,\n    enableOnContentEditable: true,\n    enableOnFormTags: true,\n    preventDefault: true,\n  });\n\n  useWarnIfUnsavedChanges(\n    isDirty,\n    \"You have unsaved changes. Please save or cancel your changes before leaving.\"\n  );\n\n  return (\n    <FormAutoSaveContext.Provider\n      value={{\n        isDirty,\n        isLoading: props.form.formState.isSubmitting,\n        cancel,\n        submit,\n      }}\n    >\n      <Fragment>\n        <ExtendedForm {...props} disabled={false}>\n          {children}\n          <button type=\"submit\" className=\"hidden\" ref={buttonRef} />\n        </ExtendedForm>\n      </Fragment>\n    </FormAutoSaveContext.Provider>\n  );\n};\n\nexport const FormAutoSaveWatch = <T extends FieldValues>(\n  props: Pick<FormProps<T>, \"form\"> & { autoSaveMs?: number }\n) => {\n  const lastFormStateRef = useRef<string | null>(null);\n  const watchedField = props.form.watch();\n  const ctx = useFormAutoSave();\n\n  const debounce = useDebounceFn(() => {\n    const json = JSON.stringify(watchedField);\n    if (json === lastFormStateRef.current) return;\n    lastFormStateRef.current = json;\n\n    ctx.submit();\n  }, props.autoSaveMs);\n\n  useEffect(() => {\n    debounce();\n  }, [debounce, watchedField]);\n\n  return null;\n};\n",
+      "type": "registry:lib",
+      "target": "/lib/form-management/form-management.tsx"
+    },
+    {
+      "path": "registry/nowts/blocks/form-management/form-management-sticky-bar.tsx",
+      "content": "import { Button } from \"@/components/ui/button\";\nimport {\n  Tooltip,\n  TooltipContent,\n  TooltipTrigger,\n} from \"@/components/ui/tooltip\";\nimport { TriangleAlert } from \"lucide-react\";\nimport { AnimatePresence, motion } from \"motion/react\";\nimport type { ReactNode } from \"react\";\nimport { createPortal } from \"react-dom\";\nimport { useIsClient } from \"../../hooks/use-is-client\";\nimport { useFormAutoSave } from \"./form-management\";\nimport { LoadingButton } from \"../../../components/submit-button\";\n\ntype FormAutoSaveStickyBarProps = {\n  actionLabel?: string;\n  cancelLabel?: string;\n};\n\n// eslint-disable-next-line @typescript-eslint/promise-function-async\nexport const FormAutoSaveStickyBar = (props: FormAutoSaveStickyBarProps) => {\n  const ctx = useFormAutoSave();\n  const onSubmit = ctx.submit;\n  const onCancel = ctx.cancel;\n  const isLoading = ctx.isLoading;\n  const isDirty = ctx.isDirty;\n  const isClient = useIsClient();\n\n  const isShow = isDirty;\n\n  if (!isClient) {\n    return null;\n  }\n\n  return createPortal(\n    <div\n      className=\"pointer-events-none fixed inset-x-0 bottom-0 flex items-center justify-center overflow-hidden py-4\"\n      style={{\n        zIndex: 999,\n      }}\n    >\n      <AnimatePresence>\n        {isShow ? (\n          <motion.div\n            key=\"save-bar\"\n            initial={{\n              opacity: 0,\n              y: 20,\n            }}\n            animate={{\n              opacity: 1,\n              y: 0,\n            }}\n            exit={{\n              opacity: [1, 1, 0],\n              y: [0, -10, 20],\n              transition: {\n                duration: 0.5,\n              },\n            }}\n            className=\"bg-card shadow-background pointer-events-auto flex w-full max-w-sm items-center gap-2 rounded-full border py-1 pr-2 pl-4 shadow-2xl lg:py-2\"\n          >\n            <TriangleAlert className=\"text-muted-foreground size-4\" />\n            <p className=\"text-muted-foreground text-sm\">Unsaved Changes</p>\n            <div className=\"flex-1\" />\n            <Button\n              variant=\"outline\"\n              size=\"sm\"\n              onClick={onCancel}\n              className=\"rounded-full\"\n            >\n              {props.cancelLabel ?? \"Reset\"}\n            </Button>\n            <Tooltip>\n              <TooltipTrigger asChild>\n                <LoadingButton\n                  size=\"sm\"\n                  loading={isLoading}\n                  variant=\"default\"\n                  onClick={onSubmit}\n                  className=\"rounded-full\"\n                >\n                  {props.actionLabel ?? \"Save\"}\n                </LoadingButton>\n              </TooltipTrigger>\n              <TooltipContent>CMD+S</TooltipContent>\n            </Tooltip>\n          </motion.div>\n        ) : null}\n      </AnimatePresence>\n    </div>,\n    document.body\n  ) as ReactNode;\n};\n",
+      "type": "registry:lib",
+      "target": "/lib/form-management/form-management-sticky-bar.tsx"
+    }
+  ],
+  "docs": "Important: This component requires react-hook-form and uses other internal hooks. Make sure to install use-debounce-fn, use-warn-if-unsaved-changes, use-is-client, and submit-button components."
+}

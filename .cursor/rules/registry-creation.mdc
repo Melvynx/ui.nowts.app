@@ -109,29 +109,7 @@ export function ComponentExamples() {
 
 Add in [MDXComponents.tsx](mdc:app/ui/_components/mdx/MDXComponents.tsx) afterward.
 
-## Step 4: Component Implementation
-
-Create your component files in `registry/nowts/blocks/component-name/` following these patterns:
-
-### File organization:
-```
-registry/nowts/blocks/component-name/
-├── component-name.tsx          # Main component
-├── component-name.types.ts     # Type definitions
-├── hooks/
-│   └── use-hook.ts            # Custom hooks
-└── lib/
-    └── utils.ts               # Utilities
-```
-
-You can also directly have utility hooks and component inside : 
-
-* hook : `registry/nowts/hooks/<hook-name>`
-* component : `registry/nowts/hooks/<component-name>`
-
-If we import one, you should add inside the registry : 
-
-https://ui.nowts.app/r/<hook-or-component-name>.json
+The examples SHOULD BE SIMPLE, UI MINIMALIST, USE SHADCN/UI COMPONENT WITHOUT ANYTHING USELESS. Please keep things simple.
 
 ## Step 5: Build Registry
 

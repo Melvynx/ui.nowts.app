@@ -150,15 +150,58 @@
       ]
     },
     {
+      "name": "form-management",
+      "type": "registry:block",
+      "title": "Form Management",
+      "description": "A comprehensive form management system with auto-save, unsaved changes warning, and sticky action bar for enhanced UX.",
+      "registryDependencies": [
+        "button",
+        "tooltip",
+        "https://ui.nowts.app/r/submit-button.json",
+        "https://ui.nowts.app/r/extended-form.json",
+        "https://ui.nowts.app/r/use-debounce-fn.json",
+        "https://ui.nowts.app/r/use-warn-if-unsaved-changes.json",
+        "https://ui.nowts.app/r/use-is-client.json"
+      ],
+      "dependencies": ["motion", "react-hotkeys-hook", "lucide-react"],
+      "docs": "Important: This component requires react-hook-form and uses other internal hooks. Make sure to install use-debounce-fn, use-warn-if-unsaved-changes, use-is-client, and submit-button components.",
+      "files": [
+        {
+          "path": "registry/nowts/blocks/form-management/form-management.tsx",
+          "type": "registry:lib",
+          "target": "/lib/form-management/form-management.tsx"
+        },
+        {
+          "path": "registry/nowts/blocks/form-management/form-management-sticky-bar.tsx",
+          "type": "registry:lib",
+          "target": "/lib/form-management/form-management-sticky-bar.tsx"
+        }
+      ]
+    },
+    {
       "name": "submit-button",
       "type": "registry:component",
       "title": "Submit Button",
       "description": "Enhanced submit button with loading state that automatically detects form submission state using React's useFormStatus hook.",
-      "registryDependencies": ["button"],
+      "registryDependencies": ["button", "https://ui.nowts.app/r/spinner.json"],
       "dependencies": ["motion", "lucide-react"],
       "files": [
         {
           "path": "registry/components/submit-button.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:component",
+      "title": "Spinner",
+      "description": "A simple loading spinner component using Lucide's Loader2 icon with spin animation.",
+      "registryDependencies": [],
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "registry/components/spinner.tsx",
           "type": "registry:component"
         }
       ]
