@@ -1,0 +1,359 @@
+---
+title: "Submit Button"
+description: "Enhanced submit button with loading state that automatically detects form submission state using React's useFormStatus hook."
+slug: "submit-button"
+type: "component"
+---
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode 
+	code={`import { SubmitButton } from "@/components/submit-button";
+
+export function MyForm() {
+  return (
+    <form action={myServerAction}>
+      <input name="email" type="email" required />
+      <SubmitButton>Submit Form</SubmitButton>
+    </form>
+  );
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[500px] flex items-center justify-center">
+
+<SubmitButtonExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[400px]" contentClassName="h-full">
+
+```tsx
+import { SubmitButton, LoadingButton } from "@/components/submit-button";
+import { Button } from "@/components/ui/button";
+
+export function MyForm() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (formData: FormData) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      console.log("Form submitted:", Object.fromEntries(formData));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Auto-detecting form submission with useFormStatus */}
+      <form action={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="email">Email</label>
+          <input 
+            id="email"
+            name="email" 
+            type="email" 
+            required 
+            className="w-full px-3 py-2 border rounded"
+          />
+        </div>
+        <SubmitButton>Submit with Auto-Detection</SubmitButton>
+      </form>
+
+      {/* Manual loading state control */}
+      <div className="space-y-4">
+        <LoadingButton 
+          loading={isLoading}
+          onClick={() => {
+            setIsLoading(true);
+            setTimeout(() => setIsLoading(false), 2000);
+          }}
+        >
+          Manual Loading Button
+        </LoadingButton>
+      </div>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **Submit Button** is an enhanced button component that automatically detects form submission state using React's `useFormStatus` hook. It provides smooth loading animations and can be used both for automatic form state detection and manual loading control.
+
+### Features
+
+- ✅ **Auto-Detection**: Automatically detects form submission state with `useFormStatus`
+- ✅ **Smooth Animations**: Beautiful loading transitions using Framer Motion
+- ✅ **Manual Control**: `LoadingButton` for custom loading state management
+- ✅ **Accessible**: Maintains button accessibility during loading states
+- ✅ **Customizable**: Accepts all standard button props and styling
+- ✅ **TypeScript**: Fully typed for better developer experience
+
+## Installation
+
+### Install the component
+
+<CommandBlock 
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/submit-button.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/submit-button.json" 
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/submit-button.json" 
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/submit-button.json" 
+/>
+
+## Usage
+
+### Basic submit button with auto-detection
+
+The `SubmitButton` automatically detects when a form is being submitted using React's `useFormStatus` hook:
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { SubmitButton } from "@/components/submit-button";
+
+export function LoginForm() {
+  async function handleLogin(formData: FormData) {
+    "use server";
+    // Your server action here
+    await signIn(formData);
+  }
+
+  return (
+    <form action={handleLogin} className="space-y-4">
+      <input name="email" type="email" required />
+      <input name="password" type="password" required />
+      <SubmitButton>Sign In</SubmitButton>
+    </form>
+  );
+}
+```
+
+</CodeBlock>
+
+### Manual loading control
+
+Use `LoadingButton` when you need manual control over the loading state:
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { LoadingButton } from "@/components/submit-button";
+import { useState } from "react";
+
+export function AsyncButton() {
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = async () => {
+    setLoading(true);
+    try {
+      await fetch("/api/data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <LoadingButton loading={loading} onClick={handleClick}>
+      Fetch Data
+    </LoadingButton>
+  );
+}
+```
+
+</CodeBlock>
+
+### With different variants and sizes
+
+Both components accept all standard button props:
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { SubmitButton, LoadingButton } from "@/components/submit-button";
+
+export function ButtonVariants() {
+  return (
+    <div className="space-y-4">
+      <SubmitButton variant="destructive" size="lg">
+        Delete Account
+      </SubmitButton>
+      
+      <LoadingButton 
+        loading={true} 
+        variant="outline" 
+        size="sm"
+      >
+        Save Draft
+      </LoadingButton>
+      
+      <SubmitButton variant="ghost" disabled>
+        Disabled Submit
+      </SubmitButton>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### Form with validation
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { SubmitButton } from "@/components/submit-button";
+import { toast } from "sonner";
+
+export function ContactForm() {
+  async function handleSubmit(formData: FormData) {
+    const email = formData.get("email") as string;
+    const message = formData.get("message") as string;
+
+    if (!email || !message) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    toast.success("Message sent successfully!");
+  }
+
+  return (
+    <form action={handleSubmit} className="space-y-4 max-w-md">
+      <div>
+        <label htmlFor="email" className="block text-sm font-medium">
+          Email
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          className="mt-1 w-full px-3 py-2 border rounded-md"
+        />
+      </div>
+      
+      <div>
+        <label htmlFor="message" className="block text-sm font-medium">
+          Message
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows={4}
+          className="mt-1 w-full px-3 py-2 border rounded-md"
+        />
+      </div>
+      
+      <SubmitButton className="w-full">
+        Send Message
+      </SubmitButton>
+    </form>
+  );
+}
+```
+
+</CodeBlock>
+
+### Multiple submit buttons in one form
+
+When using multiple submit buttons, you can use the `formAction` attribute:
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { SubmitButton } from "@/components/submit-button";
+
+export function PostForm() {
+  async function saveDraft(formData: FormData) {
+    "use server";
+    // Save as draft
+  }
+
+  async function publish(formData: FormData) {
+    "use server";
+    // Publish post
+  }
+
+  return (
+    <form className="space-y-4">
+      <input name="title" placeholder="Post title" required />
+      <textarea name="content" placeholder="Post content" required />
+      
+      <div className="flex gap-2">
+        <SubmitButton 
+          formAction={saveDraft}
+          variant="outline"
+        >
+          Save Draft
+        </SubmitButton>
+        
+        <SubmitButton formAction={publish}>
+          Publish
+        </SubmitButton>
+      </div>
+    </form>
+  );
+}
+```
+
+</CodeBlock>
+
+## API Reference
+
+### SubmitButton
+
+Extends all `Button` component props with automatic form status detection.
+
+```tsx
+interface SubmitButtonProps extends ComponentProps<typeof Button> {
+  children: React.ReactNode;
+}
+```
+
+### LoadingButton
+
+Extends all `Button` component props with manual loading control.
+
+```tsx
+interface LoadingButtonProps extends ComponentProps<typeof Button> {
+  loading?: boolean;
+  success?: string; // Future feature for success states
+  children: React.ReactNode;
+}
+```
+
+## Notes
+
+- The `SubmitButton` must be used inside a form to automatically detect submission state
+- The `useFormStatus` hook only works in React Server Components and Client Components
+- Loading state automatically disables the button to prevent double submissions
+- The loading spinner uses the Lucide React `Loader` icon 

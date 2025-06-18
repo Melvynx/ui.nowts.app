@@ -1,14 +1,13 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Loader } from "lucide-react";
 import { motion } from "motion/react";
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentProps } from "react";
 import { useFormStatus } from "react-dom";
-import { Loader } from "../../components/nowts/loader";
-import type { ButtonProps } from "../../components/ui/button";
-import { Button } from "../../components/ui/button";
 
-export const SubmitButton = (props: ButtonProps) => {
+export const SubmitButton = (props: ComponentProps<typeof Button>) => {
   const { pending } = useFormStatus();
 
   return (
@@ -23,7 +22,7 @@ export const LoadingButton = ({
   children,
   className,
   ...props
-}: ButtonProps & {
+}: ComponentProps<typeof Button> & {
   loading?: boolean;
   success?: string;
 }) => {
@@ -56,19 +55,5 @@ export const LoadingButton = ({
         <Loader size={20} />
       </motion.span>
     </Button>
-  );
-};
-
-export const SubmitButtonUnstyled = (
-  props: ComponentPropsWithoutRef<"button">,
-) => {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      {...props}
-      type={props.type ?? "submit"}
-      disabled={props.disabled ?? pending}
-    />
   );
 };

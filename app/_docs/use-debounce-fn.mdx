@@ -1,0 +1,380 @@
+---
+title: "useDebounceFn"
+description: "A React hook that debounces function calls to improve performance and prevent excessive API calls."
+slug: "use-debounce-fn"
+type: "hook"
+---
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode 
+	code={`import { useDebounceFn } from "@/hooks/use-debounce-fn";
+import { useState } from "react";
+
+export function SearchComponent() {
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  const debouncedSearch = useDebounceFn((term: string) => {
+    // Perform search API call
+    console.log("Searching for:", term);
+  }, 300);
+
+  return (
+    <input 
+      value={searchTerm}
+      onChange={(e) => {
+        setSearchTerm(e.target.value);
+        debouncedSearch(e.target.value);
+      }}
+      placeholder="Search..."
+    />
+  );
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[400px] flex items-center justify-center">
+
+<UseDebounceFnExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[400px]" contentClassName="h-full">
+
+```tsx
+import { useDebounceFn } from "@/hooks/use-debounce-fn";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+export function SearchExample() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchCount, setSearchCount] = useState(0);
+
+  const debouncedSearch = useDebounceFn((term: string) => {
+    setSearchCount(prev => prev + 1);
+    console.log("Searching for:", term);
+  }, 300);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    debouncedSearch(value);
+  };
+
+  return (
+    <div className="space-y-4 w-full max-w-md">
+      <div>
+        <Label htmlFor="search">Search (debounced)</Label>
+        <Input
+          id="search"
+          value={searchTerm}
+          onChange={handleInputChange}
+          placeholder="Type to search..."
+        />
+      </div>
+      <div className="text-sm text-muted-foreground">
+        Search called: {searchCount} times
+      </div>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **useDebounceFn** hook is a utility that debounces function calls, preventing them from being executed too frequently. This is particularly useful for search inputs, API calls, or any situation where you want to limit how often a function is called.
+
+### Features
+
+- ✅ **Performance Optimization**: Reduces unnecessary function calls
+- ✅ **Customizable Delay**: Configure the debounce time
+- ✅ **Type Safe**: Full TypeScript support with generic arguments
+- ✅ **Memory Efficient**: Automatically clears timeouts
+- ✅ **Simple API**: Easy to integrate into existing components
+
+## Installation
+
+<CommandBlock 
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json" 
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json" 
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json" 
+/>
+
+## Usage
+
+### Basic search debouncing
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useDebounceFn } from "@/hooks/use-debounce-fn";
+import { useState } from "react";
+
+export function SearchInput() {
+  const [query, setQuery] = useState("");
+
+  const debouncedSearch = useDebounceFn(async (searchTerm: string) => {
+    if (!searchTerm.trim()) return;
+    
+    // Perform API call
+    const results = await fetch(`/api/search?q=${searchTerm}`);
+    const data = await results.json();
+    console.log(data);
+  }, 500);
+
+  return (
+    <input
+      value={query}
+      onChange={(e) => {
+        setQuery(e.target.value);
+        debouncedSearch(e.target.value);
+      }}
+      placeholder="Search..."
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+### Form validation
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useDebounceFn } from "@/hooks/use-debounce-fn";
+import { useState } from "react";
+
+export function UsernameInput() {
+  const [username, setUsername] = useState("");
+  const [isValidating, setIsValidating] = useState(false);
+  const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
+
+  const validateUsername = useDebounceFn(async (name: string) => {
+    if (name.length < 3) {
+      setIsAvailable(null);
+      return;
+    }
+
+    setIsValidating(true);
+    
+    try {
+      const response = await fetch(`/api/validate-username?username=${name}`);
+      const { available } = await response.json();
+      setIsAvailable(available);
+    } catch (error) {
+      console.error("Validation failed:", error);
+    } finally {
+      setIsValidating(false);
+    }
+  }, 300);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setUsername(value);
+    setIsAvailable(null);
+    validateUsername(value);
+  };
+
+  return (
+    <div>
+      <input
+        value={username}
+        onChange={handleChange}
+        placeholder="Username"
+      />
+      {isValidating && <span>Checking availability...</span>}
+      {isAvailable === true && <span className="text-green-600">Available!</span>}
+      {isAvailable === false && <span className="text-red-600">Taken</span>}
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### Auto-save functionality
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useDebounceFn } from "@/hooks/use-debounce-fn";
+import { useState, useEffect } from "react";
+
+export function AutoSaveEditor() {
+  const [content, setContent] = useState("");
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const debouncedSave = useDebounceFn(async (text: string) => {
+    if (!text.trim()) return;
+    
+    setIsSaving(true);
+    
+    try {
+      await fetch("/api/save-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: text })
+      });
+      setLastSaved(new Date());
+    } catch (error) {
+      console.error("Save failed:", error);
+    } finally {
+      setIsSaving(false);
+    }
+  }, 1000);
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setContent(value);
+    debouncedSave(value);
+  };
+
+  return (
+    <div className="space-y-2">
+      <textarea
+        value={content}
+        onChange={handleContentChange}
+        placeholder="Start typing... (auto-saves after 1 second)"
+        rows={10}
+        className="w-full p-2 border rounded"
+      />
+      <div className="text-sm text-gray-500">
+        {isSaving && "Saving..."}
+        {lastSaved && !isSaving && `Last saved: ${lastSaved.toLocaleTimeString()}`}
+      </div>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### Multiple arguments
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useDebounceFn } from "@/hooks/use-debounce-fn";
+
+export function FilterComponent() {
+  const [filters, setFilters] = useState({
+    category: "",
+    price: "",
+    rating: ""
+  });
+
+  const debouncedFilter = useDebounceFn((
+    category: string,
+    price: string,
+    rating: string
+  ) => {
+    // Apply filters to your data
+    console.log("Filtering with:", { category, price, rating });
+    // Fetch filtered results...
+  }, 500);
+
+  const updateFilter = (key: string, value: string) => {
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    
+    debouncedFilter(
+      newFilters.category,
+      newFilters.price,
+      newFilters.rating
+    );
+  };
+
+  return (
+    <div className="space-y-4">
+      <select onChange={(e) => updateFilter("category", e.target.value)}>
+        <option value="">All Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="books">Books</option>
+      </select>
+      
+      <input
+        type="range"
+        min="0"
+        max="1000"
+        onChange={(e) => updateFilter("price", e.target.value)}
+        placeholder="Max price"
+      />
+      
+      <select onChange={(e) => updateFilter("rating", e.target.value)}>
+        <option value="">Any Rating</option>
+        <option value="4">4+ Stars</option>
+        <option value="5">5 Stars</option>
+      </select>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+## API
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `callback` | `(...args: T) => void` | - | The function to debounce |
+| `time` | `number` | `300` | Delay in milliseconds |
+
+### Returns
+
+Returns a debounced version of the callback function that accepts the same arguments.
+
+### TypeScript
+
+The hook is fully typed and preserves the argument types of your callback function:
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+// String argument
+const debouncedSearch = useDebounceFn((query: string) => {
+  // search logic
+}, 300);
+
+// Multiple arguments with different types
+const debouncedUpdate = useDebounceFn((
+  id: number,
+  data: { name: string; email: string },
+  options?: { validate: boolean }
+) => {
+  // update logic
+}, 500);
+
+// No arguments
+const debouncedRefresh = useDebounceFn(() => {
+  // refresh logic
+}, 1000);
+```
+
+</CodeBlock> 

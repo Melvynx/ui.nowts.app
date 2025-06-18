@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-debounce-fn",
+  "type": "registry:hook",
+  "title": "Use Debounce Function",
+  "description": "A React hook that debounces function calls to improve performance and prevent excessive API calls.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/nowts/hooks/use-debounce-fn.ts",
+      "content": "import { useRef } from \"react\";\n\nexport const useDebounceFn = <T extends unknown[]>(\n  callback: (...args: T) => void,\n  time = 300\n) => {\n  const debounce = useRef<number>(0);\n\n  const onDebounce = (...args: T) => {\n    clearTimeout(debounce.current);\n    debounce.current = setTimeout(() => {\n      callback(...args);\n    }, time) as unknown as number;\n  };\n\n  return onDebounce;\n};\n",
+      "type": "registry:hook"
+    }
+  ]
+}

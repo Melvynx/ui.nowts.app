@@ -1,5 +1,5 @@
 ---
-title: "Use Warn If Unsaved Changes"
+title: "useWarnIfUnsavedChanges"
 description: "A React hook that warns users before leaving the page when there are unsaved changes."
 slug: "use-warn-if-unsaved-changes"
 type: "hook"
@@ -19,10 +19,9 @@ type: "hook"
 import { useState } from "react";
 
 export function MyForm() {
-  const [formData, setFormData] = useState("");
-  const [originalData] = useState("");
+  const [inputValue, setInputValue] = useState("");
   
-  const hasUnsavedChanges = formData !== originalData;
+  const hasUnsavedChanges = inputValue.length > 0;
   
   useWarnIfUnsavedChanges(
     hasUnsavedChanges,
@@ -32,8 +31,8 @@ export function MyForm() {
   return (
     <form>
       <input 
-        value={formData}
-        onChange={(e) => setFormData(e.target.value)}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
       />
     </form>
   );
@@ -64,20 +63,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function FormWithWarning() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: ""
-  });
+export function SimpleForm() {
+  const [inputValue, setInputValue] = useState("");
   
-  const [originalData] = useState({
-    name: "",
-    email: ""
-  });
-  
-  const hasUnsavedChanges = 
-    formData.name !== originalData.name || 
-    formData.email !== originalData.email;
+  const hasUnsavedChanges = inputValue.length > 0;
   
   // Warn before leaving when there are unsaved changes
   useWarnIfUnsavedChanges(
@@ -86,40 +75,23 @@ export function FormWithWarning() {
   );
 
   const handleSave = () => {
-    // Save logic here
-    console.log("Saving:", formData);
+    // Save logic here - clear the input after saving
+    setInputValue("");
   };
 
   return (
     <div className="space-y-4 p-4 border rounded-lg">
       <h3 className="text-lg font-semibold">
-        Edit Profile {hasUnsavedChanges && "(Unsaved changes)"}
+        Simple Form {hasUnsavedChanges && "(Unsaved changes)"}
       </h3>
       
       <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
+        <Label htmlFor="input">Type something</Label>
         <Input
-          id="name"
-          value={formData.name}
-          onChange={(e) => setFormData(prev => ({ 
-            ...prev, 
-            name: e.target.value 
-          }))}
-          placeholder="Enter your name"
-        />
-      </div>
-      
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          value={formData.email}
-          onChange={(e) => setFormData(prev => ({ 
-            ...prev, 
-            email: e.target.value 
-          }))}
-          placeholder="Enter your email"
+          id="input"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Start typing to see the warning in action..."
         />
       </div>
       
@@ -128,7 +100,7 @@ export function FormWithWarning() {
       </Button>
       
       <p className="text-sm text-muted-foreground">
-        Try typing in the fields above, then attempt to navigate away or refresh the page.
+        Type something above, then try to navigate away or refresh the page.
       </p>
     </div>
   );

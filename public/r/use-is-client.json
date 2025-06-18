@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-is-client",
+  "type": "registry:hook",
+  "title": "useIsClient",
+  "description": "A React hook to check if the component is rendered on the client side, useful for SSR/hydration scenarios.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/nowts/hooks/use-is-client.ts",
+      "content": "import { useEffect, useState } from \"react\";\n\nexport function useIsClient() {\n  const [isClient, setClient] = useState(false);\n\n  useEffect(() => {\n    setClient(true);\n  }, []);\n\n  return isClient;\n}\n",
+      "type": "registry:hook"
+    }
+  ]
+}

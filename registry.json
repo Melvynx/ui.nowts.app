@@ -108,6 +108,20 @@
       ]
     },
     {
+      "name": "use-is-client",
+      "type": "registry:hook",
+      "title": "useIsClient",
+      "description": "A React hook to check if the component is rendered on the client side, useful for SSR/hydration scenarios.",
+      "registryDependencies": [],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/nowts/hooks/use-is-client.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
       "name": "use-warn-if-unsaved-changes",
       "type": "registry:hook",
       "title": "Use Warn If Unsaved Changes",
@@ -118,6 +132,34 @@
         {
           "path": "registry/nowts/hooks/use-warn-if-unsaved-changes.ts",
           "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-debounce-fn",
+      "type": "registry:hook",
+      "title": "Use Debounce Function",
+      "description": "A React hook that debounces function calls to improve performance and prevent excessive API calls.",
+      "registryDependencies": [],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/nowts/hooks/use-debounce-fn.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "submit-button",
+      "type": "registry:component",
+      "title": "Submit Button",
+      "description": "Enhanced submit button with loading state that automatically detects form submission state using React's useFormStatus hook.",
+      "registryDependencies": ["button"],
+      "dependencies": ["motion", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/components/submit-button.tsx",
+          "type": "registry:component"
         }
       ]
     }

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "submit-button",
+  "type": "registry:component",
+  "title": "Submit Button",
+  "description": "Enhanced submit button with loading state that automatically detects form submission state using React's useFormStatus hook.",
+  "dependencies": [
+    "motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "registry/components/submit-button.tsx",
+      "content": "\"use client\";\n\nimport { Button } from \"@/components/ui/button\";\nimport { cn } from \"@/lib/utils\";\nimport { Loader } from \"lucide-react\";\nimport { motion } from \"motion/react\";\nimport type { ComponentProps } from \"react\";\nimport { useFormStatus } from \"react-dom\";\n\nexport const SubmitButton = (props: ComponentProps<typeof Button>) => {\n  const { pending } = useFormStatus();\n\n  return (\n    <LoadingButton loading={pending} {...props}>\n      {props.children}\n    </LoadingButton>\n  );\n};\n\nexport const LoadingButton = ({\n  loading,\n  children,\n  className,\n  ...props\n}: ComponentProps<typeof Button> & {\n  loading?: boolean;\n  success?: string;\n}) => {\n  return (\n    <Button {...props} className={cn(className, \"relative\")}>\n      <motion.span\n        className=\"flex items-center gap-1\"\n        animate={{\n          opacity: loading ? 0 : 1,\n          y: loading ? -10 : 0,\n        }}\n      >\n        {children}\n      </motion.span>\n      <motion.span\n        initial={{\n          opacity: 0,\n          y: 10,\n        }}\n        animate={{\n          opacity: loading ? 1 : 0,\n          y: loading ? 0 : 10,\n        }}\n        exit={{\n          opacity: 0,\n          y: 10,\n        }}\n        className=\"absolute inset-0 flex items-center justify-center\"\n      >\n        <Loader size={20} />\n      </motion.span>\n    </Button>\n  );\n};\n",
+      "type": "registry:component"
+    }
+  ]
+}

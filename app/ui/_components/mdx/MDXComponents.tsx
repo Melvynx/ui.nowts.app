@@ -17,7 +17,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Tabs";
 import { BetterAuthOtpDemo } from "../examples/better-auth-otp-examples";
 import { DialogManagerExamples } from "../examples/dialog-manager-examples";
 import { ServerToastExamples } from "../examples/server-toast-examples";
+import { SubmitButtonExamples } from "../examples/submit-button-examples";
+import { UseDebounceFnExamples } from "../examples/use-debounce-fn-examples";
 import { UseIsClientExamples } from "../examples/use-is-client-examples";
+import { UseWarnIfUnsavedChangesExamples } from "../examples/use-warn-if-unsaved-changes-examples";
 
 const components: MDXComponents = {
   ComponentView: ({ children, isReloadAnimation, ...props }) => (
@@ -32,7 +35,12 @@ const components: MDXComponents = {
   BetterAuthOtpDemo: ({ ...props }) => <BetterAuthOtpDemo {...props} />,
   DialogManagerExamples: ({ ...props }) => <DialogManagerExamples {...props} />,
   ServerToastExamples: ({ ...props }) => <ServerToastExamples {...props} />,
+  SubmitButtonExamples: ({ ...props }) => <SubmitButtonExamples {...props} />,
   UseIsClientExamples: ({ ...props }) => <UseIsClientExamples {...props} />,
+  UseWarnIfUnsavedChangesExamples: ({ ...props }) => (
+    <UseWarnIfUnsavedChangesExamples {...props} />
+  ),
+  UseDebounceFnExamples: ({ ...props }) => <UseDebounceFnExamples {...props} />,
 
   CommandBlock: ({
     children,

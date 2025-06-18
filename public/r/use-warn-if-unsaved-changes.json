@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-warn-if-unsaved-changes",
+  "type": "registry:hook",
+  "title": "Use Warn If Unsaved Changes",
+  "description": "A React hook that warns users before leaving the page when there are unsaved changes.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/nowts/hooks/use-warn-if-unsaved-changes.ts",
+      "content": "import { useEffect } from \"react\";\n\n// Comment : https://github.com/vercel/next.js/discussions/9662#discussioncomment-8819562\nexport const useWarnIfUnsavedChanges = (unsaved: boolean, message?: string) => {\n  useEffect(() => {\n    // eslint-disable-next-line @typescript-eslint/no-explicit-any\n    const handleAnchorClick = (e: any) => {\n      const targetUrl = e.currentTarget.href;\n      const currentUrl = window.location.href;\n      if (targetUrl !== currentUrl) {\n        if (window.onbeforeunload) {\n          // @ts-expect-error - onbeforeunload is a function\n          const res = window.onbeforeunload();\n          if (!res) {\n            e.preventDefault();\n          }\n        }\n      }\n    };\n\n    const handleMutation = () => {\n      const anchorElements = document.querySelectorAll(\"a[href]\");\n      for (const anchor of anchorElements) {\n        anchor.addEventListener(\"click\", handleAnchorClick);\n      }\n    };\n\n    const mutationObserver = new MutationObserver(handleMutation);\n    mutationObserver.observe(document, { childList: true, subtree: true });\n\n    // don't know if needed or not but it works\n    return () => {\n      mutationObserver.disconnect();\n      const anchorElements = document.querySelectorAll(\"a[href]\");\n      for (const anchor of anchorElements) {\n        anchor.removeEventListener(\"click\", handleAnchorClick);\n      }\n    };\n  }, []);\n\n  useEffect(() => {\n    const beforeUnloadHandler = () => {\n      const yes = confirm(\n        message ??\n          \"Changes you made has not been saved just yet. Do you wish to proceed anyway?\"\n      );\n\n      if (!yes) return;\n    };\n    window.onbeforeunload = unsaved ? beforeUnloadHandler : null;\n\n    return () => {\n      window.onbeforeunload = null;\n    };\n  }, [unsaved, message]);\n};\n",
+      "type": "registry:hook"
+    }
+  ]
+}

@@ -47,7 +47,7 @@
     },
     {
       "path": "registry/nowts/blocks/dialog-manager/dialog-manager-renderer.tsx",
-      "content": "// Add this file inside app/layout.tsx to render the dialogs.\nimport { DialogComponent } from \"./dialog-component\";\nimport { useDialogStore } from \"./dialog-store\";\n\nexport function DialogManagerRenderer() {\n  const activeDialog = useDialogStore((state) => state.activeDialog);\n\n  if (activeDialog) {\n    return <DialogComponent dialog={activeDialog} />;\n  }\n\n  return null;\n}\n",
+      "content": "\"use client\";\n\n// Add this file inside app/layout.tsx to render the dialogs.\nimport { DialogComponent } from \"./dialog-component\";\nimport { useDialogStore } from \"./dialog-store\";\n\nexport function DialogManagerRenderer() {\n  const activeDialog = useDialogStore((state) => state.activeDialog);\n\n  if (activeDialog) {\n    return <DialogComponent dialog={activeDialog} />;\n  }\n\n  return null;\n}\n",
       "type": "registry:lib",
       "target": "/lib/dialog-manager/dialog-manager-renderer.tsx"
     }
