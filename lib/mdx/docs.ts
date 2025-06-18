@@ -12,4 +12,5 @@ export type Docs = {
   author?: string;
   isNew?: boolean;
   skip?: boolean;
+  type?: "component" | "hook" | "block";
 };

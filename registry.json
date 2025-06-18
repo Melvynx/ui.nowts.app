@@ -106,6 +106,20 @@
           "target": "/lib/dialog-manager/dialog-manager-renderer.tsx"
         }
       ]
+    },
+    {
+      "name": "use-warn-if-unsaved-changes",
+      "type": "registry:hook",
+      "title": "Use Warn If Unsaved Changes",
+      "description": "A React hook that warns users before leaving the page when there are unsaved changes.",
+      "registryDependencies": [],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/nowts/hooks/use-warn-if-unsaved-changes.ts",
+          "type": "registry:hook"
+        }
+      ]
     }
   ]
 }

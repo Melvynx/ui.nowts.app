@@ -1,0 +1,298 @@
+---
+title: "useIsClient"
+description: "A React hook to check if the component is rendered on the client side, useful for SSR/hydration scenarios."
+slug: "use-is-client"
+type: "hook"
+---
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode 
+	code={`import { useIsClient } from "@/hooks/use-is-client";
+
+export function MyComponent() {
+  const isClient = useIsClient();
+
+  if (!isClient) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      {/* Client-only content */}
+      <p>This renders only on the client!</p>
+    </div>
+  );
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[300px] flex items-center justify-center">
+
+<UseIsClientExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[300px]" contentClassName="h-full">
+
+```tsx
+import { useIsClient } from "@/hooks/use-is-client";
+import { useState } from "react";
+
+export function MyComponent() {
+  const isClient = useIsClient();
+  const [count, setCount] = useState(0);
+
+  if (!isClient) {
+    return (
+      <div className="p-4 border rounded-lg">
+        <p className="text-muted-foreground">Loading on server...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4 border rounded-lg space-y-4">
+      <p className="text-green-600 font-medium">✓ Rendered on client!</p>
+      <p className="text-sm text-muted-foreground">
+        Current time: {new Date().toLocaleTimeString()}
+      </p>
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => setCount(c => c + 1)}
+          className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
+        >
+          Count: {count}
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **useIsClient** hook is a simple utility that helps you determine if your React component is currently rendering on the client side. This is particularly useful in Next.js applications where components can render both on the server (SSR) and client side.
+
+### Features
+
+- ✅ **SSR Safe**: Prevents hydration mismatches
+- ✅ **Simple API**: Just returns a boolean value
+- ✅ **Lightweight**: Minimal performance impact
+- ✅ **TypeScript**: Fully typed
+
+### Use Cases
+
+- Preventing hydration mismatches with dynamic content
+- Conditionally rendering client-only components
+- Accessing browser APIs safely
+- Progressive enhancement patterns
+
+## Installation
+
+<CommandBlock 
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-is-client.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-is-client.json" 
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-is-client.json" 
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-is-client.json" 
+/>
+
+## Usage
+
+### Basic usage
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useIsClient } from "@/hooks/use-is-client";
+
+export function ClientOnlyComponent() {
+  const isClient = useIsClient();
+
+  if (!isClient) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      <p>This content only renders on the client!</p>
+      <p>Current URL: {window.location.href}</p>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### Conditional rendering with browser APIs
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useIsClient } from "@/hooks/use-is-client";
+
+export function GeolocationComponent() {
+  const isClient = useIsClient();
+  const [location, setLocation] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isClient && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation(`${position.coords.latitude}, ${position.coords.longitude}`);
+        },
+        (error) => {
+          setLocation("Location unavailable");
+        }
+      );
+    }
+  }, [isClient]);
+
+  if (!isClient) {
+    return <div>Checking location availability...</div>;
+  }
+
+  return (
+    <div>
+      <h3>Your Location</h3>
+      <p>{location || "Getting location..."}</p>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### Progressive enhancement
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useIsClient } from "@/hooks/use-is-client";
+
+export function EnhancedButton() {
+  const isClient = useIsClient();
+  const [interactionCount, setInteractionCount] = useState(0);
+
+  const handleClick = () => {
+    setInteractionCount(prev => prev + 1);
+    
+    // Client-only enhancements
+    if (isClient) {
+      // Haptic feedback on mobile
+      if ('vibrate' in navigator) {
+        navigator.vibrate(50);
+      }
+      
+      // Analytics tracking
+      gtag?.('event', 'button_click', {
+        interaction_count: interactionCount + 1
+      });
+    }
+  };
+
+  return (
+    <button 
+      onClick={handleClick}
+      className="px-4 py-2 bg-blue-500 text-white rounded"
+    >
+      Click me {isClient ? `(${interactionCount})` : ''}
+    </button>
+  );
+}
+```
+
+</CodeBlock>
+
+### Preventing hydration mismatches
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useIsClient } from "@/hooks/use-is-client";
+
+export function DynamicContent() {
+  const isClient = useIsClient();
+  
+  // This would cause hydration mismatch without useIsClient
+  const randomId = Math.random().toString(36).substr(2, 9);
+  
+  return (
+    <div>
+      <h2>Dynamic Content</h2>
+      {isClient ? (
+        <p>Random ID: {randomId}</p>
+      ) : (
+        <p>Random ID: Loading...</p>
+      )}
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### Working with local storage
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useIsClient } from "@/hooks/use-is-client";
+
+export function UserPreferences() {
+  const isClient = useIsClient();
+  const [theme, setTheme] = useState<string>("light");
+
+  useEffect(() => {
+    if (isClient) {
+      const savedTheme = localStorage.getItem("theme") || "light";
+      setTheme(savedTheme);
+    }
+  }, [isClient]);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    
+    if (isClient) {
+      localStorage.setItem("theme", newTheme);
+    }
+  };
+
+  if (!isClient) {
+    return <div>Loading preferences...</div>;
+  }
+
+  return (
+    <div className={`p-4 ${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"}`}>
+      <h3>Theme: {theme}</h3>
+      <button onClick={toggleTheme}>
+        Switch to {theme === "light" ? "dark" : "light"} theme
+      </button>
+    </div>
+  );
+}
+```
+
+</CodeBlock>

@@ -1,5 +1,5 @@
 import { GET_STARTED } from "@/lib/data/get-started";
-import { getComponents } from "@/lib/mdx/get-components";
+import { getBlocks, getComponents, getHooks } from "@/lib/mdx/get-components";
 import { SidebarButton } from "./SidebarButton";
 
 export function Sidebar() {
@@ -31,6 +31,34 @@ export function Sidebar() {
                 name={component.title}
                 slug={`/ui/${component.slug}`}
                 isNew={component.isNew}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          <span className="relative z-[1] -ml-0.5 text-sm font-[460] text-foreground">
+            Hooks
+          </span>
+          <div className="flex flex-col pb-8">
+            {getHooks.map((hook) => (
+              <SidebarButton
+                key={hook.title}
+                name={hook.title}
+                slug={`/ui/${hook.slug}`}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          <span className="relative z-[1] -ml-0.5 text-sm font-[460] text-foreground">
+            Blocks
+          </span>
+          <div className="flex flex-col pb-8">
+            {getBlocks.map((block) => (
+              <SidebarButton
+                key={block.title}
+                name={block.title}
+                slug={`/ui/${block.slug}`}
               />
             ))}
           </div>

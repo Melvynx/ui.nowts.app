@@ -17,6 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Tabs";
 import { BetterAuthOtpDemo } from "../examples/better-auth-otp-examples";
 import { DialogManagerExamples } from "../examples/dialog-manager-examples";
 import { ServerToastExamples } from "../examples/server-toast-examples";
+import { UseIsClientExamples } from "../examples/use-is-client-examples";
 
 const components: MDXComponents = {
   ComponentView: ({ children, isReloadAnimation, ...props }) => (
@@ -31,6 +32,7 @@ const components: MDXComponents = {
   BetterAuthOtpDemo: ({ ...props }) => <BetterAuthOtpDemo {...props} />,
   DialogManagerExamples: ({ ...props }) => <DialogManagerExamples {...props} />,
   ServerToastExamples: ({ ...props }) => <ServerToastExamples {...props} />,
+  UseIsClientExamples: ({ ...props }) => <UseIsClientExamples {...props} />,
 
   CommandBlock: ({
     children,

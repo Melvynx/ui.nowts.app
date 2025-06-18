@@ -2,6 +2,7 @@
 title: "Dialog Manager"
 description: "A powerful dialog manager for handling confirm, input, and custom dialogs with global state management."
 slug: "dialog-manager"
+type: "block"
 ---
 
 <Tabs defaultValue="preview">
@@ -143,15 +144,13 @@ The **Dialog Manager** is a comprehensive dialog management system that provides
 
 ## Installation
 
-<div className="space-y-4">
-
 ### 1. Install the component
 
 <CommandBlock 
-	npmCommand="npx nowts-ui@latest add dialog-manager" 
-	pnpmCommand="pnpm dlx nowts-ui@latest add dialog-manager" 
-	yarnCommand="npx nowts-ui@latest add dialog-manager" 
-	bunCommand="bunx --bun nowts-ui@latest add dialog-manager" 
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/dialog-manager.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/dialog-manager.json" 
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/dialog-manager.json" 
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/dialog-manager.json" 
 />
 
 ### 2. Add to your layout
@@ -161,7 +160,7 @@ Add the `DialogManagerRenderer` to your root layout:
 <CodeBlock contentClassName="h-fit" fileName="app/layout.tsx">
 
 ```tsx
-import { DialogManagerRenderer } from "@/components/dialog-manager-renderer";
+import { DialogManagerRenderer } from "@/lib/dialog-manager/dialog-manager-renderer";
 
 export default function RootLayout({
   children,
@@ -180,8 +179,6 @@ export default function RootLayout({
 ```
 
 </CodeBlock>
-
-</div>
 
 ## Usage
 
@@ -255,66 +252,6 @@ dialogManager.input({
     onClick: async (projectName) => {
       if (!projectName?.trim()) return;
       await createProject(projectName);
-    }
-  }
-});
-```
-
-</CodeBlock>
-
-## API
-
-### dialogManager.confirm(config)
-
-| Prop | Type | Description |
-|------|------|-------------|
-| `title?` | `string` | Dialog title |
-| `description?` | `ReactNode` | Dialog description |
-| `confirmText?` | `string` | Text user must type to confirm |
-| `action` | `DialogAction` | Action button configuration |
-| `cancel?` | `DialogCancel` | Cancel button configuration |
-| `icon?` | `LucideIcon` | Optional icon |
-| `style?` | `"default" \| "centered"` | Layout style |
-
-### dialogManager.input(config)
-
-| Prop | Type | Description |
-|------|------|-------------|
-| `title?` | `string` | Dialog title |
-| `description?` | `ReactNode` | Dialog description |
-| `input` | `InputConfig` | Input field configuration |
-| `action` | `InputAction` | Action with input value callback |
-| `cancel?` | `DialogCancel` | Cancel button configuration |
-
-### dialogManager.custom(config)
-
-| Prop | Type | Description |
-|------|------|-------------|
-| `children` | `ReactNode` | Custom React component to render |
-
-### Error handling
-
-The component automatically handles errors thrown in action callbacks and displays them as toast notifications.
-
-## Advanced Examples
-
-### Dialog with icon and centered layout
-
-<CodeBlock contentClassName="h-fit">
-
-```tsx
-import { Trash2 } from "lucide-react";
-
-dialogManager.confirm({
-  title: "Delete Project",
-  description: "This will permanently delete the project and all its data.",
-  icon: Trash2,
-  style: "centered",
-  action: {
-    label: "Delete",
-    variant: "destructive",
-    onClick: async () => {
-      await deleteProject();
     }
   }
 });
@@ -406,22 +343,27 @@ dialogManager.custom({
 
 </CodeBlock>
 
-## Customization
+### Loading State
 
-The component uses shadcn/ui components and can be styled via CSS or Tailwind:
+If you return a promise from the action, the dialog will show a loading state.
+
+If the promise is rejected, the dialog will **not be closed**.
 
 <CodeBlock contentClassName="h-fit">
 
-```css
-/* Customize dialog animations */
-.dialog-content {
-  --transition-duration: 0.2s;
-}
-
-/* Customize colors */
-.dialog-header {
-  --header-color: hsl(var(--primary));
-}
+```tsx
+dialogManager.confirm({
+  title: "Delete Item",
+  description: "Are you sure you want to delete this item?",
+  action: {
+    label: "Delete",
+    variant: "destructive",
+    onClick: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      throw new Error("Failed to delete item");
+    }
+  }
+});
 ```
 
-</CodeBlock> 
+</CodeBlock>
