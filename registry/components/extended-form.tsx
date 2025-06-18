@@ -58,5 +58,6 @@ export const useZodForm = <Z extends ZodSchema>({
 }: UseZodFormProps<Z>) =>
   useForm({
     ...formProps,
-    resolver: zodResolver(schema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(schema as any),
   });
