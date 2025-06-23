@@ -33,7 +33,7 @@ export default function Drawer({ children }: { children: React.ReactNode }) {
           <div className="relative flex h-full w-full grow flex-col rounded-[16px] bg-drawer px-3 pb-5">
             <div className="flex items-center justify-between gap-2 px-2 py-3">
               <a
-                href="https://github.com/Melvynx/registry-nowts"
+                href="https://github.com/Melvynx/ui.nowts.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group"

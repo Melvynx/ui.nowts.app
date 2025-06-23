@@ -8,7 +8,9 @@ import { getDocs } from "@/lib/mdx/mdx";
 import { ArrowUpRightIcon } from "lucide-react";
 import { MDX } from "../_components/mdx";
 
-const Docs = getDocs().sort((a, b) => a.title.localeCompare(b.title));
+const Docs = getDocs({ skip: false }).sort((a, b) =>
+  a.title.localeCompare(b.title)
+);
 
 export async function generateStaticParams() {
   return Docs.map((docs) => ({

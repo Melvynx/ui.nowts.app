@@ -44,10 +44,7 @@ export function CommandMenu() {
           "bg-background ease-linear duration-150 hover:bg-main-foreground/40 outline-none dark:hover:bg-main-foreground/20 dark:hover:border-white/10 focus-visible:ring-1 focus-visible:ring-neutral-300/80 dark:focus-visible:ring-neutral-800"
         )}
       >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 -top-[0.031em] h-px w-1/2 max-w-[1000px] -translate-x-1/4 -translate-y-1/2 bg-gradient-to-l from-transparent via-white/18 via-30% to-transparent"
-        />
+        <div aria-hidden className="hidden" />
         <span className="flex items-center gap-2 font-[460] text-neutral-500">
           <SearchIcon size={12} />
           Search

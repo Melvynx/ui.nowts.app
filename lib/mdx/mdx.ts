@@ -31,12 +31,15 @@ function getFiles(dir: string): string[] {
   }
 }
 
-export function getDocs(directory?: string): Docs[] {
+export function getDocs({
+  directory,
+  skip,
+}: { directory?: string; skip?: boolean } = {}): Docs[] {
   const files = getFiles(
     path.join(process.cwd(), "app", "_docs", ...(directory ? [directory] : []))
   );
 
-  return files
+  const docs = files
     .map((file) =>
       readFile(
         path.join(
@@ -48,6 +51,11 @@ export function getDocs(directory?: string): Docs[] {
         )
       )
     )
-    .filter((docs): docs is Docs => docs !== null)
-    .filter((docs) => !docs.skip);
+    .filter((docs): docs is Docs => docs !== null);
+
+  if (skip) {
+    return docs.filter((docs) => !docs.skip);
+  }
+
+  return docs;
 }

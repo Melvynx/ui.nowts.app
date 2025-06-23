@@ -67,7 +67,7 @@ export function Header() {
           href="/"
           className="p-1 rounded outline-none focus-visible:ring-1 focus-visible:ring-neutral-300/80 dark:focus-visible:ring-neutral-800"
         >
-          <Icons.logo className="w-[70px]" />
+          <Icons.logo className="size-8" />
         </Link>
         <div className="flex items-center gap-5 [@media(max-width:662px)]:hidden">
           <div className="flex items-center gap-5">
@@ -93,7 +93,7 @@ export function Header() {
             </div>
             <div aria-hidden className="h-[21px] w-px bg-border" />
             <a
-              href="https://github.com/Melvynx/registry-nowts"
+              href="https://github.com/Melvynx/ui.nowts.app"
               target="_blank"
               rel="noopener noreferrer"
               className="group rounded-md p-0.5 outline-none focus-visible:ring-1 focus-visible:ring-neutral-300/80 dark:focus-visible:ring-neutral-800"

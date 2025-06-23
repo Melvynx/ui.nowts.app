@@ -3,10 +3,10 @@
 import { createContext, Fragment, use, useEffect, useRef } from "react";
 import type { FieldValues } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useDebounceFn } from "../../hooks/use-debounce-fn";
-import { useWarnIfUnsavedChanges } from "../../hooks/use-warn-if-unsaved-changes";
 import type { FormProps } from "../../../components/extended-form";
 import { ExtendedForm } from "../../../components/extended-form";
+import { useDebounceFn } from "../../hooks/use-debounce-fn";
+import { useWarnIfUnsavedChanges } from "../../hooks/use-warn-if-unsaved-changes";
 
 const FormAutoSaveContext = createContext<{
   isDirty: boolean;
@@ -25,7 +25,7 @@ export const useFormAutoSave = () => {
   return ctx;
 };
 
-export const FormAutoSave = <T extends FieldValues>({
+export const FormManagement = <T extends FieldValues>({
   children,
   autoSaveMs,
   action,
