@@ -205,6 +205,20 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "extended-form",
+      "type": "registry:component",
+      "title": "Extended Form",
+      "description": "Enhanced form component with Zod schema validation and TypeScript support using react-hook-form.",
+      "registryDependencies": [],
+      "dependencies": ["react-hook-form", "@hookform/resolvers", "zod"],
+      "files": [
+        {
+          "path": "registry/nowts/components/extended-form.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
