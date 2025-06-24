@@ -187,7 +187,7 @@
       "dependencies": ["motion", "lucide-react"],
       "files": [
         {
-          "path": "registry/components/submit-button.tsx",
+          "path": "registry/nowts/components/submit-button.tsx",
           "type": "registry:component"
         }
       ]
@@ -201,7 +201,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/components/spinner.tsx",
+          "path": "registry/nowts/components/spinner.tsx",
           "type": "registry:component"
         }
       ]

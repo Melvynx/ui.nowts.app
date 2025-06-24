@@ -1,4 +1,4 @@
-import { Typography } from "@/registry/components/typography";
+import { Typography } from "@/registry/nowts/components/typography";
 import Link from "next/link";
 
 export type FooterProps = {};

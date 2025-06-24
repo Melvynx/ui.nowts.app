@@ -8,9 +8,9 @@ import { TriangleAlert } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { LoadingButton } from "../../components/submit-button";
 import { useIsClient } from "../../hooks/use-is-client";
 import { useFormAutoSave } from "./form-management";
-import { LoadingButton } from "../../../components/submit-button";
 
 type FormAutoSaveStickyBarProps = {
   actionLabel?: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { SubmitButton } from "@/registry/components/submit-button";
+import { SubmitButton } from "@/registry/nowts/components/submit-button";
 import { toast } from "sonner";
 
 export function SubmitButtonExamples() {

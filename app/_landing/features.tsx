@@ -1,4 +1,4 @@
-import { Typography } from "@/registry/components/typography";
+import { Typography } from "@/registry/nowts/components/typography";
 import { DialogManagerExamples } from "../ui/_components/examples/dialog-manager-examples";
 import { FormManagementExamples } from "../ui/_components/examples/form-management-examples";
 import { ServerToastExamples } from "../ui/_components/examples/server-toast-examples";
