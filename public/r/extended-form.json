@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "extended-form",
+  "type": "registry:component",
+  "title": "Extended Form",
+  "description": "Enhanced form component with Zod schema validation and TypeScript support using react-hook-form.",
+  "dependencies": [
+    "react-hook-form",
+    "@hookform/resolvers",
+    "zod"
+  ],
+  "registryDependencies": [
+    "form"
+  ],
+  "files": [
+    {
+      "path": "registry/nowts/components/extended-form.tsx",
+      "content": "\"use client\";\n\nimport { zodResolver } from \"@hookform/resolvers/zod\";\nimport * as React from \"react\";\nimport type {\n  SubmitHandler,\n  UseFormProps,\n  UseFormReturn,\n} from \"react-hook-form\";\nimport { FormProvider, useForm, type FieldValues } from \"react-hook-form\";\nimport type { TypeOf, ZodSchema } from \"zod\";\n\nexport type FormProps<T extends FieldValues> = Omit<\n  React.ComponentProps<\"form\">,\n  \"onSubmit\"\n> & {\n  form: UseFormReturn<T>;\n  onSubmit: SubmitHandler<T>;\n  disabled?: boolean;\n};\n\nexport const ExtendedForm = <T extends FieldValues>({\n  form,\n  onSubmit,\n  children,\n  className,\n  disabled,\n  ...props\n}: FormProps<T>) => {\n  return (\n    <FormProvider {...form}>\n      <form\n        onSubmit={form.handleSubmit(onSubmit)}\n        {...props}\n        className={className}\n      >\n        <fieldset\n          disabled={disabled ?? form.formState.isSubmitting}\n          className={className}\n        >\n          {children}\n        </fieldset>\n      </form>\n    </FormProvider>\n  );\n};\n\ntype UseZodFormProps<Z extends ZodSchema> = Exclude<\n  UseFormProps<TypeOf<Z>>,\n  \"resolver\"\n> & {\n  schema: Z;\n};\n\nexport const useZodForm = <Z extends ZodSchema>({\n  schema,\n  ...formProps\n}: UseZodFormProps<Z>) =>\n  useForm({\n    ...formProps,\n    // eslint-disable-next-line @typescript-eslint/no-explicit-any\n    resolver: zodResolver(schema as any),\n  });\n",
+      "type": "registry:component"
+    }
+  ]
+}

@@ -10,7 +10,7 @@
   "registryDependencies": [],
   "files": [
     {
-      "path": "registry/components/spinner.tsx",
+      "path": "registry/nowts/components/spinner.tsx",
       "content": "import { cn } from \"@/lib/utils\";\nimport type { LucideProps } from \"lucide-react\";\nimport { Loader2 } from \"lucide-react\";\n\nexport const Spinner = ({ className, ...props }: LucideProps) => {\n  return <Loader2 {...props} className={cn(className, \"animate-spin\")} />;\n};\n",
       "type": "registry:component"
     }
