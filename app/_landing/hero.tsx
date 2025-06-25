@@ -7,7 +7,7 @@ export const Hero = (props: HeroProps) => {
   return (
     <div id="hero" className="relative max-w-4xl mx-auto">
       <div className="flex items-center justify-center py-4 border-b [border-image:linear-gradient(to_right,transparent,--theme(--color-primary/.4),transparent)1] dark:[border-image:linear-gradient(to_right,transparent,--theme(--color-primary/.16),transparent)1]"></div>
-      <main className="relative z-40 mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8 text-center lg:gap-12 lg:py-16">
+      <div className="relative z-40 mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8 text-center lg:gap-12 lg:py-16">
         <div>
           <BlurFade inView delay={0}>
             <h1
@@ -38,7 +38,7 @@ export const Hero = (props: HeroProps) => {
             </BlurFade>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
