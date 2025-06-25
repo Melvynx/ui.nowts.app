@@ -17,6 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Tabs";
 import { BetterAuthOtpDemo } from "../examples/better-auth-otp-examples";
 import { DialogManagerExamples } from "../examples/dialog-manager-examples";
 import { FormManagementExamples } from "../examples/form-management-examples";
+import { NextTopLoaderExamples } from "../examples/next-top-loader-examples";
 import { ServerToastExamples } from "../examples/server-toast-examples";
 import { SubmitButtonExamples } from "../examples/submit-button-examples";
 import { UseDebounceFnExamples } from "../examples/use-debounce-fn-examples";
@@ -45,6 +46,7 @@ const components: MDXComponents = {
     <UseWarnIfUnsavedChangesExamples {...props} />
   ),
   UseDebounceFnExamples: ({ ...props }) => <UseDebounceFnExamples {...props} />,
+  NextTopLoaderExamples: ({ ...props }) => <NextTopLoaderExamples {...props} />,
 
   CommandBlock: ({
     children,

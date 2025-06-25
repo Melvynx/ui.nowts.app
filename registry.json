@@ -207,6 +207,21 @@
       ]
     },
     {
+      "name": "next-top-loader",
+      "type": "registry:component",
+      "title": "Next Top Loader",
+      "description": "A Next.js compatible top loading bar component with automatic navigation detection and customizable progress indicators.",
+      "registryDependencies": [],
+      "dependencies": ["zustand"],
+      "docs": "Important: Add <NextTopLoader /> to your app/layout.tsx file to enable the top loading bar across your application.",
+      "files": [
+        {
+          "path": "registry/nowts/components/next-top-loader.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "extended-form",
       "type": "registry:component",
       "title": "Extended Form",

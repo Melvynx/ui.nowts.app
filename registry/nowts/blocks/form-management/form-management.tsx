@@ -27,10 +27,8 @@ export const useFormAutoSave = () => {
 
 export const FormManagement = <T extends FieldValues>({
   children,
-  autoSaveMs,
-  action,
   ...props
-}: FormProps<T> & { autoSaveMs?: number; action?: string }) => {
+}: FormProps<T>) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const submit = () => buttonRef.current?.click();

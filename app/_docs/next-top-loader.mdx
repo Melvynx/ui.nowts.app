@@ -1,0 +1,336 @@
+---
+title: "Next Top Loader"
+description: "A Next.js compatible top loading bar component with automatic navigation detection and customizable progress indicators."
+slug: "next-top-loader"
+type: "component"
+---
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode 
+	code={`import { NextTopLoader } from "@/components/next-top-loader";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <NextTopLoader />
+        {children}
+      </body>
+    </html>
+  );
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[500px] flex items-center justify-center">
+
+<NextTopLoaderExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[400px]" contentClassName="h-full">
+
+```tsx
+import { NextTopLoader, stopLoading, useNextTopLoaderStore } from "@/components/next-top-loader";
+import { Button } from "@/components/ui/button";
+
+export function TopLoaderDemo() {
+  const { start, done, disable, enable, isEnable } = useNextTopLoaderStore();
+
+  return (
+    <div className="space-y-6">
+      {/* Basic usage */}
+      <NextTopLoader />
+      
+      {/* Manual controls */}
+      <div className="space-y-4">
+        <div className="flex gap-2">
+          <Button onClick={() => start()}>
+            Start Loading
+          </Button>
+          <Button onClick={() => done()}>
+            Complete Loading
+          </Button>
+          <Button onClick={() => stopLoading()}>
+            Stop Loading
+          </Button>
+        </div>
+        
+        <div className="flex gap-2">
+          <Button 
+            variant={isEnable ? "default" : "outline"}
+            onClick={() => isEnable ? disable() : enable()}
+          >
+            {isEnable ? "Disable" : "Enable"} Top Loader
+          </Button>
+        </div>
+      </div>
+
+      {/* Customized loader */}
+      <NextTopLoader
+        color="#ff6b6b"
+        height={4}
+        showSpinner={true}
+        speed={300}
+        delay={100}
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **Next Top Loader** is a customizable loading bar component designed specifically for Next.js applications. It automatically detects navigation events and provides visual feedback during page transitions with smooth animations and configurable styling.
+
+### Features
+
+- ✅ **Automatic Detection**: Automatically tracks navigation events and page transitions
+- ✅ **Customizable**: Full control over color, height, speed, and animation
+- ✅ **Zustand Store**: Built-in state management for programmatic control
+- ✅ **SSR Compatible**: Works seamlessly with Next.js server-side rendering
+- ✅ **Manual Control**: Programmatic start/stop functionality via store or helper functions
+- ✅ **Performance Optimized**: Uses requestAnimationFrame for smooth animations
+- ✅ **TypeScript**: Fully typed with comprehensive prop definitions
+
+## Installation
+
+### Install the component
+
+<CommandBlock 
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/next-top-loader.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/next-top-loader.json" 
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/next-top-loader.json" 
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/next-top-loader.json" 
+/>
+
+## Usage
+
+### Basic setup in layout
+
+Add the `NextTopLoader` component to your root layout to enable automatic navigation tracking:
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { NextTopLoader } from "@/components/next-top-loader";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <NextTopLoader />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+</CodeBlock>
+
+### Customized configuration
+
+Customize the appearance and behavior of the loading bar:
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { NextTopLoader } from "@/components/next-top-loader";
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <NextTopLoader
+          color="#3b82f6"
+          height={2}
+          showSpinner={true}
+          speed={200}
+          delay={0}
+        />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+</CodeBlock>
+
+### Manual control with store
+
+Use the Zustand store for programmatic control:
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useNextTopLoaderStore, stopLoading } from "@/components/next-top-loader";
+import { Button } from "@/components/ui/button";
+
+export function ManualControls() {
+  const { start, done, setProgress, disable, enable, isEnable } = useNextTopLoaderStore();
+
+  const handleAsyncOperation = async () => {
+    start();
+    try {
+      // Simulate async operation with progress updates
+      setProgress(25);
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      setProgress(50);
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      setProgress(75);
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      done();
+    } catch (error) {
+      stopLoading(); // Helper function to stop immediately
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <Button onClick={handleAsyncOperation}>
+        Start Async Operation
+      </Button>
+      
+      <Button onClick={() => isEnable ? disable() : enable()}>
+        {isEnable ? "Disable" : "Enable"} Top Loader
+      </Button>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### Disable for specific links
+
+Disable the top loader for specific links by adding a data attribute:
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import Link from "next/link";
+
+export function Navigation() {
+  return (
+    <nav className="space-x-4">
+      {/* Normal link with top loader */}
+      <Link href="/about">
+        About
+      </Link>
+      
+      {/* Link without top loader */}
+      <Link 
+        href="/contact" 
+        data-toploader-disabled="true"
+      >
+        Contact (No Loading)
+      </Link>
+      
+      {/* External link (automatically excluded) */}
+      <Link 
+        href="https://example.com" 
+        target="_blank"
+      >
+        External Link
+      </Link>
+    </nav>
+  );
+}
+```
+
+</CodeBlock>
+
+### Custom styling with CSS variables
+
+Use CSS custom properties for dynamic theming:
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { NextTopLoader } from "@/components/next-top-loader";
+
+export default function ThemedLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <NextTopLoader
+          color="var(--primary)"
+          height={1.5}
+          showSpinner={true}
+          speed={250}
+        />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+</CodeBlock>
+
+## API Reference
+
+### NextTopLoader Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `color` | `string` | `"#3b82f6"` | Color of the loading bar and spinner |
+| `height` | `number` | `3` | Height of the loading bar in pixels |
+| `showSpinner` | `boolean` | `true` | Whether to show the spinner indicator |
+| `speed` | `number` | `200` | Animation speed in milliseconds |
+| `delay` | `number` | `0` | Delay before showing the loader in milliseconds |
+
+### Store Methods
+
+| Method | Parameters | Description |
+|--------|------------|-------------|
+| `start()` | - | Start the loading animation |
+| `done()` | - | Complete the loading animation |
+| `setProgress(progress)` | `number` (0-100) | Set specific progress value |
+| `enable()` | - | Enable the top loader |
+| `disable()` | - | Disable the top loader |
+
+### Helper Functions
+
+| Function | Description |
+|----------|-------------|
+| `stopLoading()` | Immediately stop and hide the loading bar |
+
+## Notes
+
+- The component automatically detects Next.js navigation events (Link clicks, router.push, etc.)
+- External links and same-page anchor links are handled appropriately
+- The loading bar is rendered using React portals for proper z-index layering
+- Progress automatically increments with realistic timing until navigation completes
+- The component is fully SSR compatible and handles hydration properly 

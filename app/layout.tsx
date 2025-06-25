@@ -5,6 +5,7 @@ import { getDocs } from "@/lib/mdx/mdx";
 import { cn } from "@/lib/utils";
 import { DialogManagerRenderer } from "@/registry/nowts/blocks/dialog-manager/dialog-manager-renderer";
 import { ServerToaster } from "@/registry/nowts/blocks/server-toast/server-toast.server";
+import { NextTopLoader } from "@/registry/nowts/components/next-top-loader";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Suspense } from "react";
@@ -112,6 +113,7 @@ export default function RootLayout({
             <Toaster />
             <ServerToaster />
             <DialogManagerRenderer />
+            <NextTopLoader />
             {children}
             <Suspense>
               <InjectDocsServer />
