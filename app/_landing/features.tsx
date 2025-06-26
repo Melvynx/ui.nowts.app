@@ -47,12 +47,25 @@ export async function action() {
           <MDX
             source={`<CodeBlock contentClassName="h-auto">
 \`\`\`tsx
-"use server"
+import { dialogManager } from "@/lib/dialog-manager/dialog-manager";
+import { Button } from "@/components/ui/button";
 
-import { serverToast } from "@/server-toast/server-toast";
+export function MyComponent() {
+  const handleDelete = () => {
+    dialogManager.confirm({
+      title: "Delete Item",
+      description: "Are you sure you want to delete this item?",
+      action: {
+        label: "Delete",
+        variant: "destructive",
+        onClick: async () => {
+          await deleteItem();
+        }
+      }
+    });
+  };
 
-export async function action() {
-  await serverToast("Hello, world!")
+  return <Button onClick={handleDelete}>Delete</Button>;
 }
 \`\`\`
 </CodeBlock>`}
