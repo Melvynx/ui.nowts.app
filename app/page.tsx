@@ -9,12 +9,14 @@ import { VerticalLines } from "./_landing/vertical-lines";
 
 export default function Home() {
   return (
-    <div className="py-16 lg:py-32">
+    <main className="py-16 lg:py-32 relative overflow-hidden">
       <BgShapes />
       <VerticalLines width={1275} />
+      <section className="p-5">
       <Hero />
       <Features />
+      </section>
       <Footer />
-    </div>
+    </main>
   );
 }
