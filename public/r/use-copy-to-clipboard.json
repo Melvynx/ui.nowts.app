@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-copy-to-clipboard",
+  "type": "registry:hook",
+  "title": "Use Copy to Clipboard",
+  "description": "A React hook for copying text to the clipboard with fallback support and feedback state management.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/nowts/hooks/use-copy-to-clipboard.ts",
+      "content": "import { useCallback, useState } from \"react\";\n\nconst copyToClipboardSafe = (text: string) => {\n  if (window.navigator.clipboard === undefined) {\n    const textArea = document.createElement(\"textarea\");\n    textArea.value = text;\n    textArea.style.position = \"fixed\"; //avoid scrolling to bottom\n    document.body.append(textArea);\n    textArea.focus();\n    textArea.select();\n\n    try {\n      document.execCommand(\"copy\");\n    } catch (error: unknown) {\n      console.error(\"Failed to copy to clipboard\", error);\n    }\n\n    textArea.remove();\n    return;\n  }\n  void navigator.clipboard.writeText(text);\n};\n\nexport const useCopyToClipboard = (delay = 5000) => {\n  const [isCopied, setIsCopied] = useState(false);\n\n  const copyToClipboard = useCallback(\n    (text: string) => {\n      copyToClipboardSafe(text);\n      setIsCopied(true);\n      setTimeout(() => {\n        setIsCopied(false);\n      }, delay);\n    },\n    [delay]\n  );\n\n  return { isCopied, copyToClipboard };\n};\n",
+      "type": "registry:hook"
+    }
+  ]
+}

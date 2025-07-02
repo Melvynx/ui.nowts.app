@@ -234,6 +234,20 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "use-copy-to-clipboard",
+      "type": "registry:hook",
+      "title": "Use Copy to Clipboard",
+      "description": "A React hook for copying text to the clipboard with fallback support and feedback state management.",
+      "registryDependencies": [],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/nowts/hooks/use-copy-to-clipboard.ts",
+          "type": "registry:hook"
+        }
+      ]
     }
   ]
 }
