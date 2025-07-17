@@ -110,7 +110,7 @@ Add in @MDXComponents.tsx afterward.
 
 The examples SHOULD BE SIMPLE, UI MINIMALIST, USE SHADCN/UI COMPONENT WITHOUT ANYTHING USELESS. Please keep things simple.
 
-## Step 5: Build Registry
+## Step 4: Build Registry
 
 After completing all steps, run:
 

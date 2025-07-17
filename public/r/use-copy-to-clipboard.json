@@ -3,7 +3,7 @@
   "name": "use-copy-to-clipboard",
   "type": "registry:hook",
   "title": "Use Copy to Clipboard",
-  "description": "A React hook for copying text to the clipboard with fallback support and feedback state management.",
+  "description": "A React hook for copying text to clipboard with visual feedback and fallback support for older browsers.",
   "dependencies": [],
   "registryDependencies": [],
   "files": [

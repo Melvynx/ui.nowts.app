@@ -1,6 +1,6 @@
 ---
 title: "useCopyToClipboard"
-description: "A React hook for copying text to the clipboard with fallback support and feedback state management."
+description: "A React hook for copying text to clipboard with visual feedback and fallback support for older browsers."
 slug: "use-copy-to-clipboard"
 type: "hook"
 ---
@@ -17,27 +17,17 @@ type: "hook"
 <CopyCode 
 	code={`import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { Button } from "@/components/ui/button";
-import { Check, Copy } from "lucide-react";
 
 export function CopyExample() {
   const { isCopied, copyToClipboard } = useCopyToClipboard();
+  
+  const handleCopy = () => {
+    copyToClipboard("Hello, World!");
+  };
 
   return (
-    <Button 
-      onClick={() => copyToClipboard("Hello, World!")}
-      variant={isCopied ? "default" : "outline"}
-    >
-      {isCopied ? (
-        <>
-          <Check className="w-4 h-4 mr-2" />
-          Copied!
-        </>
-      ) : (
-        <>
-          <Copy className="w-4 h-4 mr-2" />
-          Copy Text
-        </>
-      )}
+    <Button onClick={handleCopy}>
+      {isCopied ? "Copied!" : "Copy Text"}
     </Button>
   );
 }`}
@@ -61,66 +51,34 @@ export function CopyExample() {
 <CodeBlock className="h-[400px]" contentClassName="h-full">
 
 ```tsx
-import { Button } from "@/components/ui/button";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { Check, Copy } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
-export function CopyToClipboardExample() {
+export function CopyToClipboardDemo() {
   const { isCopied, copyToClipboard } = useCopyToClipboard();
+  const [text, setText] = useState("Hello, World!");
 
-  const handleCopyText = () => {
-    copyToClipboard("Hello, World! This text has been copied to your clipboard.");
-  };
-
-  const handleCopyCode = () => {
-    const code = `const greeting = "Hello, World!";
-console.log(greeting);`;
-    copyToClipboard(code);
+  const handleCopy = () => {
+    copyToClipboard(text);
   };
 
   return (
-    <div className="space-y-4 p-4">
-      <div className="space-y-2">
-        <h3 className="text-sm font-medium">Basic Copy</h3>
-        <Button 
-          onClick={handleCopyText}
-          variant={isCopied ? "default" : "outline"}
-        >
-          {isCopied ? (
-            <>
-              <Check className="w-4 h-4 mr-2" />
-              Copied!
-            </>
-          ) : (
-            <>
-              <Copy className="w-4 h-4 mr-2" />
-              Copy Text
-            </>
-          )}
-        </Button>
+    <div className="space-y-4 w-full max-w-md">
+      <div>
+        <Label htmlFor="text-input">Text to copy</Label>
+        <Input
+          id="text-input"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Enter text to copy..."
+        />
       </div>
-
-      <div className="space-y-2">
-        <h3 className="text-sm font-medium">Copy Code</h3>
-        <div className="relative">
-          <pre className="bg-muted p-3 rounded-md text-sm overflow-x-auto">
-            <code>{`const greeting = "Hello, World!";
-console.log(greeting);`}</code>
-          </pre>
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={handleCopyCode}
-            className="absolute top-2 right-2 h-8 w-8 p-0"
-          >
-            {isCopied ? (
-              <Check className="w-3 h-3" />
-            ) : (
-              <Copy className="w-3 h-3" />
-            )}
-          </Button>
-        </div>
-      </div>
+      <Button onClick={handleCopy} className="w-full">
+        {isCopied ? "Copied!" : "Copy to Clipboard"}
+      </Button>
     </div>
   );
 }
@@ -134,16 +92,16 @@ console.log(greeting);`}</code>
 
 ## About
 
-The **useCopyToClipboard** hook provides a simple and reliable way to copy text to the clipboard with automatic fallback support and user feedback state management.
+The **useCopyToClipboard** hook provides a simple way to copy text to the clipboard with visual feedback. It includes fallback support for older browsers that don't support the modern Clipboard API, ensuring compatibility across different environments.
 
 ### Features
 
-- ✅ **Cross-browser Compatibility**: Uses modern Clipboard API when available, falls back to `document.execCommand` for older browsers
-- ✅ **User Feedback**: Built-in `isCopied` state for showing copy confirmation
+- ✅ **Modern Clipboard API**: Uses the native `navigator.clipboard.writeText()` when available
+- ✅ **Fallback Support**: Automatically falls back to `document.execCommand('copy')` for older browsers
+- ✅ **Visual Feedback**: Built-in `isCopied` state for user feedback
 - ✅ **Customizable Delay**: Configure how long the "copied" state persists
-- ✅ **Safe Implementation**: Handles errors gracefully and cleans up temporary elements
+- ✅ **Type Safe**: Full TypeScript support
 - ✅ **Zero Dependencies**: No external dependencies required
-- ✅ **TypeScript Support**: Fully typed with excellent developer experience
 
 ## Installation
 
@@ -164,16 +122,67 @@ The **useCopyToClipboard** hook provides a simple and reliable way to copy text 
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { Button } from "@/components/ui/button";
 
-export function BasicCopyButton() {
+export function CopyButton() {
   const { isCopied, copyToClipboard } = useCopyToClipboard();
 
+  const handleCopy = () => {
+    copyToClipboard("https://example.com");
+  };
+
   return (
-    <Button 
-      onClick={() => copyToClipboard("Hello, World!")}
-      variant={isCopied ? "default" : "outline"}
-    >
-      {isCopied ? "Copied!" : "Copy Text"}
+    <Button onClick={handleCopy} variant="outline">
+      {isCopied ? "Copied!" : "Copy URL"}
     </Button>
+  );
+}
+```
+
+</CodeBlock>
+
+### Copy code snippet
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Copy, Check } from "lucide-react";
+
+export function CodeSnippet() {
+  const { isCopied, copyToClipboard } = useCopyToClipboard();
+  
+  const codeSnippet = `npm install @shadcn/ui
+npx shadcn-ui@latest init
+npx shadcn-ui@latest add button`;
+
+  const handleCopy = () => {
+    copyToClipboard(codeSnippet);
+  };
+
+  return (
+    <Card className="w-full max-w-md">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">Installation</CardTitle>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleCopy}
+          className="h-8 w-8 p-0"
+        >
+          {isCopied ? (
+            <Check className="h-4 w-4 text-green-600" />
+          ) : (
+            <Copy className="h-4 w-4" />
+          )}
+        </Button>
+      </CardHeader>
+      <CardContent>
+        <pre className="text-sm bg-muted p-2 rounded overflow-x-auto">
+          <code>{codeSnippet}</code>
+        </pre>
+      </CardContent>
+    </Card>
   );
 }
 ```
@@ -188,89 +197,17 @@ export function BasicCopyButton() {
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { Button } from "@/components/ui/button";
 
-export function CustomDelayExample() {
-  // Reset feedback state after 3 seconds
-  const { isCopied, copyToClipboard } = useCopyToClipboard(3000);
-
-  return (
-    <Button onClick={() => copyToClipboard("Text to copy")}>
-      {isCopied ? "Copied!" : "Copy"}
-    </Button>
-  );
-}
-```
-
-</CodeBlock>
-
-### Copy code block with icon
-
-<CodeBlock contentClassName="h-fit">
-
-```tsx
-import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { Button } from "@/components/ui/button";
-import { Check, Copy } from "lucide-react";
-
-export function CopyCodeBlock() {
-  const { isCopied, copyToClipboard } = useCopyToClipboard();
-  
-  const code = `const greeting = "Hello, World!";
-console.log(greeting);`;
-
-  return (
-    <div className="relative">
-      <pre className="bg-muted p-4 rounded-md overflow-x-auto">
-        <code>{code}</code>
-      </pre>
-      <Button
-        size="sm"
-        variant="ghost"
-        onClick={() => copyToClipboard(code)}
-        className="absolute top-2 right-2 h-8 w-8 p-0"
-      >
-        {isCopied ? (
-          <Check className="w-4 h-4 text-green-600" />
-        ) : (
-          <Copy className="w-4 h-4" />
-        )}
-      </Button>
-    </div>
-  );
-}
-```
-
-</CodeBlock>
-
-### Copy URL or sharing
-
-<CodeBlock contentClassName="h-fit">
-
-```tsx
-import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { Button } from "@/components/ui/button";
-import { Share2, Check } from "lucide-react";
-
-export function ShareButton() {
+export function CopyWithCustomDelay() {
+  // Custom delay of 2 seconds
   const { isCopied, copyToClipboard } = useCopyToClipboard(2000);
 
-  const handleShare = () => {
-    const url = window.location.href;
-    copyToClipboard(url);
+  const handleCopy = () => {
+    copyToClipboard("Custom delay example!");
   };
 
   return (
-    <Button onClick={handleShare} variant="outline" size="sm">
-      {isCopied ? (
-        <>
-          <Check className="w-4 h-4 mr-2" />
-          Link Copied!
-        </>
-      ) : (
-        <>
-          <Share2 className="w-4 h-4 mr-2" />
-          Share Link
-        </>
-      )}
+    <Button onClick={handleCopy}>
+      {isCopied ? "Copied for 2s!" : "Copy Text"}
     </Button>
   );
 }
@@ -278,56 +215,52 @@ export function ShareButton() {
 
 </CodeBlock>
 
-### Copy form data
+### Copy email or contact info
 
 <CodeBlock contentClassName="h-fit">
 
 ```tsx
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Mail, Phone } from "lucide-react";
 
-export function CopyFormData() {
-  const { isCopied, copyToClipboard } = useCopyToClipboard();
-  const [email, setEmail] = useState("user@example.com");
-  const [apiKey, setApiKey] = useState("sk-1234567890abcdef");
-
-  const copyCredentials = () => {
-    const credentials = `Email: ${email}
-API Key: ${apiKey}
-Environment: Production`;
-    copyToClipboard(credentials);
-  };
+export function ContactInfo() {
+  const { isCopied: emailCopied, copyToClipboard: copyEmail } = useCopyToClipboard();
+  const { isCopied: phoneCopied, copyToClipboard: copyPhone } = useCopyToClipboard();
 
   return (
-    <div className="space-y-4 p-4 border rounded-lg">
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          readOnly
-        />
-      </div>
-      
-      <div className="space-y-2">
-        <Label htmlFor="api-key">API Key</Label>
-        <Input
-          id="api-key"
-          type="password"
-          value={apiKey}
-          onChange={(e) => setApiKey(e.target.value)}
-          readOnly
-        />
-      </div>
-
-      <Button onClick={copyCredentials} className="w-full">
-        {isCopied ? "Credentials Copied!" : "Copy Credentials"}
-      </Button>
-    </div>
+    <Card className="w-full max-w-sm">
+      <CardContent className="space-y-4 pt-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Mail className="h-4 w-4" />
+            <span className="text-sm">contact@example.com</span>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => copyEmail("contact@example.com")}
+          >
+            {emailCopied ? "Copied!" : "Copy"}
+          </Button>
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Phone className="h-4 w-4" />
+            <span className="text-sm">+1 (555) 123-4567</span>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => copyPhone("+1 (555) 123-4567")}
+          >
+            {phoneCopied ? "Copied!" : "Copy"}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 ```
@@ -349,12 +282,12 @@ export function CopyWithToast() {
 
   useEffect(() => {
     if (isCopied) {
-      toast.success("Text copied to clipboard!");
+      toast.success("Copied to clipboard!");
     }
   }, [isCopied]);
 
   const handleCopy = () => {
-    copyToClipboard("This text will show a toast notification when copied!");
+    copyToClipboard("Text copied with toast notification!");
   };
 
   return (
@@ -373,41 +306,31 @@ export function CopyWithToast() {
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `delay` | `number` | `5000` | Duration in milliseconds to keep the `isCopied` state as `true` |
+| `delay` | `number` | `5000` | Duration in milliseconds for how long `isCopied` remains `true` |
 
 ### Returns
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `isCopied` | `boolean` | Whether text was recently copied (resets after delay) |
+| `isCopied` | `boolean` | Whether text was recently copied (true for `delay` milliseconds after copying) |
 | `copyToClipboard` | `(text: string) => void` | Function to copy text to clipboard |
 
-### Browser Support
+### Browser Compatibility
 
-The hook automatically handles browser compatibility:
+The hook automatically detects browser capabilities and uses the appropriate method:
 
-- **Modern browsers**: Uses the Clipboard API (`navigator.clipboard.writeText`)
-- **Older browsers**: Falls back to `document.execCommand('copy')` with temporary textarea
-- **Error handling**: Logs errors to console and continues gracefully
-
-### TypeScript
-
-The hook is fully typed and provides excellent IntelliSense support:
+- **Modern browsers**: Uses `navigator.clipboard.writeText()` (preferred method)
+- **Older browsers**: Falls back to `document.execCommand('copy')` with textarea approach
+- **Error handling**: Catches and logs errors when copy operations fail
 
 <CodeBlock contentClassName="h-fit">
 
 ```tsx
-// The hook is typed like this:
-declare const useCopyToClipboard: (delay?: number) => {
-  isCopied: boolean;
-  copyToClipboard: (text: string) => void;
-};
+// The hook handles browser compatibility automatically
+const { isCopied, copyToClipboard } = useCopyToClipboard();
 
-// Usage with TypeScript
-const { isCopied, copyToClipboard } = useCopyToClipboard(3000);
-
-// isCopied is inferred as boolean
-// copyToClipboard is inferred as (text: string) => void
+// Works in all browsers
+copyToClipboard("Any text content");
 ```
 
 </CodeBlock>
