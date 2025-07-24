@@ -25,6 +25,8 @@ import { UseIsClientExamples } from "../examples/use-is-client-examples";
 import { UseWarnIfUnsavedChangesExamples } from "../examples/use-warn-if-unsaved-changes-examples";
 import { CopyToClipboardExamples } from "../examples/use-copy-to-clipboard-examples";
 import { UseMobileExamples } from "../examples/use-mobile-examples";
+import { SvglImagesExamples } from "../examples/svgl-images-examples";
+import { BetterAuthSignInWithExamples } from "../examples/better-auth-sign-in-with-examples";
 
 const components: MDXComponents = {
   ComponentView: ({ children, isReloadAnimation, ...props }) => (
@@ -51,6 +53,8 @@ const components: MDXComponents = {
   NextTopLoaderExamples: ({ ...props }) => <NextTopLoaderExamples {...props} />,
   CopyToClipboardExamples: ({ ...props }) => <CopyToClipboardExamples {...props} />,
   UseMobileExamples: ({ ...props }) => <UseMobileExamples {...props} />,
+  SvglImagesExamples: ({ ...props }) => <SvglImagesExamples {...props} />,
+  BetterAuthSignInWithExamples: ({ ...props }) => <BetterAuthSignInWithExamples {...props} />,
 
   CommandBlock: ({
     children,

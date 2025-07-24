@@ -1,0 +1,449 @@
+---
+title: "Better Auth Sign In With"
+description: "OAuth sign-in button component with loading states, error handling, and support for GitHub and Google providers."
+slug: "better-auth-sign-in-with"
+externalDocs: "https://better-auth.com/"
+type: "component"
+---
+
+This component provides OAuth sign-in buttons with loading states and error handling, designed for use with [Better Auth](https://better-auth.com/).
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode 
+	code={`import { SignInWith } from "@/components/better-auth-sign-in-with";
+
+export function MyComponent() {
+  const handleSignIn = async (provider: "github" | "google") => {
+    // Your Better Auth sign-in logic
+    await signIn[provider]();
+  };
+
+  return (
+    <SignInWith
+      type="github"
+      onSignIn={handleSignIn}
+      buttonProps={{}}
+    />
+  );
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[200px] flex items-center justify-center">
+
+<BetterAuthSignInWithExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[200px]" contentClassName="h-full">
+
+```tsx
+import { SignInWith } from "@/components/better-auth-sign-in-with";
+
+export function BetterAuthSignInWithExamples() {
+  const handleSignIn = async (provider: "github" | "google") => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  };
+
+  return (
+    <div className="space-y-3 w-full max-w-sm">
+      <SignInWith
+        type="github"
+        onSignIn={handleSignIn}
+        buttonProps={{}}
+      />
+      <SignInWith
+        type="google"
+        onSignIn={handleSignIn}
+        buttonProps={{}}
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **Better Auth Sign In With** component provides OAuth authentication buttons with built-in loading states, error handling, and toast notifications. It supports GitHub and Google providers out of the box.
+
+### Features
+
+- ✅ **OAuth providers**: GitHub and Google support
+- ✅ **Loading states**: Automatic loading indicators during sign-in
+- ✅ **Error handling**: Toast notifications for errors
+- ✅ **Success feedback**: Toast notifications for successful sign-ins
+- ✅ **Responsive design**: Works well on all screen sizes
+- ✅ **Theme-aware icons**: Uses SVGL images with automatic theme switching
+- ✅ **TypeScript support**: Fully typed for better developer experience
+
+## Installation
+
+<div className="space-y-4">
+
+### 1. Install the component
+
+<CommandBlock 
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-sign-in-with.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/better-auth-sign-in-with.json" 
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-sign-in-with.json" 
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/better-auth-sign-in-with.json" 
+/>
+
+### 2. Install dependencies
+
+<CommandBlock 
+	npmCommand="npm install @tanstack/react-query" 
+	pnpmCommand="pnpm add @tanstack/react-query" 
+	yarnCommand="yarn add @tanstack/react-query" 
+	bunCommand="bun add @tanstack/react-query" 
+/>
+
+</div>
+
+## Usage
+
+### Basic usage with Better Auth
+
+<CodeBlock contentClassName="h-fit" fileName="components/AuthForm.tsx">
+
+```tsx
+import { SignInWith } from "@/components/better-auth-sign-in-with";
+import { signIn } from "@/lib/auth-client";
+
+export function AuthForm() {
+  const handleSignIn = async (provider: "github" | "google") => {
+    await signIn[provider]({
+      callbackURL: "/dashboard",
+    });
+  };
+
+  return (
+    <div className="space-y-3">
+      <SignInWith
+        type="github"
+        onSignIn={handleSignIn}
+        buttonProps={{}}
+      />
+      <SignInWith
+        type="google"
+        onSignIn={handleSignIn}
+        buttonProps={{}}
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### With custom button styling
+
+<CodeBlock contentClassName="h-fit" fileName="components/CustomAuthForm.tsx">
+
+```tsx
+import { SignInWith } from "@/components/better-auth-sign-in-with";
+import { signIn } from "@/lib/auth-client";
+
+export function CustomAuthForm() {
+  const handleSignIn = async (provider: "github" | "google") => {
+    await signIn[provider]();
+  };
+
+  return (
+    <div className="space-y-3">
+      <SignInWith
+        type="github"
+        onSignIn={handleSignIn}
+        className="bg-black text-white hover:bg-gray-800"
+        buttonProps={{
+          size: "lg",
+        }}
+      />
+      <SignInWith
+        type="google"
+        onSignIn={handleSignIn}
+        className="border-blue-200 hover:bg-blue-50"
+        buttonProps={{
+          size: "lg",
+        }}
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### With error handling
+
+<CodeBlock contentClassName="h-fit" fileName="components/RobustAuthForm.tsx">
+
+```tsx
+import { SignInWith } from "@/components/better-auth-sign-in-with";
+import { signIn } from "@/lib/auth-client";
+
+export function RobustAuthForm() {
+  const handleSignIn = async (provider: "github" | "google") => {
+    try {
+      await signIn[provider]({
+        callbackURL: "/dashboard",
+      });
+    } catch (error) {
+      // Error will be automatically handled by the component
+      // and shown as a toast notification
+      throw error;
+    }
+  };
+
+  return (
+    <div className="space-y-3 w-full max-w-sm">
+      <SignInWith
+        type="github"
+        onSignIn={handleSignIn}
+        buttonProps={{}}
+      />
+      <SignInWith
+        type="google"
+        onSignIn={handleSignIn}
+        buttonProps={{}}
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+## API
+
+### SignInWith
+
+```tsx
+type SignInWith = {
+  type: "github" | "google";
+  className?: string;
+  buttonProps: ComponentProps<typeof LoadingButton>;
+  onSignIn: (provider: "github" | "google") => Promise<void>;
+}
+```
+
+| Property | Type | Description | Required |
+|----------|------|-------------|----------|
+| `type` | `"github" \| "google"` | OAuth provider type | ✅ |
+| `onSignIn` | `(provider) => Promise<void>` | Sign-in handler function | ✅ |
+| `buttonProps` | `ComponentProps<typeof LoadingButton>` | Props for the underlying button | ✅ |
+| `className` | `string` | Additional CSS classes | - |
+
+### Button Props
+
+The component accepts all props supported by the `LoadingButton` component, including:
+
+- `size`: Button size (`sm`, `default`, `lg`)
+- `variant`: Button variant (`default`, `destructive`, `outline`, `secondary`, `ghost`, `link`)
+- `disabled`: Disable the button
+- And all standard HTML button attributes
+
+## Examples
+
+### Complete auth page
+
+<CodeBlock contentClassName="h-fit" fileName="app/auth/page.tsx">
+
+```tsx
+import { SignInWith } from "@/components/better-auth-sign-in-with";
+import { signIn } from "@/lib/auth-client";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+export default function AuthPage() {
+  const handleSignIn = async (provider: "github" | "google") => {
+    await signIn[provider]({
+      callbackURL: "/dashboard",
+    });
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>Welcome back</CardTitle>
+          <CardDescription>
+            Sign in to your account using your preferred provider
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <SignInWith
+            type="github"
+            onSignIn={handleSignIn}
+            buttonProps={{}}
+          />
+          <SignInWith
+            type="google"
+            onSignIn={handleSignIn}
+            buttonProps={{}}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### With redirect handling
+
+<CodeBlock contentClassName="h-fit" fileName="components/AuthButtons.tsx">
+
+```tsx
+import { SignInWith } from "@/components/better-auth-sign-in-with";
+import { signIn } from "@/lib/auth-client";
+import { useRouter, useSearchParams } from "next/navigation";
+
+export function AuthButtons() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+
+  const handleSignIn = async (provider: "github" | "google") => {
+    const result = await signIn[provider]({
+      callbackURL: callbackUrl,
+    });
+    
+    if (result.success) {
+      router.push(callbackUrl);
+    }
+  };
+
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      <SignInWith
+        type="github"
+        onSignIn={handleSignIn}
+        buttonProps={{}}
+      />
+      <SignInWith
+        type="google"
+        onSignIn={handleSignIn}
+        buttonProps={{}}
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### Mobile-optimized
+
+<CodeBlock contentClassName="h-fit" fileName="components/MobileAuth.tsx">
+
+```tsx
+import { SignInWith } from "@/components/better-auth-sign-in-with";
+import { signIn } from "@/lib/auth-client";
+
+export function MobileAuth() {
+  const handleSignIn = async (provider: "github" | "google") => {
+    await signIn[provider]();
+  };
+
+  return (
+    <div className="space-y-4 px-4">
+      <SignInWith
+        type="github"
+        onSignIn={handleSignIn}
+        className="h-12"
+        buttonProps={{
+          size: "lg",
+        }}
+      />
+      <SignInWith
+        type="google"
+        onSignIn={handleSignIn}
+        className="h-12"
+        buttonProps={{
+          size: "lg",
+        }}
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+## Provider Configuration
+
+### Icon Mapping
+
+The component includes built-in icon mapping for supported providers:
+
+```tsx
+const IconMap = {
+  github: {
+    light: "github_light",
+    dark: "github_dark",
+    label: "GitHub",
+  },
+  google: {
+    light: "google",
+    dark: "google",
+    label: "Google",
+  },
+};
+```
+
+### Adding New Providers
+
+To add support for additional OAuth providers, you can extend the component or create a custom version with additional provider mappings.
+
+## Benefits
+
+### Consistent UX
+Provides consistent loading states and error handling across all OAuth providers.
+
+### Better Auth Integration
+Designed specifically for Better Auth but can be adapted for other authentication libraries.
+
+### Accessible
+Uses proper ARIA attributes and semantic HTML for better accessibility.
+
+### Performance
+Uses React Query for efficient mutation handling and automatic retry logic.
+
+## Troubleshooting
+
+### Sign-in not working
+- Ensure Better Auth is properly configured with your OAuth providers
+- Check that provider credentials are set in your environment variables
+- Verify the `onSignIn` function is properly implemented
+
+### Loading states not showing
+- Ensure React Query is properly set up in your app
+- Check that the `onSignIn` function returns a Promise
+
+### Toast notifications not appearing
+- Ensure Sonner is installed and configured
+- Check that the Sonner toaster is rendered in your app layout

@@ -1,0 +1,341 @@
+---
+title: "SVGL Images"
+description: "A component for displaying SVGL icons with automatic light/dark theme switching."
+slug: "svgl-images"
+externalDocs: "https://svgl.app/"
+type: "component"
+---
+
+This component uses [SVGL](https://svgl.app/) to display beautiful icons with automatic theme switching using next-themes.
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode 
+	code={`import { SvglImg } from "@/components/svgl-images";
+
+export function MyComponent() {
+  return (
+    <SvglImg
+      lightIconName="github_light"
+      darkIconName="github_dark"
+      width="24"
+      height="24"
+    />
+  );
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[200px] flex items-center justify-center">
+
+<SvglImagesExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[200px]" contentClassName="h-full">
+
+```tsx
+import { SvglImg } from "@/components/svgl-images";
+
+export function SvglImagesExamples() {
+  return (
+    <div className="flex items-center gap-4">
+      <SvglImg
+        lightIconName="github_light"
+        darkIconName="github_dark"
+        width="32"
+        height="32"
+      />
+      <SvglImg
+        lightIconName="google"
+        darkIconName="google"
+        width="32"
+        height="32"
+      />
+      <SvglImg
+        lightIconName="react"
+        darkIconName="react"
+        width="32"
+        height="32"
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **SVGL Images** component provides a seamless way to display icons from the [SVGL](https://svgl.app/) library with automatic theme switching support using next-themes.
+
+### Features
+
+- ✅ **Automatic theme switching**: Displays different icons for light and dark themes
+- ✅ **SVGL integration**: Access to hundreds of beautiful SVG icons
+- ✅ **next-themes compatibility**: Works with any next-themes setup
+- ✅ **Full img props support**: All standard HTML img attributes supported
+- ✅ **TypeScript support**: Fully typed for better developer experience
+
+## Installation
+
+<div className="space-y-4">
+
+### 1. Install the component
+
+<CommandBlock 
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/svgl-images.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/svgl-images.json" 
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/svgl-images.json" 
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/svgl-images.json" 
+/>
+
+### 2. Install next-themes (if not already installed)
+
+<CommandBlock 
+	npmCommand="npm install next-themes" 
+	pnpmCommand="pnpm add next-themes" 
+	yarnCommand="yarn add next-themes" 
+	bunCommand="bun add next-themes" 
+/>
+
+</div>
+
+## Usage
+
+### Basic usage
+
+<CodeBlock contentClassName="h-fit" fileName="components/MyComponent.tsx">
+
+```tsx
+import { SvglImg } from "@/components/svgl-images";
+
+export function MyComponent() {
+  return (
+    <SvglImg
+      lightIconName="github_light"
+      darkIconName="github_dark"
+      width="24"
+      height="24"
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+### With custom styling
+
+<CodeBlock contentClassName="h-fit" fileName="components/IconButton.tsx">
+
+```tsx
+import { SvglImg } from "@/components/svgl-images";
+
+export function IconButton() {
+  return (
+    <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+      <SvglImg
+        lightIconName="google"
+        darkIconName="google"
+        width="20"
+        height="20"
+        className="opacity-70 hover:opacity-100 transition-opacity"
+      />
+    </button>
+  );
+}
+```
+
+</CodeBlock>
+
+### Popular icon combinations
+
+<CodeBlock contentClassName="h-fit" fileName="components/SocialIcons.tsx">
+
+```tsx
+import { SvglImg } from "@/components/svgl-images";
+
+export function SocialIcons() {
+  return (
+    <div className="flex gap-4">
+      {/* GitHub */}
+      <SvglImg
+        lightIconName="github_light"
+        darkIconName="github_dark"
+        width="32"
+        height="32"
+      />
+      
+      {/* Google (same for both themes) */}
+      <SvglImg
+        lightIconName="google"
+        darkIconName="google"
+        width="32"
+        height="32"
+      />
+      
+      {/* React */}
+      <SvglImg
+        lightIconName="react"
+        darkIconName="react"
+        width="32"
+        height="32"
+      />
+      
+      {/* Next.js */}
+      <SvglImg
+        lightIconName="nextdotjs_light"
+        darkIconName="nextdotjs_dark"
+        width="32"
+        height="32"
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+## API
+
+### SvglImg
+
+```tsx
+type SvglImgProps = {
+  lightIconName: string;
+  darkIconName: string;
+} & Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt">;
+```
+
+| Property | Type | Description | Required |
+|----------|------|-------------|----------|
+| `lightIconName` | `string` | Icon name for light theme | ✅ |
+| `darkIconName` | `string` | Icon name for dark theme | ✅ |
+| `...imgProps` | `ImgHTMLAttributes` | All standard HTML img attributes | - |
+
+### Finding Icon Names
+
+Visit [SVGL.app](https://svgl.app/) to browse available icons. The icon name is the filename without the `.svg` extension.
+
+Examples:
+- `github_light` → `https://svgl.app/library/github_light.svg`
+- `github_dark` → `https://svgl.app/library/github_dark.svg`
+- `react` → `https://svgl.app/library/react.svg`
+
+## Examples
+
+### Auth buttons
+
+<CodeBlock contentClassName="h-fit" fileName="components/AuthButtons.tsx">
+
+```tsx
+import { SvglImg } from "@/components/svgl-images";
+import { Button } from "@/components/ui/button";
+
+export function AuthButtons() {
+  return (
+    <div className="space-y-2">
+      <Button variant="outline" className="w-full">
+        <SvglImg
+          lightIconName="github_light"
+          darkIconName="github_dark"
+          width="16"
+          height="16"
+        />
+        Continue with GitHub
+      </Button>
+      
+      <Button variant="outline" className="w-full">
+        <SvglImg
+          lightIconName="google"
+          darkIconName="google"
+          width="16"
+          height="16"
+        />
+        Continue with Google
+      </Button>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### Tech stack showcase
+
+<CodeBlock contentClassName="h-fit" fileName="components/TechStack.tsx">
+
+```tsx
+import { SvglImg } from "@/components/svgl-images";
+
+const techStack = [
+  { light: "react", dark: "react", name: "React" },
+  { light: "nextdotjs_light", dark: "nextdotjs_dark", name: "Next.js" },
+  { light: "typescript", dark: "typescript", name: "TypeScript" },
+  { light: "tailwindcss", dark: "tailwindcss", name: "Tailwind CSS" },
+];
+
+export function TechStack() {
+  return (
+    <div className="grid grid-cols-4 gap-4">
+      {techStack.map((tech) => (
+        <div key={tech.name} className="text-center">
+          <SvglImg
+            lightIconName={tech.light}
+            darkIconName={tech.dark}
+            width="48"
+            height="48"
+            className="mx-auto mb-2"
+          />
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            {tech.name}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+## Benefits
+
+### Theme-aware icons
+Automatically switches between light and dark variants based on the current theme, providing optimal contrast and visual consistency.
+
+### Performance
+Icons are loaded directly from SVGL's CDN, ensuring fast loading times and reducing bundle size.
+
+### Accessibility
+Automatically sets appropriate alt text based on the icon name for better screen reader support.
+
+## Troubleshooting
+
+### Icons not switching themes
+- Ensure next-themes is properly configured in your app
+- Check that both `lightIconName` and `darkIconName` are valid SVGL icon names
+
+### Icons not loading
+- Verify the icon names exist on [SVGL.app](https://svgl.app/)
+- Check network connectivity to `svgl.app`
+- Ensure icon names don't include the `.svg` extension
