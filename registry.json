@@ -41,22 +41,22 @@
         {
           "path": "registry/nowts/blocks/server-toast/server-toast.type.ts",
           "type": "registry:lib",
-          "target": "/lib/server-toast/server-toast.type.ts"
+          "target": "lib/server-toast/server-toast.type.ts"
         },
         {
           "path": "registry/nowts/blocks/server-toast/server-toast.ts",
           "type": "registry:lib",
-          "target": "/lib/server-toast/server-toast.ts"
+          "target": "lib/server-toast/server-toast.ts"
         },
         {
           "path": "registry/nowts/blocks/server-toast/server-toast.server.tsx",
           "type": "registry:lib",
-          "target": "/lib/server-toast/server-toast.server.tsx"
+          "target": "lib/server-toast/server-toast.server.tsx"
         },
         {
           "path": "registry/nowts/blocks/server-toast/server-toast.client.tsx",
           "type": "registry:lib",
-          "target": "/lib/server-toast/server-toast.client.tsx"
+          "target": "lib/server-toast/server-toast.client.tsx"
         }
       ]
     },
@@ -72,38 +72,38 @@
         "label",
         "sonner"
       ],
-      "dependencies": ["zustand"],
+      "dependencies": ["zustand", "lucide-react"],
       "docs": "Important: Add <DialogManagerRenderer /> inside app/layout.tsx to render the dialogs.",
       "files": [
         {
           "path": "registry/nowts/blocks/dialog-manager/dialog-types.ts",
           "type": "registry:lib",
-          "target": "/lib/dialog-manager/dialog-types.ts"
+          "target": "lib/dialog-manager/dialog-types.ts"
         },
         {
           "path": "registry/nowts/blocks/dialog-manager/dialog-factory.ts",
           "type": "registry:lib",
-          "target": "/lib/dialog-manager/dialog-factory.ts"
+          "target": "lib/dialog-manager/dialog-factory.ts"
         },
         {
           "path": "registry/nowts/blocks/dialog-manager/dialog-store.ts",
           "type": "registry:lib",
-          "target": "/lib/dialog-manager/dialog-store.ts"
+          "target": "lib/dialog-manager/dialog-store.ts"
         },
         {
           "path": "registry/nowts/blocks/dialog-manager/dialog-manager.ts",
           "type": "registry:lib",
-          "target": "/lib/dialog-manager/dialog-manager.ts"
+          "target": "lib/dialog-manager/dialog-manager.ts"
         },
         {
           "path": "registry/nowts/blocks/dialog-manager/dialog-component.tsx",
           "type": "registry:lib",
-          "target": "/lib/dialog-manager/dialog-component.tsx"
+          "target": "lib/dialog-manager/dialog-component.tsx"
         },
         {
           "path": "registry/nowts/blocks/dialog-manager/dialog-manager-renderer.tsx",
           "type": "registry:lib",
-          "target": "/lib/dialog-manager/dialog-manager-renderer.tsx"
+          "target": "lib/dialog-manager/dialog-manager-renderer.tsx"
         }
       ]
     },
@@ -169,12 +169,17 @@
         {
           "path": "registry/nowts/blocks/form-management/form-management.tsx",
           "type": "registry:lib",
-          "target": "/lib/form-management/form-management.tsx"
+          "target": "lib/form-management/form-management.tsx"
         },
         {
           "path": "registry/nowts/blocks/form-management/form-management-sticky-bar.tsx",
           "type": "registry:lib",
-          "target": "/lib/form-management/form-management-sticky-bar.tsx"
+          "target": "lib/form-management/form-management-sticky-bar.tsx"
+        },
+        {
+          "path": "registry/nowts/blocks/form-management/form-management-auto-save.tsx",
+          "type": "registry:lib",
+          "target": "lib/form-management/form-management-auto-save.tsx"
         }
       ]
     },
@@ -246,6 +251,52 @@
         {
           "path": "registry/nowts/hooks/use-copy-to-clipboard.ts",
           "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-mobile",
+      "type": "registry:hook",
+      "title": "Use Mobile",
+      "description": "A React hook to detect if the current device is mobile based on screen width with responsive breakpoint detection.",
+      "registryDependencies": [],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/nowts/hooks/use-mobile.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "svgl-images",
+      "type": "registry:component",
+      "title": "SVGL Images",
+      "description": "A component for displaying SVGL icons with automatic light/dark theme switching using next-themes.",
+      "registryDependencies": [],
+      "dependencies": ["next-themes"],
+      "files": [
+        {
+          "path": "registry/nowts/components/svgl-images.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "better-auth-sign-in-with",
+      "type": "registry:component",
+      "title": "Better Auth Sign In With",
+      "description": "OAuth sign-in button component with loading states, error handling, and support for GitHub and Google providers.",
+      "registryDependencies": [
+        "https://ui.nowts.app/r/submit-button.json",
+        "https://ui.nowts.app/r/svgl-images.json",
+        "sonner"
+      ],
+      "dependencies": ["@tanstack/react-query"],
+      "files": [
+        {
+          "path": "registry/nowts/components/better-auth-sign-in-with.tsx",
+          "type": "registry:component"
         }
       ]
     }

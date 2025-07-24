@@ -24,6 +24,7 @@ import { UseDebounceFnExamples } from "../examples/use-debounce-fn-examples";
 import { UseIsClientExamples } from "../examples/use-is-client-examples";
 import { UseWarnIfUnsavedChangesExamples } from "../examples/use-warn-if-unsaved-changes-examples";
 import { CopyToClipboardExamples } from "../examples/use-copy-to-clipboard-examples";
+import { UseMobileExamples } from "../examples/use-mobile-examples";
 
 const components: MDXComponents = {
   ComponentView: ({ children, isReloadAnimation, ...props }) => (
@@ -49,6 +50,7 @@ const components: MDXComponents = {
   UseDebounceFnExamples: ({ ...props }) => <UseDebounceFnExamples {...props} />,
   NextTopLoaderExamples: ({ ...props }) => <NextTopLoaderExamples {...props} />,
   CopyToClipboardExamples: ({ ...props }) => <CopyToClipboardExamples {...props} />,
+  UseMobileExamples: ({ ...props }) => <UseMobileExamples {...props} />,
 
   CommandBlock: ({
     children,

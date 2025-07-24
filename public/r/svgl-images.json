@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "svgl-images",
+  "type": "registry:component",
+  "title": "SVGL Images",
+  "description": "A component for displaying SVGL icons with automatic light/dark theme switching using next-themes.",
+  "dependencies": [
+    "next-themes"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/nowts/components/svgl-images.tsx",
+      "content": "import { useTheme } from \"next-themes\";\nimport type { ImgHTMLAttributes } from \"react\";\n\ntype SvglImgProps = {\n  lightIconName: string;\n  darkIconName: string;\n} & Omit<ImgHTMLAttributes<HTMLImageElement>, \"src\" | \"alt\">;\n\nexport const SvglImg = ({\n  lightIconName,\n  darkIconName,\n  ...imgProps\n}: SvglImgProps) => {\n  const { resolvedTheme } = useTheme();\n  const isDark = resolvedTheme === \"dark\";\n  const src = `https://svgl.app/library/${\n    isDark ? darkIconName : lightIconName\n  }.svg`;\n\n  return (\n    <img src={src} alt={isDark ? darkIconName : lightIconName} {...imgProps} />\n  );\n};\n",
+      "type": "registry:component"
+    }
+  ]
+}

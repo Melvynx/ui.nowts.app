@@ -21,7 +21,8 @@ const copyToClipboardSafe = (text: string) => {
   void navigator.clipboard.writeText(text);
 };
 
-export const useCopyToClipboard = (delay = 5000) => {
+export const useCopyToClipboard = (options: { delay?: number } = {}) => {
+  const { delay = 5000 } = options;
   const [isCopied, setIsCopied] = useState(false);
 
   const copyToClipboard = useCallback(

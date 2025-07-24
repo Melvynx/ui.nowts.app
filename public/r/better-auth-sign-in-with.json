@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "better-auth-sign-in-with",
+  "type": "registry:component",
+  "title": "Better Auth Sign In With",
+  "description": "OAuth sign-in button component with loading states, error handling, and support for GitHub and Google providers.",
+  "dependencies": [
+    "@tanstack/react-query"
+  ],
+  "registryDependencies": [
+    "https://ui.nowts.app/r/submit-button.json",
+    "https://ui.nowts.app/r/svgl-images.json",
+    "sonner"
+  ],
+  "files": [
+    {
+      "path": "registry/nowts/components/better-auth-sign-in-with.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/utils\";\nimport { useMutation } from \"@tanstack/react-query\";\nimport type { ComponentProps } from \"react\";\nimport { toast } from \"sonner\";\nimport { LoadingButton } from \"./submit-button\";\nimport { SvglImg } from \"./svgl-images\";\n\ntype OAuthProvider = \"github\" | \"google\";\n\nconst IconMap: Record<\n  OAuthProvider,\n  { light: string; dark: string; label: string }\n> = {\n  github: {\n    light: \"github_light\",\n    dark: \"github_dark\",\n    label: \"GitHub\",\n  },\n  google: {\n    light: \"google\",\n    dark: \"google\",\n    label: \"Google\",\n  },\n};\n\nexport const SignInWith = (props: {\n  type: OAuthProvider;\n  className?: string;\n  buttonProps: ComponentProps<typeof LoadingButton>;\n  onSignIn: (provider: OAuthProvider) => Promise<void>;\n}) => {\n  const mutation = useMutation({\n    mutationFn: async () => {\n      return props.onSignIn(props.type);\n    },\n    onSuccess: () => {\n      toast.success(`Signed in with ${props.type}`);\n    },\n    onError: (ctx: { error: Error }) => {\n      toast.error(ctx.error.message);\n    },\n  });\n\n  return (\n    <LoadingButton\n      loading={mutation.isPending}\n      className={cn(\"flex-1 max-lg:py-2 w-full\", props.className)}\n      variant=\"outline\"\n      onClick={() => {\n        mutation.mutate();\n      }}\n      {...props.buttonProps}\n    >\n      <SvglImg\n        height=\"16\"\n        width=\"16\"\n        lightIconName={IconMap[props.type].light}\n        darkIconName={IconMap[props.type].dark}\n      />\n      Continue with {IconMap[props.type].label}\n    </LoadingButton>\n  );\n};\n",
+      "type": "registry:component"
+    }
+  ]
+}

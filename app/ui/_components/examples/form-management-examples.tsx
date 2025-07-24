@@ -2,10 +2,8 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  FormAutoSaveWatch,
-  FormManagement,
-} from "@/registry/nowts/blocks/form-management/form-management";
+import { FormManagement } from "@/registry/nowts/blocks/form-management/form-management";
+import { FormAutoSaveWatch } from "@/registry/nowts/blocks/form-management/form-management-auto-save";
 import { FormAutoSaveStickyBar } from "@/registry/nowts/blocks/form-management/form-management-sticky-bar";
 import { useZodForm } from "@/registry/nowts/components/extended-form";
 import { toast } from "sonner";

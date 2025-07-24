@@ -1,15 +1,7 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(pnpm:*)",
-      "Bash(gh:*)",
-      "Edit",
-      "Bash(ls:*)",
-      "Bash(git:*)",
-      "mcp__context7"
-    ],
-    "defaultMode": "acceptEdits"
+    "defaultMode": "acceptEdits",
+    "allow": ["Bash(pnpm :*)", "Bash(git :*)"]
   },
-  "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": ["context7"]
+  "includeCoAuthoredBy": false
 }

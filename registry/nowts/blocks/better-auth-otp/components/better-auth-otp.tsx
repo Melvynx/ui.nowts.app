@@ -94,10 +94,9 @@ export function OtpForm({
             <motion.div
               key="email-step"
               variants={variants}
-              initial="initial"
               animate="active"
               exit="exit"
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.1 }}
               custom={direction}
             >
               <form
@@ -128,10 +127,10 @@ export function OtpForm({
               initial="initial"
               animate="active"
               exit="exit"
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.1 }}
               custom={direction}
             >
-              <div className="flex flex-col items-center gap-4 w-full">
+              <div className="flex text-center flex-col items-center gap-4 w-full">
                 <p className="text-muted-foreground text-sm">
                   Enter the code sent to your email{" "}
                   <span className="font-bold">{email}</span>
@@ -169,11 +168,11 @@ export function OtpForm({
 
 const variants = {
   initial: (direction: number) => {
-    return { x: `${100 * direction}px`, opacity: 0 };
+    return { x: `${20 * direction}px`, opacity: 0 };
   },
   active: { x: "0%", opacity: 1 },
   exit: (direction: number) => {
-    return { x: `${-100 * direction}px`, opacity: 0 };
+    return { x: `${-20 * direction}px`, opacity: 0 };
   },
 };
 

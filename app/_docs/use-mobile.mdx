@@ -1,0 +1,266 @@
+---
+title: "Use Mobile"
+description: "A React hook to detect if the current device is mobile based on screen width with responsive breakpoint detection."
+slug: "use-mobile"
+type: "hook"
+---
+
+A React hook that detects if the current device is mobile based on screen width with responsive breakpoint detection.
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode 
+	code={`import { useIsMobile } from "@/hooks/use-mobile";
+
+export function MyComponent() {
+  const isMobile = useIsMobile();
+  
+  return (
+    <div>
+      <p>Device type: {isMobile ? "Mobile" : "Desktop"}</p>
+    </div>
+  );
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[200px] flex items-center justify-center">
+
+<UseMobileExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[200px]" contentClassName="h-full">
+
+```tsx
+import { useIsMobile } from "@/hooks/use-mobile";
+
+export function UseMobileExamples() {
+  const isMobile = useIsMobile();
+  
+  return (
+    <div className="text-center space-y-2">
+      <p className="text-sm text-muted-foreground">
+        Current device type:
+      </p>
+      <p className="text-lg font-medium">
+        {isMobile ? "📱 Mobile" : "🖥️ Desktop"}
+      </p>
+      <p className="text-xs text-muted-foreground">
+        Resize your window to see it change
+      </p>
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **Use Mobile** hook is a lightweight React hook that detects if the current device is mobile based on screen width using a responsive breakpoint.
+
+### Features
+
+- ✅ **Responsive detection**: Uses media queries to detect mobile devices
+- ✅ **SSR-safe**: Returns `false` initially to prevent hydration mismatches
+- ✅ **Real-time updates**: Automatically updates when window is resized
+- ✅ **Customizable breakpoint**: Uses 768px breakpoint (standard mobile breakpoint)
+- ✅ **Performance optimized**: Uses native `matchMedia` API
+- ✅ **TypeScript support**: Fully typed with proper return types
+
+## Installation
+
+<div className="space-y-4">
+
+### Install the hook
+
+<CommandBlock 
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-mobile.json" 
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-mobile.json" 
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-mobile.json" 
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-mobile.json" 
+/>
+
+</div>
+
+## Usage
+
+### Basic usage
+
+<CodeBlock contentClassName="h-fit" fileName="components/ResponsiveComponent.tsx">
+
+```tsx
+import { useIsMobile } from "@/hooks/use-mobile";
+
+export function ResponsiveComponent() {
+  const isMobile = useIsMobile();
+  
+  return (
+    <div>
+      {isMobile ? (
+        <MobileView />
+      ) : (
+        <DesktopView />
+      )}
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### Conditional rendering
+
+<CodeBlock contentClassName="h-fit" fileName="components/Navigation.tsx">
+
+```tsx
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
+
+export function Navigation() {
+  const isMobile = useIsMobile();
+  
+  return (
+    <nav className="flex items-center justify-between p-4">
+      <div className="logo">My App</div>
+      
+      {isMobile ? (
+        <Button variant="ghost" size="icon">
+          <Menu className="h-4 w-4" />
+        </Button>
+      ) : (
+        <div className="flex space-x-4">
+          <Button variant="ghost">Home</Button>
+          <Button variant="ghost">About</Button>
+          <Button variant="ghost">Contact</Button>
+        </div>
+      )}
+    </nav>
+  );
+}
+```
+
+</CodeBlock>
+
+### With responsive layouts
+
+<CodeBlock contentClassName="h-fit" fileName="components/ProductGrid.tsx">
+
+```tsx
+import { useIsMobile } from "@/hooks/use-mobile";
+
+export function ProductGrid({ products }) {
+  const isMobile = useIsMobile();
+  
+  const gridColumns = isMobile ? 1 : 3;
+  
+  return (
+    <div 
+      className="grid gap-4"
+      style={{ gridTemplateColumns: `repeat(${gridColumns}, 1fr)` }}
+    >
+      {products.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+### With custom breakpoint logic
+
+<CodeBlock contentClassName="h-fit" fileName="components/AdaptiveModal.tsx">
+
+```tsx
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
+
+export function AdaptiveModal({ open, onOpenChange, children }) {
+  const isMobile = useIsMobile();
+  
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={onOpenChange}>
+        <DrawerContent>
+          {children}
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+  
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        {children}
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+</CodeBlock>
+
+## API
+
+### useIsMobile
+
+```tsx
+function useIsMobile(): boolean
+```
+
+Returns `true` if the current viewport width is below 768px (mobile), `false` otherwise.
+
+| Return | Type | Description |
+|--------|------|-------------|
+| `isMobile` | `boolean` | Whether the current device is mobile |
+
+## Implementation Details
+
+### Breakpoint
+
+The hook uses a breakpoint of **768px** which is the standard mobile breakpoint used by most CSS frameworks including Tailwind CSS.
+
+### SSR Compatibility
+
+The hook returns `false` initially to prevent hydration mismatches between server and client. The actual mobile state is determined after the component mounts on the client.
+
+### Performance
+
+- Uses the native `matchMedia` API for optimal performance
+- Event listener is properly cleaned up when component unmounts
+- No polling or repeated calculations
+
+## Troubleshooting
+
+### Hook returns wrong value initially
+This is expected behavior for SSR compatibility. The hook will return `false` initially and then update to the correct value after hydration.
+
+### Not updating on window resize
+Make sure you're using the hook in a client component. The hook won't work in server components.
+
+### Different breakpoint needed
+The current implementation uses 768px. To use a different breakpoint, you can modify the `MOBILE_BREAKPOINT` constant in the hook file.

@@ -38,7 +38,7 @@ Add your component to @registry.json following this structure:
     {
       "path": "registry/nowts/blocks/component-name/lib.ts",
       "type": "registry:lib",
-      "target": "/lib/component-name/lib.ts"
+      "target": "lib/component-name/lib.ts"
     }
   ]
 }

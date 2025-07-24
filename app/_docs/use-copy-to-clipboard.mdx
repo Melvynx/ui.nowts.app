@@ -199,7 +199,7 @@ import { Button } from "@/components/ui/button";
 
 export function CopyWithCustomDelay() {
   // Custom delay of 2 seconds
-  const { isCopied, copyToClipboard } = useCopyToClipboard(2000);
+  const { isCopied, copyToClipboard } = useCopyToClipboard({ delay: 2000 });
 
   const handleCopy = () => {
     copyToClipboard("Custom delay example!");
@@ -306,7 +306,8 @@ export function CopyWithToast() {
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `delay` | `number` | `5000` | Duration in milliseconds for how long `isCopied` remains `true` |
+| `options` | `{ delay?: number }` | `{ delay: 5000 }` | Configuration object |
+| `options.delay` | `number` | `5000` | Duration in milliseconds for how long `isCopied` remains `true` |
 
 ### Returns
 
