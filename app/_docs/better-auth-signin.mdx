@@ -1,0 +1,501 @@
+---
+title: "Better Auth Sign In"
+description: "A complete and customizable sign-in page with email/password, OTP, and OAuth provider support."
+slug: "better-auth-signin"
+externalDocs: "https://www.better-auth.com"
+type: "block"
+---
+
+A production-ready sign-in component with support for multiple authentication methods, built for [Better Auth](https://www.better-auth.com).
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode
+	code={`import { SignInPage } from "@/components/sign-in-page";
+
+export default function SignIn() {
+  return (
+    <SignInPage
+      appName="My App"
+      appIcon="/logo.png"
+      onSendOtp={async (email) => {
+        "use server";
+        await authClient.emailOtp.sendVerificationOtp({
+          email,
+          type: "sign-in",
+        });
+      }}
+      onVerifyOtp={async (email, otp) => {
+        "use server";
+        await authClient.signIn.emailOtp({ email, otp });
+      }}
+      onPasswordSignIn={async ({ email, password }) => {
+        "use server";
+        await authClient.signIn.email({ email, password });
+      }}
+      onProviderSignIn={async (provider) => {
+        "use server";
+        await authClient.signIn.social({ provider });
+      }}
+      providers={[
+        {
+          id: "github",
+          name: "GitHub",
+          icon: <GithubIcon />,
+        }
+      ]}
+    />
+  );
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[600px] flex items-center justify-center">
+
+<BetterAuthSignInExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[600px]" contentClassName="h-full">
+
+```tsx
+"use client";
+
+import { SignInPage } from "@/components/sign-in-page";
+import { Github } from "lucide-react";
+
+export function BetterAuthSignInExamples() {
+  return (
+    <SignInPage
+      appName="Acme Inc"
+      appIcon="/logo.png"
+      description="Sign in to your account to continue"
+      onSendOtp={async (email) => {
+        console.log("Sending OTP to:", email);
+      }}
+      onVerifyOtp={async (email, otp) => {
+        console.log("Verifying OTP:", { email, otp });
+      }}
+      onPasswordSignIn={async ({ email, password }) => {
+        console.log("Password sign in:", { email, password });
+      }}
+      onProviderSignIn={async (provider) => {
+        console.log("Provider sign in:", provider);
+      }}
+      providers={[
+        {
+          id: "github",
+          name: "GitHub",
+          icon: <Github className="size-4" />,
+          buttonClassName: "bg-black text-white hover:bg-gray-900",
+        },
+      ]}
+      signUpUrl="/signup"
+      forgotPasswordUrl="/forgot-password"
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **Better Auth Sign In** component provides a complete authentication experience with support for email/password, OTP (one-time password), and OAuth providers. It's built to work seamlessly with Better Auth but can be adapted to any authentication system.
+
+### Features
+
+- ✅ **Multiple auth methods**: Email/password, OTP, and OAuth providers
+- ✅ **Smooth transitions**: Animated method switching with Framer Motion
+- ✅ **Built-in OTP component**: Automatically includes better-auth-otp
+- ✅ **Customizable providers**: Easy OAuth configuration
+- ✅ **Responsive design**: Mobile-first approach
+- ✅ **Complete TypeScript** support
+- ✅ **Accessible**: Built with shadcn/ui primitives
+
+## Installation
+
+<div className="space-y-4">
+
+### 1. Install the component
+
+<CommandBlock
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
+/>
+
+This will also install the `better-auth-otp` component and all required dependencies.
+
+### 2. Set up Better Auth
+
+<CodeBlock contentClassName="h-fit" fileName="lib/auth.ts">
+
+```tsx
+import { betterAuth } from "better-auth";
+
+export const auth = betterAuth({
+  emailAndPassword: {
+    enabled: true,
+  },
+  emailOtp: {
+    enabled: true,
+  },
+  socialProviders: {
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    },
+  },
+});
+```
+
+</CodeBlock>
+
+</div>
+
+## Usage
+
+### Basic usage with Better Auth
+
+<CodeBlock contentClassName="h-fit" fileName="app/signin/page.tsx">
+
+```tsx
+import { SignInPage } from "@/components/sign-in-page";
+import { auth } from "@/lib/auth";
+import { Github } from "lucide-react";
+import { redirect } from "next/navigation";
+
+export default function SignIn() {
+  async function handleSendOtp(email: string) {
+    "use server";
+    await auth.api.sendVerificationCode({
+      body: { email, type: "email-verification" },
+    });
+  }
+
+  async function handleVerifyOtp(email: string, otp: string) {
+    "use server";
+    const result = await auth.api.signInEmailOtp({
+      body: { email, otp },
+    });
+
+    if (result) {
+      redirect("/dashboard");
+    }
+  }
+
+  async function handlePasswordSignIn(credentials: {
+    email: string;
+    password: string;
+  }) {
+    "use server";
+    const result = await auth.api.signInEmail({
+      body: credentials,
+    });
+
+    if (result) {
+      redirect("/dashboard");
+    }
+  }
+
+  async function handleProviderSignIn(provider: string) {
+    "use server";
+    redirect(`/api/auth/social/${provider}`);
+  }
+
+  return (
+    <SignInPage
+      appName="Acme Inc"
+      appIcon="/logo.png"
+      onSendOtp={handleSendOtp}
+      onVerifyOtp={handleVerifyOtp}
+      onPasswordSignIn={handlePasswordSignIn}
+      onProviderSignIn={handleProviderSignIn}
+      providers={[
+        {
+          id: "github",
+          name: "GitHub",
+          icon: <Github className="size-4" />,
+        },
+      ]}
+      signUpUrl="/signup"
+      forgotPasswordUrl="/forgot-password"
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+### OTP only
+
+<CodeBlock contentClassName="h-fit" fileName="app/signin/page.tsx">
+
+```tsx
+import { SignInPage } from "@/components/sign-in-page";
+
+export default function SignIn() {
+  return (
+    <SignInPage
+      appName="Acme Inc"
+      defaultMethod="otp"
+      onSendOtp={async (email) => {
+        "use server";
+        // Send OTP logic
+      }}
+      onVerifyOtp={async (email, otp) => {
+        "use server";
+        // Verify OTP logic
+      }}
+      onPasswordSignIn={async () => {}} // Required but won't be shown
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+### With multiple OAuth providers
+
+<CodeBlock contentClassName="h-fit" fileName="app/signin/page.tsx">
+
+```tsx
+import { SignInPage } from "@/components/sign-in-page";
+import { Github, Mail } from "lucide-react";
+
+export default function SignIn() {
+  return (
+    <SignInPage
+      appName="Acme Inc"
+      onSendOtp={async (email) => {}}
+      onVerifyOtp={async (email, otp) => {}}
+      onPasswordSignIn={async ({ email, password }) => {}}
+      onProviderSignIn={async (provider) => {
+        "use server";
+        redirect(`/api/auth/${provider}`);
+      }}
+      providers={[
+        {
+          id: "github",
+          name: "GitHub",
+          icon: <Github className="size-4" />,
+          buttonClassName: "bg-black text-white hover:bg-gray-900",
+        },
+        {
+          id: "google",
+          name: "Google",
+          icon: <Mail className="size-4" />,
+          buttonClassName: "bg-white text-black border hover:bg-gray-50",
+        },
+      ]}
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+### Custom styling
+
+<CodeBlock contentClassName="h-fit" fileName="app/signin/page.tsx">
+
+```tsx
+import { SignInPage } from "@/components/sign-in-page";
+
+export default function SignIn() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <SignInPage
+        appName="Acme Inc"
+        description="Welcome back! Please sign in to continue."
+        onSendOtp={async (email) => {}}
+        onVerifyOtp={async (email, otp) => {}}
+        onPasswordSignIn={async ({ email, password }) => {}}
+        onProviderSignIn={async (provider) => {}}
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+## API
+
+### SignInPage
+
+The main sign-in component.
+
+```tsx
+type SignInPageProps = {
+  // App information
+  appName: string;
+  appIcon?: string;
+  description?: string;
+
+  // Auth callbacks (all required)
+  onSendOtp: (email: string) => Promise<void>;
+  onVerifyOtp: (email: string, otp: string) => Promise<void>;
+  onPasswordSignIn: (credentials: {
+    email: string;
+    password: string;
+  }) => Promise<void>;
+  onProviderSignIn: (providerId: string) => Promise<void>;
+
+  // Optional configuration
+  defaultEmail?: string;
+  defaultMethod?: "otp" | "password";
+  forgotPasswordUrl?: string;
+  signUpUrl?: string;
+  providers?: ProviderConfig[];
+
+  // Callbacks
+  onSuccess?: () => void;
+  onError?: (error: string) => void;
+};
+```
+
+### ProviderConfig
+
+Configuration for OAuth providers.
+
+```tsx
+type ProviderConfig = {
+  id: string;
+  name: string;
+  icon: React.ReactNode;
+  buttonClassName?: string;
+};
+```
+
+## Components
+
+The sign-in block includes several sub-components:
+
+### SignInAuthMethods
+
+Handles switching between OTP and password authentication.
+
+### SignInPasswordForm
+
+Form for email/password sign in.
+
+### SignInProviderButton
+
+Button for OAuth provider sign in.
+
+### Divider
+
+Visual separator between auth methods.
+
+## Architecture
+
+The Better Auth Sign In component is structured as:
+
+1. **SignInPage** - Main wrapper with app branding
+2. **SignInAuthMethods** - Auth method toggle (OTP ↔ Password)
+3. **OtpForm** - From better-auth-otp dependency
+4. **SignInPasswordForm** - Email/password form
+5. **SignInProviderButton** - OAuth providers
+6. **Divider** - Visual separation
+
+## Best practices
+
+### Error handling
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { SignInPage } from "@/components/sign-in-page";
+import { toast } from "sonner";
+
+export default function SignIn() {
+  return (
+    <SignInPage
+      appName="Acme Inc"
+      onError={(error) => {
+        toast.error(error);
+      }}
+      onSuccess={() => {
+        toast.success("Welcome back!");
+      }}
+      // ... other props
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+### Loading states
+
+The component handles loading states internally for all auth methods.
+
+### Redirects
+
+<CodeBlock contentClassName="h-fit">
+
+```tsx
+import { SignInPage } from "@/components/sign-in-page";
+import { redirect } from "next/navigation";
+
+export default function SignIn() {
+  async function handlePasswordSignIn(credentials) {
+    "use server";
+    const result = await auth.signIn(credentials);
+
+    if (result.success) {
+      // Get callback URL from searchParams if needed
+      const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
+      redirect(callbackUrl);
+    }
+  }
+
+  return (
+    <SignInPage
+      onPasswordSignIn={handlePasswordSignIn}
+      // ... other props
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+## Troubleshooting
+
+### OTP not working
+- Ensure `better-auth-otp` is properly installed
+- Check that email sending is configured in Better Auth
+- Verify OTP expiration settings
+
+### Provider sign-in fails
+- Check OAuth credentials in environment variables
+- Verify redirect URLs in provider settings
+- Ensure social providers are enabled in Better Auth
+
+### Forms don't submit
+- All callback props (`onSendOtp`, `onVerifyOtp`, etc.) are required
+- Check that callbacks are async functions
+- Verify error handling in callbacks

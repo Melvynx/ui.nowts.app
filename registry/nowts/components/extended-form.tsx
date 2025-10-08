@@ -1,14 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as React from "react";
+import type * as React from "react";
 import type {
   SubmitHandler,
   UseFormProps,
   UseFormReturn,
 } from "react-hook-form";
 import { FormProvider, useForm, type FieldValues } from "react-hook-form";
-import type { TypeOf, ZodSchema } from "zod";
+import type * as z from "zod";
 
 export type FormProps<T extends FieldValues> = Omit<
   React.ComponentProps<"form">,
@@ -45,19 +45,23 @@ export const ExtendedForm = <T extends FieldValues>({
   );
 };
 
-type UseZodFormProps<Z extends ZodSchema> = Exclude<
-  UseFormProps<TypeOf<Z>>,
-  "resolver"
-> & {
+type UseZodFormProps<
+  Input extends FieldValues,
+  Output extends FieldValues,
+  Z extends z.ZodType<Output, Input>,
+> = Exclude<UseFormProps<z.output<Z>>, "resolver"> & {
   schema: Z;
 };
 
-export const useZodForm = <Z extends ZodSchema>({
+export const useZodForm = <
+  Input extends FieldValues,
+  Output extends FieldValues,
+  Z extends z.ZodType<Output, Input>,
+>({
   schema,
   ...formProps
-}: UseZodFormProps<Z>) =>
+}: UseZodFormProps<Input, Output, Z>) =>
   useForm({
     ...formProps,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: zodResolver(schema as any),
+    resolver: zodResolver(schema) as never,
   });

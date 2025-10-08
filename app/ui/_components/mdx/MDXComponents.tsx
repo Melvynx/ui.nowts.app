@@ -15,6 +15,9 @@ import { ComponentView } from "../ComponentView";
 import { CopyCode } from "../CopyCode";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Tabs";
 import { BetterAuthOtpDemo } from "../examples/better-auth-otp-examples";
+import { BetterAuthSignInExamples } from "../examples/better-auth-signin-examples";
+import { BetterAuthSignUpExamples } from "../examples/better-auth-signup-examples";
+import { CopyToClipboardExamples } from "../examples/use-copy-to-clipboard-examples";
 import { DialogManagerExamples } from "../examples/dialog-manager-examples";
 import { FormManagementExamples } from "../examples/form-management-examples";
 import { NextTopLoaderExamples } from "../examples/next-top-loader-examples";
@@ -23,7 +26,6 @@ import { SubmitButtonExamples } from "../examples/submit-button-examples";
 import { UseDebounceFnExamples } from "../examples/use-debounce-fn-examples";
 import { UseIsClientExamples } from "../examples/use-is-client-examples";
 import { UseWarnIfUnsavedChangesExamples } from "../examples/use-warn-if-unsaved-changes-examples";
-import { CopyToClipboardExamples } from "../examples/use-copy-to-clipboard-examples";
 
 const components: MDXComponents = {
   ComponentView: ({ children, isReloadAnimation, ...props }) => (
@@ -49,6 +51,8 @@ const components: MDXComponents = {
   UseDebounceFnExamples: ({ ...props }) => <UseDebounceFnExamples {...props} />,
   NextTopLoaderExamples: ({ ...props }) => <NextTopLoaderExamples {...props} />,
   CopyToClipboardExamples: ({ ...props }) => <CopyToClipboardExamples {...props} />,
+  BetterAuthSignUpExamples: ({ ...props }) => <BetterAuthSignUpExamples {...props} />,
+  BetterAuthSignInExamples: ({ ...props }) => <BetterAuthSignInExamples {...props} />,
 
   CommandBlock: ({
     children,

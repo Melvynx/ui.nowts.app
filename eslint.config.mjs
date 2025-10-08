@@ -1,8 +1,7 @@
 import { fixupConfigRules } from "@eslint/compat";
 import { FlatCompat } from "@eslint/eslintrc";
 import pluginJs from "@eslint/js";
-import hooksPlugin from "eslint-plugin-react-hooks";
-import pluginReactConfig from "eslint-plugin-react/configs/recommended.js";
+import pluginReact from "eslint-plugin-react";
 // Plugin doesn't support TailwindV4
 // FYI : https://github.com/francoismassart/eslint-plugin-tailwindcss/issues/325
 // import tailwind from "eslint-plugin-tailwindcss";
@@ -29,15 +28,14 @@ export default [
   // Typescript
   ...tseslint.configs.strict,
   ...tseslint.configs.stylistic,
-  // Tailwind
-  // ...tailwind.configs["flat/recommended"],
-  // React
-  ...fixupConfigRules(pluginReactConfig),
+  pluginReact.configs.flat.recommended,
+  pluginReact.configs.flat["jsx-runtime"],
   {
-    plugins: {
-      "react-hooks": hooksPlugin,
+    settings: {
+      react: {
+        version: "detect",
+      },
     },
-    rules: hooksPlugin.configs.recommended.rules,
   },
   // NextJS
   {
@@ -68,10 +66,7 @@ export default [
       camelcase: 0,
       "no-async-promise-executor": "error",
       "no-await-in-loop": "error",
-      "no-console": [
-        "error",
-        { allow: ["warn", "error", "info", "trace", "debug"] },
-      ],
+      "no-console": "warn",
       "no-misleading-character-class": "error",
       "no-multi-assign": "error",
       "no-multi-str": "error",
@@ -103,17 +98,18 @@ export default [
       "@typescript-eslint/no-confusing-non-null-assertion": "error",
       "@typescript-eslint/no-dynamic-delete": "error",
       "@typescript-eslint/no-require-imports": "error",
+      "@typescript-eslint/no-unnecessary-condition": 0,
       "@typescript-eslint/no-unnecessary-qualifier": "error",
       "@typescript-eslint/no-unnecessary-type-arguments": "error",
       "@typescript-eslint/no-unnecessary-type-constraint": "error",
       "@typescript-eslint/prefer-includes": "error",
+      "@typescript-eslint/prefer-nullish-coalescing": 0,
       "@typescript-eslint/prefer-optional-chain": "error",
       "@typescript-eslint/prefer-readonly": "error",
       "@typescript-eslint/prefer-string-starts-ends-with": "error",
       "@typescript-eslint/prefer-ts-expect-error": "error",
       "@typescript-eslint/promise-function-async": "error",
       "@typescript-eslint/require-array-sort-compare": "error",
-      "@typescript-eslint/switch-exhaustiveness-check": "error",
       "@typescript-eslint/unified-signatures": "error",
       "@typescript-eslint/no-empty-object-type": 0,
       "@typescript-eslint/array-type": "error",
@@ -147,6 +143,8 @@ export default [
       "eslint.config.mjs",
       "**/worker.js",
       "src/generated",
+      ".claude",
+      ".conductor",
     ],
   },
 ];

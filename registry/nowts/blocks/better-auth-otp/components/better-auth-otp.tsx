@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -45,7 +43,7 @@ export function OtpForm({
     try {
       await sendOtp(data.email);
       setEmail(data.email);
-      setDirection(1); // Forward direction
+      setDirection(1);
       setStep("otp");
     } catch (error) {
       onError?.(error instanceof Error ? error.message : "Failed to send OTP");
@@ -61,7 +59,6 @@ export function OtpForm({
       onSuccess?.();
     } catch (error) {
       onError?.(error instanceof Error ? error.message : "Invalid OTP");
-      // Reset the OTP input on error
       setOtpResetKey((prev) => prev + 1);
     } finally {
       setIsLoading(false);
@@ -74,7 +71,7 @@ export function OtpForm({
       await sendOtp(email);
     } catch (error) {
       onError?.(
-        error instanceof Error ? error.message : "Failed to resend OTP"
+        error instanceof Error ? error.message : "Failed to resend OTP",
       );
     } finally {
       setIsLoading(false);
@@ -82,7 +79,7 @@ export function OtpForm({
   };
 
   const handleBack = () => {
-    setDirection(-1); // Backward direction
+    setDirection(-1);
     setStep("email");
   };
 
@@ -97,7 +94,7 @@ export function OtpForm({
               initial="initial"
               animate="active"
               exit="exit"
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.15 }}
               custom={direction}
             >
               <form
@@ -109,7 +106,14 @@ export function OtpForm({
               >
                 <div className="space-y-2">
                   <Label>Email</Label>
-                  <Input placeholder="john@doe.com" disabled={isLoading} />
+                  <Input
+                    placeholder="john@doe.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isLoading}
+                    type="email"
+                    required
+                  />
                 </div>
 
                 <Button
@@ -128,29 +132,29 @@ export function OtpForm({
               initial="initial"
               animate="active"
               exit="exit"
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.15 }}
               custom={direction}
             >
-              <div className="flex flex-col items-center gap-4 w-full">
+              <div className="flex w-full flex-col items-start gap-4">
                 <p className="text-muted-foreground text-sm">
-                  Enter the code sent to your email{" "}
-                  <span className="font-bold">{email}</span>
-                </p>
-
-                <OtpInput
-                  key={otpResetKey}
-                  onVerify={handleVerifyOtp}
-                  isLoading={isLoading}
-                />
-
-                <div className="flex items-center gap-2">
+                  A one-time password has been sent to{" "}
+                  <span className="font-bold">{email}</span>{" "}
                   <button
                     onClick={handleBack}
-                    className="underline text-muted-foreground text-sm hover:text-foreground"
+                    className="underline hover:text-foreground"
                     disabled={isLoading}
+                    type="button"
                   >
                     Edit email
                   </button>
+                </p>
+
+                <div className="flex items-center gap-2">
+                  <OtpInput
+                    key={otpResetKey}
+                    onVerify={handleVerifyOtp}
+                    isLoading={isLoading}
+                  />
 
                   <ResendButton
                     onResend={handleResendOtp}
@@ -169,11 +173,11 @@ export function OtpForm({
 
 const variants = {
   initial: (direction: number) => {
-    return { x: `${100 * direction}px`, opacity: 0 };
+    return { x: `${20 * direction}px`, opacity: 0 };
   },
   active: { x: "0%", opacity: 1 },
   exit: (direction: number) => {
-    return { x: `${-100 * direction}px`, opacity: 0 };
+    return { x: `${-20 * direction}px`, opacity: 0 };
   },
 };
 
@@ -232,12 +236,13 @@ function ResendButton({ onResend, isLoading, cooldown }: ResendButtonProps) {
     <button
       onClick={handleResend}
       disabled={isLoading || !countdown.isCountdownFinished}
+      type="button"
       className={cn(
         "underline text-muted-foreground text-sm hover:text-foreground",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         {
           "animate-pulse": isLoading,
-        }
+        },
       )}
     >
       Resend {countdown.count > 0 ? `(${countdown.count})` : ""}

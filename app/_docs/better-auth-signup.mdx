@@ -1,0 +1,439 @@
+---
+title: "Better Auth Sign Up"
+description: "A complete sign-up form component with email and password authentication using Better Auth."
+slug: "better-auth-signup"
+externalDocs: "https://www.better-auth.com/docs/authentication/email-password"
+type: "block"
+---
+
+A complete sign-up form component with email and password authentication, password confirmation validation, and built-in error handling for Better Auth.
+
+<Tabs defaultValue="preview">
+
+<div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
+
+<TabsList>
+	<TabsTrigger value="preview">Preview</TabsTrigger>
+	<TabsTrigger value="code">Code</TabsTrigger>
+</TabsList>
+
+<CopyCode
+	code={`import { BetterAuthSignUp } from "@/components/better-auth-signup";
+
+export default function SignUpPage() {
+  const handleSignUp = async (data) => {
+    "use server";
+    await authClient.signUp.email(data);
+  };
+
+  return (
+    <BetterAuthSignUp
+      onSignUp={handleSignUp}
+      onSuccess={() => window.location.href = "/dashboard"}
+    />
+  );
+}`}
+	mode="text"
+/>
+
+</div>
+
+<TabsContent value="preview">
+
+<ComponentView className="h-[600px] flex items-center justify-center">
+
+<BetterAuthSignUpExamples />
+
+</ComponentView>
+
+</TabsContent>
+
+<TabsContent value="code">
+
+<CodeBlock className="h-[600px]" contentClassName="h-full">
+
+```tsx
+"use client";
+
+import { BetterAuthSignUp } from "@/components/better-auth-signup";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+
+export default function SignUpPage() {
+  const handleSignUp = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    const result = await authClient.signUp.email({
+      email: data.email,
+      password: data.password,
+      name: data.name,
+    });
+
+    if (result.error) {
+      throw new Error(result.error.message);
+    }
+  };
+
+  return (
+    <BetterAuthSignUp
+      onSignUp={handleSignUp}
+      onSuccess={() => {
+        toast.success("Account created successfully!");
+        window.location.href = "/dashboard";
+      }}
+      onError={(error) => {
+        toast.error(error);
+      }}
+      signInLink={
+        <>
+          Already have an account?{" "}
+          <a href="/signin" className="underline">
+            Sign in
+          </a>
+        </>
+      }
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+</TabsContent>
+
+</Tabs>
+
+## About
+
+The **Better Auth Sign Up** component is a fully-featured sign-up form designed to work seamlessly with Better Auth. It handles form validation, password confirmation, loading states, and error handling out of the box.
+
+### Features
+
+- ✅ **Email & Password Authentication**: Complete sign-up flow with Better Auth
+- ✅ **Password Confirmation**: Built-in password matching validation
+- ✅ **Form Validation**: Zod schema validation with helpful error messages
+- ✅ **Error Handling**: Automatic toast notifications for errors
+- ✅ **Loading States**: Visual feedback during submission
+- ✅ **TypeScript Support**: Fully typed for type safety
+- ✅ **Customizable**: Props for title, description, and callbacks
+- ✅ **Responsive Design**: Works on all screen sizes
+
+## Installation
+
+<div className="space-y-4">
+
+### 1. Install the component
+
+<CommandBlock
+	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
+	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
+	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
+	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
+/>
+
+### 2. Configure Better Auth
+
+<CodeBlock contentClassName="h-fit" fileName="lib/auth-client.ts">
+
+```tsx
+import { createAuthClient } from "better-auth/react";
+
+export const authClient = createAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_APP_URL,
+});
+```
+
+</CodeBlock>
+
+</div>
+
+## Usage
+
+### Basic Implementation
+
+<CodeBlock contentClassName="h-fit" fileName="app/signup/page.tsx">
+
+```tsx
+"use client";
+
+import { BetterAuthSignUp } from "@/components/better-auth-signup";
+import { authClient } from "@/lib/auth-client";
+
+export default function SignUpPage() {
+  const handleSignUp = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    const result = await authClient.signUp.email(data);
+
+    if (result.error) {
+      throw new Error(result.error.message);
+    }
+  };
+
+  return (
+    <BetterAuthSignUp
+      onSignUp={handleSignUp}
+      onSuccess={() => {
+        window.location.href = "/dashboard";
+      }}
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+### With Custom Messages
+
+<CodeBlock contentClassName="h-fit" fileName="app/signup/page.tsx">
+
+```tsx
+<BetterAuthSignUp
+  onSignUp={handleSignUp}
+  title="Join our platform"
+  description="Create your account in seconds"
+  onSuccess={() => {
+    toast.success("Welcome aboard!");
+    window.location.href = "/onboarding";
+  }}
+  onError={(error) => {
+    toast.error(`Sign up failed: ${error}`);
+  }}
+/>
+```
+
+</CodeBlock>
+
+### With Sign In Link
+
+<CodeBlock contentClassName="h-fit" fileName="app/signup/page.tsx">
+
+```tsx
+import Link from "next/link";
+
+<BetterAuthSignUp
+  onSignUp={handleSignUp}
+  signInLink={
+    <>
+      Already have an account?{" "}
+      <Link href="/signin" className="underline hover:text-foreground">
+        Sign in
+      </Link>
+    </>
+  }
+/>
+```
+
+</CodeBlock>
+
+### Server Action Pattern
+
+<CodeBlock contentClassName="h-fit" fileName="app/signup/page.tsx">
+
+```tsx
+import { BetterAuthSignUp } from "@/components/better-auth-signup";
+import { signUpAction } from "./actions";
+
+export default function SignUpPage() {
+  return (
+    <BetterAuthSignUp
+      onSignUp={async (data) => {
+        const result = await signUpAction(data);
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+      }}
+      onSuccess={() => {
+        window.location.href = "/dashboard";
+      }}
+    />
+  );
+}
+```
+
+</CodeBlock>
+
+<CodeBlock contentClassName="h-fit" fileName="app/signup/actions.ts">
+
+```tsx
+"use server";
+
+import { auth } from "@/lib/auth";
+
+export async function signUpAction(data: {
+  name: string;
+  email: string;
+  password: string;
+}) {
+  try {
+    await auth.api.signUpEmail({
+      body: {
+        email: data.email,
+        password: data.password,
+        name: data.name,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Sign up failed",
+    };
+  }
+}
+```
+
+</CodeBlock>
+
+## API
+
+### BetterAuthSignUp Props
+
+| Prop | Type | Description | Default |
+|------|------|-------------|---------|
+| `onSignUp` | `(data: { name: string; email: string; password: string }) => Promise<void>` | **Required.** Function to handle sign up | - |
+| `onSuccess` | `() => void` | Called after successful sign up | - |
+| `onError` | `(error: string) => void` | Called when sign up fails | - |
+| `title` | `string` | Card title | `"Create an account"` |
+| `description` | `string` | Card description | `"Enter your details to get started"` |
+| `signInLink` | `React.ReactNode` | Link to sign in page | - |
+
+## Validation Schema
+
+The component uses the following Zod schema:
+
+```tsx
+const signUpSchema = z
+  .object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+```
+
+## Customization
+
+### Custom Validation
+
+To use custom validation, you can create your own component based on this one:
+
+<CodeBlock contentClassName="h-fit" fileName="components/custom-signup.tsx">
+
+```tsx
+"use client";
+
+import { BetterAuthSignUp } from "@/components/better-auth-signup";
+import { z } from "zod";
+
+const customSchema = z
+  .object({
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Invalid email").endsWith("@company.com", "Must use company email"),
+    password: z
+      .string()
+      .min(12, "Password must be at least 12 characters")
+      .regex(/[A-Z]/, "Must contain uppercase letter")
+      .regex(/[0-9]/, "Must contain number"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+```
+
+</CodeBlock>
+
+### Styling
+
+The component uses Tailwind CSS and shadcn/ui styling. You can customize it by:
+
+1. Modifying the component's className props
+2. Updating your theme in `tailwind.config.js`
+3. Using CSS variables for colors
+
+## Best Practices
+
+1. **Password Strength**: The default minimum is 8 characters. Consider adding additional validation for stronger passwords.
+2. **Email Verification**: Implement email verification after sign up.
+3. **Rate Limiting**: Add rate limiting on the server to prevent abuse.
+4. **HTTPS Only**: Always use HTTPS in production for authentication.
+5. **Error Messages**: Keep error messages generic to prevent user enumeration.
+6. **Redirect After Sign Up**: Always redirect users to a meaningful page after successful sign up.
+
+## Examples
+
+### With Better Auth
+
+<CodeBlock contentClassName="h-fit" fileName="app/signup/page.tsx">
+
+```tsx
+"use client";
+
+import { BetterAuthSignUp } from "@/components/better-auth-signup";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+
+export default function SignUpPage() {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <BetterAuthSignUp
+        onSignUp={async (data) => {
+          const result = await authClient.signUp.email({
+            email: data.email,
+            password: data.password,
+            name: data.name,
+          });
+
+          if (result.error) {
+            throw new Error(result.error.message);
+          }
+        }}
+        onSuccess={() => {
+          toast.success("Account created! Redirecting...");
+          setTimeout(() => {
+            window.location.href = "/dashboard";
+          }, 1000);
+        }}
+        signInLink={
+          <>
+            Already have an account?{" "}
+            <a href="/signin" className="underline hover:text-foreground">
+              Sign in
+            </a>
+          </>
+        }
+      />
+    </div>
+  );
+}
+```
+
+</CodeBlock>
+
+## Troubleshooting
+
+### Form not submitting
+- Verify Better Auth is properly configured
+- Check that `onSignUp` function is async and handles errors
+- Ensure all required environment variables are set
+
+### Validation errors not showing
+- The component uses inline error messages below each field
+- Check browser console for validation errors
+- Verify Zod schema is compatible with your requirements
+
+### Password confirmation not working
+- The validation happens automatically via the Zod schema
+- Check that both password fields are filled
+- Error appears on the "Confirm Password" field
