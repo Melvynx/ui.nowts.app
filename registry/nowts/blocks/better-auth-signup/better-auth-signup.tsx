@@ -13,12 +13,12 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ExtendedForm, useZodForm } from "@/components/ui/extended-form";
+import { ExtendedForm, useZodForm } from "../../components/extended-form";
 
 const signUpSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
-    email: z.string().email("Invalid email address"),
+    email: z.email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
   })
@@ -88,11 +88,7 @@ export function BetterAuthSignUp({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <ExtendedForm
-          form={form}
-          onSubmit={handleSubmit}
-          className="space-y-4"
-        >
+        <ExtendedForm form={form} onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input

@@ -50,9 +50,15 @@ const components: MDXComponents = {
   ),
   UseDebounceFnExamples: ({ ...props }) => <UseDebounceFnExamples {...props} />,
   NextTopLoaderExamples: ({ ...props }) => <NextTopLoaderExamples {...props} />,
-  CopyToClipboardExamples: ({ ...props }) => <CopyToClipboardExamples {...props} />,
-  BetterAuthSignUpExamples: ({ ...props }) => <BetterAuthSignUpExamples {...props} />,
-  BetterAuthSignInExamples: ({ ...props }) => <BetterAuthSignInExamples {...props} />,
+  CopyToClipboardExamples: ({ ...props }) => (
+    <CopyToClipboardExamples {...props} />
+  ),
+  BetterAuthSignUpExamples: ({ ...props }) => (
+    <BetterAuthSignUpExamples {...props} />
+  ),
+  BetterAuthSignInExamples: ({ ...props }) => (
+    <BetterAuthSignInExamples {...props} />
+  ),
 
   CommandBlock: ({
     children,
@@ -96,7 +102,7 @@ const components: MDXComponents = {
           rel="noopener noreferrer"
           className={cn(
             "underline underline-offset-[2.5px] decoration-neutral-300 dark:decoration-neutral-500 duration-200 hover:decoration-neutral-500 dark:hover:decoration-neutral-300 hover:text-black dark:hover:text-white",
-            props.className
+            props.className,
           )}
         >
           {children}
@@ -109,7 +115,7 @@ const components: MDXComponents = {
         {...props}
         className={cn(
           "underline underline-offset-[2.5px] decoration-neutral-300 dark:decoration-neutral-500 duration-200 hover:decoration-neutral-500 dark:hover:decoration-neutral-300 hover:text-black dark:hover:text-white",
-          props.className
+          props.className,
         )}
       >
         {children}

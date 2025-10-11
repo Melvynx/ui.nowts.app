@@ -10,8 +10,8 @@ type: "hook"
 <div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
 
 <TabsList>
-	<TabsTrigger value="preview">Preview</TabsTrigger>
-	<TabsTrigger value="code">Code</TabsTrigger>
+  <TabsTrigger value="preview">Preview</TabsTrigger>
+  <TabsTrigger value="code">Code</TabsTrigger>
 </TabsList>
 
 <CopyCode 
@@ -22,26 +22,25 @@ import { Check, Copy } from "lucide-react";
 export function CopyExample() {
   const { isCopied, copyToClipboard } = useCopyToClipboard();
 
-  return (
-    <Button 
-      onClick={() => copyToClipboard("Hello, World!")}
-      variant={isCopied ? "default" : "outline"}
-    >
-      {isCopied ? (
-        <>
-          <Check className="w-4 h-4 mr-2" />
-          Copied!
-        </>
-      ) : (
-        <>
-          <Copy className="w-4 h-4 mr-2" />
-          Copy Text
-        </>
-      )}
-    </Button>
-  );
+return (
+<Button
+onClick={() => copyToClipboard("Hello, World!")}
+variant={isCopied ? "default" : "outline"} >
+{isCopied ? (
+<>
+<Check className="w-4 h-4 mr-2" />
+Copied!
+</>
+) : (
+<>
+<Copy className="w-4 h-4 mr-2" />
+Copy Text
+</>
+)}
+</Button>
+);
 }`}
-	mode="text"
+mode="text"
 />
 
 </div>
@@ -69,7 +68,9 @@ export function CopyToClipboardExample() {
   const { isCopied, copyToClipboard } = useCopyToClipboard();
 
   const handleCopyText = () => {
-    copyToClipboard("Hello, World! This text has been copied to your clipboard.");
+    copyToClipboard(
+      "Hello, World! This text has been copied to your clipboard.",
+    );
   };
 
   const handleCopyCode = () => {
@@ -82,7 +83,7 @@ console.log(greeting);`;
     <div className="space-y-4 p-4">
       <div className="space-y-2">
         <h3 className="text-sm font-medium">Basic Copy</h3>
-        <Button 
+        <Button
           onClick={handleCopyText}
           variant={isCopied ? "default" : "outline"}
         >
@@ -147,11 +148,11 @@ The **useCopyToClipboard** hook provides a simple and reliable way to copy text 
 
 ## Installation
 
-<CommandBlock 
-	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-copy-to-clipboard.json" 
-	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-copy-to-clipboard.json" 
-	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-copy-to-clipboard.json" 
-	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-copy-to-clipboard.json" 
+<CommandBlock
+  npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-copy-to-clipboard.json"
+  pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-copy-to-clipboard.json"
+  yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-copy-to-clipboard.json"
+  bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-copy-to-clipboard.json"
 />
 
 ## Usage
@@ -168,7 +169,7 @@ export function BasicCopyButton() {
   const { isCopied, copyToClipboard } = useCopyToClipboard();
 
   return (
-    <Button 
+    <Button
       onClick={() => copyToClipboard("Hello, World!")}
       variant={isCopied ? "default" : "outline"}
     >
@@ -213,7 +214,7 @@ import { Check, Copy } from "lucide-react";
 
 export function CopyCodeBlock() {
   const { isCopied, copyToClipboard } = useCopyToClipboard();
-  
+
   const code = `const greeting = "Hello, World!";
 console.log(greeting);`;
 
@@ -312,7 +313,7 @@ Environment: Production`;
           readOnly
         />
       </div>
-      
+
       <div className="space-y-2">
         <Label htmlFor="api-key">API Key</Label>
         <Input
@@ -357,11 +358,7 @@ export function CopyWithToast() {
     copyToClipboard("This text will show a toast notification when copied!");
   };
 
-  return (
-    <Button onClick={handleCopy}>
-      Copy with Toast
-    </Button>
-  );
+  return <Button onClick={handleCopy}>Copy with Toast</Button>;
 }
 ```
 
@@ -371,16 +368,16 @@ export function CopyWithToast() {
 
 ### Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `delay` | `number` | `5000` | Duration in milliseconds to keep the `isCopied` state as `true` |
+| Parameter | Type     | Default | Description                                                     |
+| --------- | -------- | ------- | --------------------------------------------------------------- |
+| `delay`   | `number` | `5000`  | Duration in milliseconds to keep the `isCopied` state as `true` |
 
 ### Returns
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `isCopied` | `boolean` | Whether text was recently copied (resets after delay) |
-| `copyToClipboard` | `(text: string) => void` | Function to copy text to clipboard |
+| Property          | Type                     | Description                                           |
+| ----------------- | ------------------------ | ----------------------------------------------------- |
+| `isCopied`        | `boolean`                | Whether text was recently copied (resets after delay) |
+| `copyToClipboard` | `(text: string) => void` | Function to copy text to clipboard                    |
 
 ### Browser Support
 

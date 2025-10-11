@@ -24,7 +24,7 @@ export function ComponentView({
     <div
       className={cn(
         "relative border-neutral-300/50 bg-background dark:border-neutral-800/40 rounded-xl border px-4",
-        className
+        className,
       )}
     >
       {isReloadAnimation ? <div key={reloadKey}>{children}</div> : children}

@@ -89,6 +89,6 @@ export const FormAutoSaveStickyBar = (props: FormAutoSaveStickyBarProps) => {
         ) : null}
       </AnimatePresence>
     </div>,
-    document.body
+    document.body,
   ) as ReactNode;
 };

@@ -8,7 +8,9 @@ export function CopyToClipboardExamples() {
   const { isCopied, copyToClipboard } = useCopyToClipboard();
 
   const handleCopyText = () => {
-    copyToClipboard("Hello, World! This text has been copied to your clipboard.");
+    copyToClipboard(
+      "Hello, World! This text has been copied to your clipboard.",
+    );
   };
 
   const handleCopyCode = () => {
@@ -21,7 +23,7 @@ console.log(greeting);`;
     <div className="space-y-4 p-4">
       <div className="space-y-2">
         <h3 className="text-sm font-medium">Basic Copy</h3>
-        <Button 
+        <Button
           onClick={handleCopyText}
           variant={isCopied ? "default" : "outline"}
         >

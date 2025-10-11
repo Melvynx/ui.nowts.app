@@ -10,8 +10,8 @@ type: "block"
 <div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
 
 <TabsList>
-	<TabsTrigger value="preview">Preview</TabsTrigger>
-	<TabsTrigger value="code">Code</TabsTrigger>
+  <TabsTrigger value="preview">Preview</TabsTrigger>
+  <TabsTrigger value="code">Code</TabsTrigger>
 </TabsList>
 
 <CopyCode 
@@ -33,9 +33,9 @@ export function MyComponent() {
     });
   };
 
-  return <Button onClick={handleDelete}>Delete</Button>;
+return <Button onClick={handleDelete}>Delete</Button>;
 }`}
-	mode="text"
+mode="text"
 />
 
 </div>
@@ -70,8 +70,8 @@ export function MyComponent() {
         onClick: async () => {
           // Your delete logic here
           await deleteItem();
-        }
-      }
+        },
+      },
     });
   };
 
@@ -81,15 +81,15 @@ export function MyComponent() {
       description: "Enter a new name for this item.",
       input: {
         label: "Name",
-        placeholder: "Enter new name..."
+        placeholder: "Enter new name...",
       },
       action: {
         label: "Rename",
         onClick: async (value) => {
           if (!value?.trim()) return;
           await renameItem(value);
-        }
-      }
+        },
+      },
     });
   };
 
@@ -99,11 +99,9 @@ export function MyComponent() {
         <div className="p-6">
           <h2 className="text-lg font-semibold mb-4">Custom Dialog</h2>
           <p className="mb-4">This is a custom dialog with your own content.</p>
-          <Button onClick={() => dialogManager.closeAll()}>
-            Close
-          </Button>
+          <Button onClick={() => dialogManager.closeAll()}>Close</Button>
         </div>
-      )
+      ),
     });
   };
 
@@ -112,9 +110,7 @@ export function MyComponent() {
       <Button onClick={handleConfirm} variant="destructive">
         Delete Item
       </Button>
-      <Button onClick={handleInput}>
-        Rename Item
-      </Button>
+      <Button onClick={handleInput}>Rename Item</Button>
       <Button onClick={handleCustom} variant="secondary">
         Custom Dialog
       </Button>
@@ -146,11 +142,11 @@ The **Dialog Manager** is a comprehensive dialog management system that provides
 
 ### 1. Install the component
 
-<CommandBlock 
-	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/dialog-manager.json" 
-	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/dialog-manager.json" 
-	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/dialog-manager.json" 
-	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/dialog-manager.json" 
+<CommandBlock
+  npmCommand="npx shadcn@latest add https://ui.nowts.app/r/dialog-manager.json"
+  pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/dialog-manager.json"
+  yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/dialog-manager.json"
+  bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/dialog-manager.json"
 />
 
 ### 2. Add to your layout
@@ -199,8 +195,8 @@ export function DeleteButton() {
         variant: "destructive",
         onClick: async () => {
           await deleteItem();
-        }
-      }
+        },
+      },
     });
   };
 
@@ -221,15 +217,16 @@ export function DeleteButton() {
 ```tsx
 dialogManager.confirm({
   title: "Delete Account",
-  description: "This action is irreversible. All your data will be permanently deleted.",
+  description:
+    "This action is irreversible. All your data will be permanently deleted.",
   confirmText: "DELETE",
   action: {
     label: "Delete Account",
     variant: "destructive",
     onClick: async () => {
       await deleteAccount();
-    }
-  }
+    },
+  },
 });
 ```
 
@@ -245,15 +242,15 @@ dialogManager.input({
   description: "Enter a name for your new project.",
   input: {
     label: "Project Name",
-    placeholder: "My awesome project"
+    placeholder: "My awesome project",
   },
   action: {
     label: "Create",
     onClick: async (projectName) => {
       if (!projectName?.trim()) return;
       await createProject(projectName);
-    }
-  }
+    },
+  },
 });
 ```
 
@@ -270,7 +267,7 @@ dialogManager.input({
   input: {
     label: "Filename",
     placeholder: "document.pdf",
-    defaultValue: currentFilename
+    defaultValue: currentFilename,
   },
   action: {
     label: "Rename",
@@ -278,14 +275,14 @@ dialogManager.input({
       if (!filename?.trim()) {
         throw new Error("Filename cannot be empty");
       }
-      
+
       if (!/^[a-zA-Z0-9._-]+$/.test(filename)) {
         throw new Error("Invalid filename format");
       }
-      
+
       await renameFile(filename);
-    }
-  }
+    },
+  },
 });
 ```
 
@@ -313,7 +310,9 @@ function CreateUserForm({ onClose }: { onClose: () => void }) {
         <Input
           id="name"
           value={formData.name}
-          onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, name: e.target.value }))
+          }
         />
       </div>
       <div>
@@ -322,7 +321,9 @@ function CreateUserForm({ onClose }: { onClose: () => void }) {
           id="email"
           type="email"
           value={formData.email}
-          onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, email: e.target.value }))
+          }
         />
       </div>
       <div className="flex justify-end gap-2">
@@ -337,7 +338,7 @@ function CreateUserForm({ onClose }: { onClose: () => void }) {
 
 // Usage
 dialogManager.custom({
-  children: <CreateUserForm onClose={() => dialogManager.closeAll()} />
+  children: <CreateUserForm onClose={() => dialogManager.closeAll()} />,
 });
 ```
 
@@ -361,8 +362,8 @@ dialogManager.confirm({
     onClick: async () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       throw new Error("Failed to delete item");
-    }
-  }
+    },
+  },
 });
 ```
 

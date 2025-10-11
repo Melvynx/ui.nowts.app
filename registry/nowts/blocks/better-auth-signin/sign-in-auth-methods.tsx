@@ -1,4 +1,4 @@
-import { OtpForm } from "@/components/better-auth-otp";
+import { OtpForm } from "@/test-registry/components/better-auth-otp";
 import { useState } from "react";
 import type { SignInPasswordFormProps } from "./sign-in-password-form";
 import { SignInPasswordForm } from "./sign-in-password-form";

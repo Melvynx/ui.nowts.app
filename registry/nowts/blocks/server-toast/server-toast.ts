@@ -3,7 +3,7 @@ import type { ServerToastEnum } from "./server-toast.type";
 
 export async function serverToast(
   message: string,
-  type: ServerToastEnum = "info"
+  type: ServerToastEnum = "info",
 ) {
   const cookieStore = await cookies();
   const id = crypto.randomUUID();

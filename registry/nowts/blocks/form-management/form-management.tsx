@@ -45,7 +45,7 @@ export const FormManagement = <T extends FieldValues>({
 
   useWarnIfUnsavedChanges(
     isDirty,
-    "You have unsaved changes. Please save or cancel your changes before leaving."
+    "You have unsaved changes. Please save or cancel your changes before leaving.",
   );
 
   return (
@@ -68,7 +68,7 @@ export const FormManagement = <T extends FieldValues>({
 };
 
 export const FormAutoSaveWatch = <T extends FieldValues>(
-  props: Pick<FormProps<T>, "form"> & { autoSaveMs?: number }
+  props: Pick<FormProps<T>, "form"> & { autoSaveMs?: number },
 ) => {
   const lastFormStateRef = useRef<string | null>(null);
   const watchedField = props.form.watch();

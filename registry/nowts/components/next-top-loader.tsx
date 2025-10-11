@@ -236,7 +236,7 @@ export const NextTopLoader = ({
       showSpinner={showSpinner}
       speed={speed}
     />,
-    document.body
+    document.body,
   );
 };
 

@@ -12,7 +12,7 @@ type Toast = {
 // Source : https://buildui.com/posts/toast-messages-in-react-server-components
 export function ClientToasts({ toasts }: { toasts: Toast[] }) {
   const [optimisticToasts, remove] = useOptimistic(toasts, (current, id) =>
-    current.filter((toast) => toast.id !== id)
+    current.filter((toast) => toast.id !== id),
   );
 
   const localToasts = optimisticToasts.map((toast) => ({

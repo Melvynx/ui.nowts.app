@@ -99,7 +99,7 @@ export default function RootLayout({
         className={cn(
           "overflow-x-hidden bg-background font-sans text-foreground antialiased outline-none",
           fontSans.variable,
-          fontMono.variable
+          fontMono.variable,
         )}
       >
         <Providers>
@@ -127,7 +127,7 @@ export default function RootLayout({
 
 export async function InjectDocsServer() {
   const docs = getDocs().sort(
-    (a, b) => a.title?.localeCompare(b.title ?? "") ?? 0
+    (a, b) => a.title?.localeCompare(b.title ?? "") ?? 0,
   );
   return <InjectDocs docs={docs} />;
 }

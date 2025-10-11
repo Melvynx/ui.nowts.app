@@ -10,8 +10,8 @@ type: "component"
 <div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
 
 <TabsList>
-	<TabsTrigger value="preview">Preview</TabsTrigger>
-	<TabsTrigger value="code">Code</TabsTrigger>
+  <TabsTrigger value="preview">Preview</TabsTrigger>
+  <TabsTrigger value="code">Code</TabsTrigger>
 </TabsList>
 
 <CopyCode 
@@ -55,7 +55,7 @@ export function MyForm() {
     setIsLoading(true);
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log("Form submitted:", Object.fromEntries(formData));
     } finally {
       setIsLoading(false);
@@ -68,11 +68,11 @@ export function MyForm() {
       <form action={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="email">Email</label>
-          <input 
+          <input
             id="email"
-            name="email" 
-            type="email" 
-            required 
+            name="email"
+            type="email"
+            required
             className="w-full px-3 py-2 border rounded"
           />
         </div>
@@ -81,7 +81,7 @@ export function MyForm() {
 
       {/* Manual loading state control */}
       <div className="space-y-4">
-        <LoadingButton 
+        <LoadingButton
           loading={isLoading}
           onClick={() => {
             setIsLoading(true);
@@ -119,11 +119,11 @@ The **Submit Button** is an enhanced button component that automatically detects
 
 ### Install the component
 
-<CommandBlock 
-	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/submit-button.json" 
-	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/submit-button.json" 
-	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/submit-button.json" 
-	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/submit-button.json" 
+<CommandBlock
+  npmCommand="npx shadcn@latest add https://ui.nowts.app/r/submit-button.json"
+  pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/submit-button.json"
+  yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/submit-button.json"
+  bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/submit-button.json"
 />
 
 ## Usage
@@ -203,15 +203,11 @@ export function ButtonVariants() {
       <SubmitButton variant="destructive" size="lg">
         Delete Account
       </SubmitButton>
-      
-      <LoadingButton 
-        loading={true} 
-        variant="outline" 
-        size="sm"
-      >
+
+      <LoadingButton loading={true} variant="outline" size="sm">
         Save Draft
       </LoadingButton>
-      
+
       <SubmitButton variant="ghost" disabled>
         Disabled Submit
       </SubmitButton>
@@ -241,7 +237,7 @@ export function ContactForm() {
     }
 
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     toast.success("Message sent successfully!");
   }
 
@@ -259,7 +255,7 @@ export function ContactForm() {
           className="mt-1 w-full px-3 py-2 border rounded-md"
         />
       </div>
-      
+
       <div>
         <label htmlFor="message" className="block text-sm font-medium">
           Message
@@ -272,10 +268,8 @@ export function ContactForm() {
           className="mt-1 w-full px-3 py-2 border rounded-md"
         />
       </div>
-      
-      <SubmitButton className="w-full">
-        Send Message
-      </SubmitButton>
+
+      <SubmitButton className="w-full">Send Message</SubmitButton>
     </form>
   );
 }
@@ -288,4 +282,4 @@ export function ContactForm() {
 - The `SubmitButton` must be used inside a form to automatically detect submission state
 - The `useFormStatus` hook only works in React Server Components and Client Components
 - Loading state automatically disables the button to prevent double submissions
-- The loading spinner uses the Lucide React `Loader` icon 
+- The loading spinner uses the Lucide React `Loader` icon

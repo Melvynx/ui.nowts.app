@@ -38,7 +38,9 @@ export function SignInPage({
           {appIcon && (
             <Avatar className="size-8 rounded-md">
               <AvatarImage src={appIcon} alt={`${appName} logo`} />
-              <AvatarFallback>{appName.substring(0, 1).toUpperCase()}</AvatarFallback>
+              <AvatarFallback>
+                {appName.substring(0, 1).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
           )}
           <h1 className="text-xl font-semibold">{appName}</h1>

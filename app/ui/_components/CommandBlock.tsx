@@ -38,7 +38,7 @@ export function CommandBlock({
     <div
       className={cn(
         "relative overflow-hidden rounded-xl border border-neutral-300/50 bg-neutral-200/30 dark:border-neutral-800/60 dark:bg-neutral-900/40 not-prose mt-8",
-        className
+        className,
       )}
     >
       <Tabs

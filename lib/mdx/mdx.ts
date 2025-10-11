@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fs from "fs";
 import path from "path";
 
@@ -36,7 +37,7 @@ export function getDocs({
   skip,
 }: { directory?: string; skip?: boolean } = {}): Docs[] {
   const files = getFiles(
-    path.join(process.cwd(), "app", "_docs", ...(directory ? [directory] : []))
+    path.join(process.cwd(), "app", "_docs", ...(directory ? [directory] : [])),
   );
 
   const docs = files
@@ -47,9 +48,9 @@ export function getDocs({
           "app",
           "_docs",
           ...(directory ? [directory] : []),
-          file
-        )
-      )
+          file,
+        ),
+      ),
     )
     .filter((docs): docs is Docs => docs !== null);
 

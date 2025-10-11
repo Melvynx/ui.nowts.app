@@ -301,11 +301,7 @@
         "sonner",
         "https://ui.nowts.app/r/extended-form.json"
       ],
-      "dependencies": [
-        "zod",
-        "react-hook-form",
-        "@hookform/resolvers"
-      ],
+      "dependencies": ["zod", "react-hook-form", "@hookform/resolvers"],
       "files": [
         {
           "path": "registry/nowts/blocks/better-auth-signup/better-auth-signup.tsx",

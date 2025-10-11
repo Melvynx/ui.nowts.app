@@ -2,7 +2,7 @@ import { useRef } from "react";
 
 export const useDebounceFn = <T extends unknown[]>(
   callback: (...args: T) => void,
-  time = 300
+  time = 300,
 ) => {
   const debounce = useRef<number>(0);
 

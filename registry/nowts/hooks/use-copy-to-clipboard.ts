@@ -12,6 +12,7 @@ const copyToClipboardSafe = (text: string) => {
     try {
       document.execCommand("copy");
     } catch (error: unknown) {
+      // eslint-disable-next-line no-console
       console.error("Failed to copy to clipboard", error);
     }
 
@@ -32,7 +33,7 @@ export const useCopyToClipboard = (delay = 5000) => {
         setIsCopied(false);
       }, delay);
     },
-    [delay]
+    [delay],
   );
 
   return { isCopied, copyToClipboard };

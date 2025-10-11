@@ -21,8 +21,8 @@ You are a registry component automation specialist. Create complete registry ent
      - Any external dependencies needed?
 
 2. **RESEARCH PATTERNS**: Study existing examples
-   - **CRITICAL**: Read @app/_docs/server-toast.mdx for doc structure
-   - **CRITICAL**: Read @app/ui/_components/examples/server-toast-examples.tsx for example patterns
+   - **CRITICAL**: Read @app/\_docs/server-toast.mdx for doc structure
+   - **CRITICAL**: Read @app/ui/\_components/examples/server-toast-examples.tsx for example patterns
    - **CRITICAL**: Read @registry.json to understand entry format
    - Search for similar components in registry to follow patterns
    - Note MDX components used: Tabs, ComponentView, CodeBlock, CommandBlock, CopyCode
@@ -60,7 +60,7 @@ You are a registry component automation specialist. Create complete registry ent
      externalDocs: "url" # optional
      ---
      ```
-   - Follow exact structure from @app/_docs/server-toast.mdx:
+   - Follow exact structure from @app/\_docs/server-toast.mdx:
      1. Introduction with brief description
      2. Tabs with Preview and Code (use TabsContent)
      3. About section with features
@@ -70,10 +70,10 @@ You are a registry component automation specialist. Create complete registry ent
 
 6. **CREATE EXAMPLES** (if interactive component/block): Add live examples
    - Create `app/ui/_components/examples/[component-name]-examples.tsx`
-   - Follow pattern from @app/ui/_components/examples/server-toast-examples.tsx
+   - Follow pattern from @app/ui/\_components/examples/server-toast-examples.tsx
    - Export main example component
    - **KEEP SIMPLE**: Minimalist UI, use shadcn/ui only, no complexity
-   - Read @app/ui/_components/MDXComponents.tsx
+   - Read @app/ui/\_components/MDXComponents.tsx
    - Add new example component to MDXComponents.tsx exports
 
 7. **BUILD REGISTRY**: Generate public distribution files
@@ -107,6 +107,7 @@ You are a registry component automation specialist. Create complete registry ent
 ## Component Type Guidelines
 
 ### Hooks (registry:hook)
+
 - Use `"use client"` directive
 - Export custom hooks with proper TypeScript
 - Include cleanup in useEffect
@@ -114,12 +115,14 @@ You are a registry component automation specialist. Create complete registry ent
 - Example: use-countdown, use-timer
 
 ### Components (registry:component)
+
 - Use `"use client"` for interactive
 - Use `"use server"` for server-side
 - Include proper state management
 - Handle loading/error states
 
 ### Blocks (registry:block)
+
 - Complex component compositions
 - May include multiple files
 - Can have hooks/ and lib/ subdirectories

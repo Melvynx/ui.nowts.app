@@ -4,9 +4,7 @@
   "type": "registry:block",
   "title": "Dialog Manager",
   "description": "A powerful dialog manager for handling confirm, input, and custom dialogs with global state management.",
-  "dependencies": [
-    "zustand"
-  ],
+  "dependencies": ["zustand"],
   "registryDependencies": [
     "alert-dialog",
     "button",

@@ -6,10 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
 export type SignInPasswordFormProps = {
-  onSubmit: (credentials: {
-    email: string;
-    password: string;
-  }) => Promise<void>;
+  onSubmit: (credentials: { email: string; password: string }) => Promise<void>;
   defaultEmail?: string;
   forgotPasswordUrl?: string;
   onError?: (error: string) => void;
@@ -31,9 +28,7 @@ export function SignInPasswordForm({
     try {
       await onSubmit({ email, password });
     } catch (error) {
-      onError?.(
-        error instanceof Error ? error.message : "Sign in failed"
-      );
+      onError?.(error instanceof Error ? error.message : "Sign in failed");
     } finally {
       setIsLoading(false);
     }

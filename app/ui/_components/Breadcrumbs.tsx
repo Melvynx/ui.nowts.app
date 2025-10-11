@@ -1,12 +1,12 @@
-import { ChevronRight } from 'lucide-react';
-import Link from 'next/link';
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 type Breadcrumbs = {
-  category?: string
-  groupName: string
-  backLink?: string
-  currentPage: string
-}
+  category?: string;
+  groupName: string;
+  backLink?: string;
+  currentPage: string;
+};
 
 export function Breadcrumbs({
   category,

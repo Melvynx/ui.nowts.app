@@ -42,7 +42,7 @@ export const useWarnIfUnsavedChanges = (unsaved: boolean, message?: string) => {
     const beforeUnloadHandler = () => {
       const yes = confirm(
         message ??
-          "Changes you made has not been saved just yet. Do you wish to proceed anyway?"
+          "Changes you made has not been saved just yet. Do you wish to proceed anyway?",
       );
 
       if (!yes) return;

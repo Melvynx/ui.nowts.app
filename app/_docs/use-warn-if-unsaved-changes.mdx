@@ -10,8 +10,8 @@ type: "hook"
 <div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
 
 <TabsList>
-	<TabsTrigger value="preview">Preview</TabsTrigger>
-	<TabsTrigger value="code">Code</TabsTrigger>
+  <TabsTrigger value="preview">Preview</TabsTrigger>
+  <TabsTrigger value="code">Code</TabsTrigger>
 </TabsList>
 
 <CopyCode 
@@ -28,16 +28,16 @@ export function MyForm() {
     "You have unsaved changes. Are you sure you want to leave?"
   );
 
-  return (
-    <form>
-      <input 
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-      />
-    </form>
-  );
+return (
+<form>
+<input
+value={inputValue}
+onChange={(e) => setInputValue(e.target.value)}
+/>
+</form>
+);
 }`}
-	mode="text"
+mode="text"
 />
 
 </div>
@@ -65,13 +65,13 @@ import { Label } from "@/components/ui/label";
 
 export function SimpleForm() {
   const [inputValue, setInputValue] = useState("");
-  
+
   const hasUnsavedChanges = inputValue.length > 0;
-  
+
   // Warn before leaving when there are unsaved changes
   useWarnIfUnsavedChanges(
     hasUnsavedChanges,
-    "You have unsaved changes. Are you sure you want to leave?"
+    "You have unsaved changes. Are you sure you want to leave?",
   );
 
   const handleSave = () => {
@@ -84,7 +84,7 @@ export function SimpleForm() {
       <h3 className="text-lg font-semibold">
         Simple Form {hasUnsavedChanges && "(Unsaved changes)"}
       </h3>
-      
+
       <div className="space-y-2">
         <Label htmlFor="input">Type something</Label>
         <Input
@@ -94,11 +94,11 @@ export function SimpleForm() {
           placeholder="Start typing to see the warning in action..."
         />
       </div>
-      
+
       <Button onClick={handleSave} disabled={!hasUnsavedChanges}>
         Save Changes
       </Button>
-      
+
       <p className="text-sm text-muted-foreground">
         Type something above, then try to navigate away or refresh the page.
       </p>
@@ -127,11 +127,11 @@ The **useWarnIfUnsavedChanges** hook provides a simple way to warn users before 
 
 ## Installation
 
-<CommandBlock 
-	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-warn-if-unsaved-changes.json" 
-	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-warn-if-unsaved-changes.json" 
-	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-warn-if-unsaved-changes.json" 
-	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-warn-if-unsaved-changes.json" 
+<CommandBlock
+  npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-warn-if-unsaved-changes.json"
+  pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-warn-if-unsaved-changes.json"
+  yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-warn-if-unsaved-changes.json"
+  bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-warn-if-unsaved-changes.json"
 />
 
 ## Usage
@@ -147,9 +147,9 @@ import { useState } from "react";
 export function MyForm() {
   const [formData, setFormData] = useState("");
   const [savedData, setSavedData] = useState("");
-  
+
   const hasUnsavedChanges = formData !== savedData;
-  
+
   useWarnIfUnsavedChanges(hasUnsavedChanges);
 
   const handleSave = () => {
@@ -159,10 +159,7 @@ export function MyForm() {
 
   return (
     <form>
-      <input 
-        value={formData}
-        onChange={(e) => setFormData(e.target.value)}
-      />
+      <input value={formData} onChange={(e) => setFormData(e.target.value)} />
       <button type="button" onClick={handleSave}>
         Save
       </button>
@@ -180,7 +177,7 @@ export function MyForm() {
 ```tsx
 useWarnIfUnsavedChanges(
   hasUnsavedChanges,
-  "You have unsaved changes that will be lost. Do you want to continue?"
+  "You have unsaved changes that will be lost. Do you want to continue?",
 );
 ```
 
@@ -198,15 +195,15 @@ export function UserProfileForm() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    bio: ""
+    bio: "",
   });
-  
+
   const [originalData, setOriginalData] = useState({
     name: "",
     email: "",
-    bio: ""
+    bio: "",
   });
-  
+
   // Load initial data
   useEffect(() => {
     const loadUserData = async () => {
@@ -216,15 +213,15 @@ export function UserProfileForm() {
     };
     loadUserData();
   }, []);
-  
+
   // Check if any field has changed
   const hasUnsavedChanges = Object.keys(formData).some(
-    key => formData[key] !== originalData[key]
+    (key) => formData[key] !== originalData[key],
   );
-  
+
   useWarnIfUnsavedChanges(
     hasUnsavedChanges,
-    "Your profile changes haven't been saved. Leave anyway?"
+    "Your profile changes haven't been saved. Leave anyway?",
   );
 
   const handleSave = async () => {
@@ -258,12 +255,12 @@ export function AutoSaveForm() {
   const [content, setContent] = useState("");
   const [lastSaved, setLastSaved] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  
+
   const hasUnsavedChanges = content !== lastSaved && !isSaving;
-  
+
   useWarnIfUnsavedChanges(
     hasUnsavedChanges,
-    "Your document has unsaved changes. Leave without saving?"
+    "Your document has unsaved changes. Leave without saving?",
   );
 
   const debouncedSave = useDebounceFn(async (value: string) => {
@@ -290,7 +287,11 @@ export function AutoSaveForm() {
         placeholder="Start typing..."
       />
       <div className="text-sm text-muted-foreground">
-        {isSaving ? "Saving..." : hasUnsavedChanges ? "Unsaved changes" : "All changes saved"}
+        {isSaving
+          ? "Saving..."
+          : hasUnsavedChanges
+            ? "Unsaved changes"
+            : "All changes saved"}
       </div>
     </div>
   );
@@ -303,10 +304,10 @@ export function AutoSaveForm() {
 
 ### Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `unsaved` | `boolean` | - | Whether there are unsaved changes |
-| `message` | `string` | `"Changes you made has not been saved just yet. Do you wish to proceed anyway?"` | Custom warning message |
+| Parameter | Type      | Default                                                                          | Description                       |
+| --------- | --------- | -------------------------------------------------------------------------------- | --------------------------------- |
+| `unsaved` | `boolean` | -                                                                                | Whether there are unsaved changes |
+| `message` | `string`  | `"Changes you made has not been saved just yet. Do you wish to proceed anyway?"` | Custom warning message            |
 
 ### Behavior
 
@@ -318,4 +319,4 @@ export function AutoSaveForm() {
 
 - The hook uses `MutationObserver` to dynamically handle anchor elements added to the DOM
 - For browser navigation events, the actual message shown may vary depending on the browser
-- The hook is designed to work with Next.js Link components and other SPA routing solutions 
+- The hook is designed to work with Next.js Link components and other SPA routing solutions

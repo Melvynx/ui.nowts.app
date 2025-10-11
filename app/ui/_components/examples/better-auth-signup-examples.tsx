@@ -10,7 +10,8 @@ export function BetterAuthSignUpExamples() {
     password: string;
   }) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("Sign up data:", data);
+    // eslint-disable-next-line no-console
+    console.info("Sign up data:", data);
   };
 
   return (

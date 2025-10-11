@@ -15,7 +15,7 @@ export function UseWarnIfUnsavedChangesExamples() {
   // Warn before leaving when there are unsaved changes
   useWarnIfUnsavedChanges(
     hasUnsavedChanges,
-    "You have unsaved changes. Are you sure you want to leave?"
+    "You have unsaved changes. Are you sure you want to leave?",
   );
 
   const handleSave = () => {

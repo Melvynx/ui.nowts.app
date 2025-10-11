@@ -41,7 +41,7 @@ export function CommandMenu() {
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
           "group relative flex items-center justify-between gap-4 pl-2.5 pr-2 py-1.5 border rounded-full text-[13px] leading-none border-border/60 dark:border-border/50",
-          "bg-background ease-linear duration-150 hover:bg-main-foreground/40 outline-none dark:hover:bg-main-foreground/20 dark:hover:border-white/10 focus-visible:ring-1 focus-visible:ring-neutral-300/80 dark:focus-visible:ring-neutral-800"
+          "bg-background ease-linear duration-150 hover:bg-main-foreground/40 outline-none dark:hover:bg-main-foreground/20 dark:hover:border-white/10 focus-visible:ring-1 focus-visible:ring-neutral-300/80 dark:focus-visible:ring-neutral-800",
         )}
       >
         <div aria-hidden className="hidden" />
@@ -98,7 +98,7 @@ function CommandMenuIcon() {
     <span
       className={cn(
         "text-neutral-500 border border-border/60 ease-linear duration-150 group-hover:border-transparent",
-        "px-1.5 py-1 rounded-lg text-[10px] flex items-center gap-0.5"
+        "px-1.5 py-1 rounded-lg text-[10px] flex items-center gap-0.5",
       )}
     >
       <CommandIcon size={10} /> K

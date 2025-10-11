@@ -5,7 +5,7 @@ export function VerticalLines(props: { width?: number; className?: string }) {
     <div
       className={cn(
         "absolute inset-y-0 left-1/2 -translate-x-1/2 max-w-full w-full sm:w-6xl z-10 pointer-events-none",
-        props.className
+        props.className,
       )}
       style={{
         width: props.width ? `${props.width}px` : undefined,

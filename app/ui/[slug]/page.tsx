@@ -9,7 +9,7 @@ import { ArrowUpRightIcon } from "lucide-react";
 import { MDX } from "../_components/mdx";
 
 const Docs = getDocs({ skip: false }).sort((a, b) =>
-  a.title.localeCompare(b.title)
+  a.title.localeCompare(b.title),
 );
 
 export async function generateStaticParams() {

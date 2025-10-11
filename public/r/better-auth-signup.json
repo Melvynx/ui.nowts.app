@@ -4,11 +4,7 @@
   "type": "registry:block",
   "title": "Better Auth Sign Up",
   "description": "A complete sign-up form component with email and password authentication using Better Auth.",
-  "dependencies": [
-    "zod",
-    "react-hook-form",
-    "@hookform/resolvers"
-  ],
+  "dependencies": ["zod", "react-hook-form", "@hookform/resolvers"],
   "registryDependencies": [
     "button",
     "input",

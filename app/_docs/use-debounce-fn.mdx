@@ -10,8 +10,8 @@ type: "hook"
 <div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
 
 <TabsList>
-	<TabsTrigger value="preview">Preview</TabsTrigger>
-	<TabsTrigger value="code">Code</TabsTrigger>
+  <TabsTrigger value="preview">Preview</TabsTrigger>
+  <TabsTrigger value="code">Code</TabsTrigger>
 </TabsList>
 
 <CopyCode 
@@ -26,18 +26,18 @@ export function SearchComponent() {
     console.log("Searching for:", term);
   }, 300);
 
-  return (
-    <input 
-      value={searchTerm}
-      onChange={(e) => {
-        setSearchTerm(e.target.value);
-        debouncedSearch(e.target.value);
-      }}
-      placeholder="Search..."
-    />
-  );
+return (
+<input
+value={searchTerm}
+onChange={(e) => {
+setSearchTerm(e.target.value);
+debouncedSearch(e.target.value);
+}}
+placeholder="Search..."
+/>
+);
 }`}
-	mode="text"
+mode="text"
 />
 
 </div>
@@ -67,7 +67,7 @@ export function SearchExample() {
   const [searchCount, setSearchCount] = useState(0);
 
   const debouncedSearch = useDebounceFn((term: string) => {
-    setSearchCount(prev => prev + 1);
+    setSearchCount((prev) => prev + 1);
     console.log("Searching for:", term);
   }, 300);
 
@@ -116,11 +116,11 @@ The **useDebounceFn** hook is a utility that debounces function calls, preventin
 
 ## Installation
 
-<CommandBlock 
-	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json" 
-	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json" 
-	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json" 
-	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json" 
+<CommandBlock
+  npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json"
+  pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json"
+  yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json"
+  bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-debounce-fn.json"
 />
 
 ## Usage
@@ -138,7 +138,7 @@ export function SearchInput() {
 
   const debouncedSearch = useDebounceFn(async (searchTerm: string) => {
     if (!searchTerm.trim()) return;
-    
+
     // Perform API call
     const results = await fetch(`/api/search?q=${searchTerm}`);
     const data = await results.json();
@@ -180,7 +180,7 @@ export function UsernameInput() {
     }
 
     setIsValidating(true);
-    
+
     try {
       const response = await fetch(`/api/validate-username?username=${name}`);
       const { available } = await response.json();
@@ -201,13 +201,11 @@ export function UsernameInput() {
 
   return (
     <div>
-      <input
-        value={username}
-        onChange={handleChange}
-        placeholder="Username"
-      />
+      <input value={username} onChange={handleChange} placeholder="Username" />
       {isValidating && <span>Checking availability...</span>}
-      {isAvailable === true && <span className="text-green-600">Available!</span>}
+      {isAvailable === true && (
+        <span className="text-green-600">Available!</span>
+      )}
       {isAvailable === false && <span className="text-red-600">Taken</span>}
     </div>
   );
@@ -231,14 +229,14 @@ export function AutoSaveEditor() {
 
   const debouncedSave = useDebounceFn(async (text: string) => {
     if (!text.trim()) return;
-    
+
     setIsSaving(true);
-    
+
     try {
       await fetch("/api/save-draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: text })
+        body: JSON.stringify({ content: text }),
       });
       setLastSaved(new Date());
     } catch (error) {
@@ -265,7 +263,9 @@ export function AutoSaveEditor() {
       />
       <div className="text-sm text-gray-500">
         {isSaving && "Saving..."}
-        {lastSaved && !isSaving && `Last saved: ${lastSaved.toLocaleTimeString()}`}
+        {lastSaved &&
+          !isSaving &&
+          `Last saved: ${lastSaved.toLocaleTimeString()}`}
       </div>
     </div>
   );
@@ -285,28 +285,23 @@ export function FilterComponent() {
   const [filters, setFilters] = useState({
     category: "",
     price: "",
-    rating: ""
+    rating: "",
   });
 
-  const debouncedFilter = useDebounceFn((
-    category: string,
-    price: string,
-    rating: string
-  ) => {
-    // Apply filters to your data
-    console.log("Filtering with:", { category, price, rating });
-    // Fetch filtered results...
-  }, 500);
+  const debouncedFilter = useDebounceFn(
+    (category: string, price: string, rating: string) => {
+      // Apply filters to your data
+      console.log("Filtering with:", { category, price, rating });
+      // Fetch filtered results...
+    },
+    500,
+  );
 
   const updateFilter = (key: string, value: string) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
-    
-    debouncedFilter(
-      newFilters.category,
-      newFilters.price,
-      newFilters.rating
-    );
+
+    debouncedFilter(newFilters.category, newFilters.price, newFilters.rating);
   };
 
   return (
@@ -316,7 +311,7 @@ export function FilterComponent() {
         <option value="electronics">Electronics</option>
         <option value="books">Books</option>
       </select>
-      
+
       <input
         type="range"
         min="0"
@@ -324,7 +319,7 @@ export function FilterComponent() {
         onChange={(e) => updateFilter("price", e.target.value)}
         placeholder="Max price"
       />
-      
+
       <select onChange={(e) => updateFilter("rating", e.target.value)}>
         <option value="">Any Rating</option>
         <option value="4">4+ Stars</option>
@@ -341,10 +336,10 @@ export function FilterComponent() {
 
 ### Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `callback` | `(...args: T) => void` | - | The function to debounce |
-| `time` | `number` | `300` | Delay in milliseconds |
+| Parameter  | Type                   | Default | Description              |
+| ---------- | ---------------------- | ------- | ------------------------ |
+| `callback` | `(...args: T) => void` | -       | The function to debounce |
+| `time`     | `number`               | `300`   | Delay in milliseconds    |
 
 ### Returns
 
@@ -363,13 +358,16 @@ const debouncedSearch = useDebounceFn((query: string) => {
 }, 300);
 
 // Multiple arguments with different types
-const debouncedUpdate = useDebounceFn((
-  id: number,
-  data: { name: string; email: string },
-  options?: { validate: boolean }
-) => {
-  // update logic
-}, 500);
+const debouncedUpdate = useDebounceFn(
+  (
+    id: number,
+    data: { name: string; email: string },
+    options?: { validate: boolean },
+  ) => {
+    // update logic
+  },
+  500,
+);
 
 // No arguments
 const debouncedRefresh = useDebounceFn(() => {
@@ -377,4 +375,4 @@ const debouncedRefresh = useDebounceFn(() => {
 }, 1000);
 ```
 
-</CodeBlock> 
+</CodeBlock>

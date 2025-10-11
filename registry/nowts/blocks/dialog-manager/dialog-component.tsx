@@ -20,7 +20,7 @@ export function DialogComponent(props: { dialog: Dialog }) {
   const { dialog } = props;
   const [confirmText, setConfirmText] = useState("");
   const [inputValue, setInputValue] = useState(
-    dialog.type === "input" ? dialog.input.defaultValue ?? "" : ""
+    dialog.type === "input" ? (dialog.input.defaultValue ?? "") : "",
   );
 
   if (dialog.type === "custom") {
@@ -38,7 +38,7 @@ export function DialogComponent(props: { dialog: Dialog }) {
 
   const handleAction = async () => {
     await handleDialogAction(dialog.id, async () =>
-      dialog.action.onClick?.(dialog.type === "input" ? inputValue : undefined)
+      dialog.action.onClick?.(dialog.type === "input" ? inputValue : undefined),
     );
   };
 

@@ -36,7 +36,7 @@ export function SidebarButton({
         "relative -mx-2.5 mt-1 select-none rounded-lg border border-transparent px-2 py-1.5 font-medium outline-none focus-visible:border-neutral-200 dark:focus-visible:border-neutral-800",
         isActive
           ? "z-0 border-neutral-200 bg-[#ebebeb] text-black dark:border-neutral-800 dark:bg-[#1c1c1c] dark:text-white"
-          : "text-[#2b2b2b] hover:bg-[#ebebeb] dark:text-neutral-300 dark:hover:bg-[#1c1c1c]"
+          : "text-[#2b2b2b] hover:bg-[#ebebeb] dark:text-neutral-300 dark:hover:bg-[#1c1c1c]",
       )}
     >
       {isNew && (
@@ -45,7 +45,7 @@ export function SidebarButton({
           <div
             className={cn(
               "w-[30px] h-4 font-medium bg-yellow-400/30 dark:bg-[#eaec8a]/16 rounded-full text-[10px]",
-              "leading-[150%] text-center mr-2.5 text-yellow-600 dark:text-[#eaec8a] [text-shadow:0_1px_1.5px_rgb(0,0,0,0.16)]"
+              "leading-[150%] text-center mr-2.5 text-yellow-600 dark:text-[#eaec8a] [text-shadow:0_1px_1.5px_rgb(0,0,0,0.16)]",
             )}
           >
             New
@@ -58,7 +58,7 @@ export function SidebarButton({
           <div
             className={cn(
               "w-[30px] h-4 font-medium bg-amber-600/20 dark:bg-amber-800/35 rounded-full text-[10px]",
-              "leading-[150%] text-center mr-2.5 text-amber-600 dark:text-amber-500 [text-shadow:0_1px_1.5px_rgb(0,0,0,0.16)]"
+              "leading-[150%] text-center mr-2.5 text-amber-600 dark:text-amber-500 [text-shadow:0_1px_1.5px_rgb(0,0,0,0.16)]",
             )}
           >
             Beta

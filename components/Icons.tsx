@@ -20,7 +20,7 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       className={cn(
         "mr-1 h-[28px] w-[28px] text-neutral-400 dark:text-neutral-400",
-        props.className
+        props.className,
       )}
       fill="currentColor"
       {...props}

@@ -4,14 +4,8 @@
   "type": "registry:component",
   "title": "Submit Button",
   "description": "Enhanced submit button with loading state that automatically detects form submission state using React's useFormStatus hook.",
-  "dependencies": [
-    "motion",
-    "lucide-react"
-  ],
-  "registryDependencies": [
-    "button",
-    "https://ui.nowts.app/r/spinner.json"
-  ],
+  "dependencies": ["motion", "lucide-react"],
+  "registryDependencies": ["button", "https://ui.nowts.app/r/spinner.json"],
   "files": [
     {
       "path": "registry/nowts/components/submit-button.tsx",

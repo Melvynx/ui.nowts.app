@@ -15,7 +15,7 @@ type Heading = {
 export function OnThisPage() {
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [visibleHeadings, setVisibleHeadings] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
 
   const pathname = usePathname();
@@ -124,7 +124,7 @@ export function OnThisPage() {
                   ? "text-primary !border-primary"
                   : "duration-300 ease-in-out hover:text-primary",
                 level === "h2" && "pl-4",
-                level === "h3" && "pl-6"
+                level === "h3" && "pl-6",
               )}
             >
               {text}

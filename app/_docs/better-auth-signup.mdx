@@ -13,8 +13,8 @@ A complete sign-up form component with email and password authentication, passwo
 <div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
 
 <TabsList>
-	<TabsTrigger value="preview">Preview</TabsTrigger>
-	<TabsTrigger value="code">Code</TabsTrigger>
+  <TabsTrigger value="preview">Preview</TabsTrigger>
+  <TabsTrigger value="code">Code</TabsTrigger>
 </TabsList>
 
 <CopyCode
@@ -26,14 +26,14 @@ export default function SignUpPage() {
     await authClient.signUp.email(data);
   };
 
-  return (
-    <BetterAuthSignUp
-      onSignUp={handleSignUp}
-      onSuccess={() => window.location.href = "/dashboard"}
-    />
-  );
+return (
+<BetterAuthSignUp
+onSignUp={handleSignUp}
+onSuccess={() => window.location.href = "/dashboard"}
+/>
+);
 }`}
-	mode="text"
+mode="text"
 />
 
 </div>
@@ -127,10 +127,10 @@ The **Better Auth Sign Up** component is a fully-featured sign-up form designed 
 ### 1. Install the component
 
 <CommandBlock
-	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
-	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
-	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
-	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
+  npmCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
+  pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
+  yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
+  bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/better-auth-signup.json"
 />
 
 ### 2. Configure Better Auth
@@ -225,7 +225,7 @@ import Link from "next/link";
       </Link>
     </>
   }
-/>
+/>;
 ```
 
 </CodeBlock>
@@ -294,14 +294,14 @@ export async function signUpAction(data: {
 
 ### BetterAuthSignUp Props
 
-| Prop | Type | Description | Default |
-|------|------|-------------|---------|
-| `onSignUp` | `(data: { name: string; email: string; password: string }) => Promise<void>` | **Required.** Function to handle sign up | - |
-| `onSuccess` | `() => void` | Called after successful sign up | - |
-| `onError` | `(error: string) => void` | Called when sign up fails | - |
-| `title` | `string` | Card title | `"Create an account"` |
-| `description` | `string` | Card description | `"Enter your details to get started"` |
-| `signInLink` | `React.ReactNode` | Link to sign in page | - |
+| Prop          | Type                                                                         | Description                              | Default                               |
+| ------------- | ---------------------------------------------------------------------------- | ---------------------------------------- | ------------------------------------- |
+| `onSignUp`    | `(data: { name: string; email: string; password: string }) => Promise<void>` | **Required.** Function to handle sign up | -                                     |
+| `onSuccess`   | `() => void`                                                                 | Called after successful sign up          | -                                     |
+| `onError`     | `(error: string) => void`                                                    | Called when sign up fails                | -                                     |
+| `title`       | `string`                                                                     | Card title                               | `"Create an account"`                 |
+| `description` | `string`                                                                     | Card description                         | `"Enter your details to get started"` |
+| `signInLink`  | `React.ReactNode`                                                            | Link to sign in page                     | -                                     |
 
 ## Validation Schema
 
@@ -338,7 +338,10 @@ import { z } from "zod";
 const customSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().email("Invalid email").endsWith("@company.com", "Must use company email"),
+    email: z
+      .string()
+      .email("Invalid email")
+      .endsWith("@company.com", "Must use company email"),
     password: z
       .string()
       .min(12, "Password must be at least 12 characters")
@@ -424,16 +427,19 @@ export default function SignUpPage() {
 ## Troubleshooting
 
 ### Form not submitting
+
 - Verify Better Auth is properly configured
 - Check that `onSignUp` function is async and handles errors
 - Ensure all required environment variables are set
 
 ### Validation errors not showing
+
 - The component uses inline error messages below each field
 - Check browser console for validation errors
 - Verify Zod schema is compatible with your requirements
 
 ### Password confirmation not working
+
 - The validation happens automatically via the Zod schema
 - Check that both password fields are filled
 - Error appears on the "Confirm Password" field

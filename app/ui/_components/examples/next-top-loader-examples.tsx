@@ -12,12 +12,15 @@ export function NextTopLoaderExamples() {
     // Simulate incremental progress
     const steps = [20, 40, 60, 80, 100];
     steps.forEach((step, index) => {
-      setTimeout(() => {
-        setProgress(step);
-        if (index === steps.length - 1) {
-          setTimeout(() => done(), 200);
-        }
-      }, (index + 1) * 300);
+      setTimeout(
+        () => {
+          setProgress(step);
+          if (index === steps.length - 1) {
+            setTimeout(() => done(), 200);
+          }
+        },
+        (index + 1) * 300,
+      );
     });
   };
 

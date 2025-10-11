@@ -14,8 +14,8 @@ const usePackageManagerStore = create<PackageManagerStore>()(
       packageManager: "npm",
       setPackageManager: (pm) => set({ packageManager: pm }),
     }),
-    { name: "packageManager" }
-  )
+    { name: "packageManager" },
+  ),
 );
 
 export function usePackageManager() {

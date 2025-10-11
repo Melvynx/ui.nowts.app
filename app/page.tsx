@@ -13,8 +13,8 @@ export default function Home() {
       <BgShapes />
       <VerticalLines width={1275} />
       <section className="p-5">
-      <Hero />
-      <Features />
+        <Hero />
+        <Features />
       </section>
       <Footer />
     </main>

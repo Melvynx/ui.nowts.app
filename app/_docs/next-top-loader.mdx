@@ -10,8 +10,8 @@ type: "component"
 <div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
 
 <TabsList>
-	<TabsTrigger value="preview">Preview</TabsTrigger>
-	<TabsTrigger value="code">Code</TabsTrigger>
+  <TabsTrigger value="preview">Preview</TabsTrigger>
+  <TabsTrigger value="code">Code</TabsTrigger>
 </TabsList>
 
 <CopyCode 
@@ -47,7 +47,11 @@ export default function RootLayout({ children }) {
 <CodeBlock className="h-[400px]" contentClassName="h-full">
 
 ```tsx
-import { NextTopLoader, stopLoading, useNextTopLoaderStore } from "@/components/next-top-loader";
+import {
+  NextTopLoader,
+  stopLoading,
+  useNextTopLoaderStore,
+} from "@/components/next-top-loader";
 import { Button } from "@/components/ui/button";
 
 export function TopLoaderDemo() {
@@ -57,25 +61,19 @@ export function TopLoaderDemo() {
     <div className="space-y-6">
       {/* Basic usage */}
       <NextTopLoader />
-      
+
       {/* Manual controls */}
       <div className="space-y-4">
         <div className="flex gap-2">
-          <Button onClick={() => start()}>
-            Start Loading
-          </Button>
-          <Button onClick={() => done()}>
-            Complete Loading
-          </Button>
-          <Button onClick={() => stopLoading()}>
-            Stop Loading
-          </Button>
+          <Button onClick={() => start()}>Start Loading</Button>
+          <Button onClick={() => done()}>Complete Loading</Button>
+          <Button onClick={() => stopLoading()}>Stop Loading</Button>
         </div>
-        
+
         <div className="flex gap-2">
-          <Button 
+          <Button
             variant={isEnable ? "default" : "outline"}
-            onClick={() => isEnable ? disable() : enable()}
+            onClick={() => (isEnable ? disable() : enable())}
           >
             {isEnable ? "Disable" : "Enable"} Top Loader
           </Button>
@@ -119,11 +117,11 @@ The **Next Top Loader** is a customizable loading bar component designed specifi
 
 ### Install the component
 
-<CommandBlock 
-	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/next-top-loader.json" 
-	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/next-top-loader.json" 
-	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/next-top-loader.json" 
-	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/next-top-loader.json" 
+<CommandBlock
+  npmCommand="npx shadcn@latest add https://ui.nowts.app/r/next-top-loader.json"
+  pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/next-top-loader.json"
+  yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/next-top-loader.json"
+  bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/next-top-loader.json"
 />
 
 ## Usage
@@ -191,25 +189,29 @@ Use the Zustand store for programmatic control:
 <CodeBlock contentClassName="h-fit">
 
 ```tsx
-import { useNextTopLoaderStore, stopLoading } from "@/components/next-top-loader";
+import {
+  useNextTopLoaderStore,
+  stopLoading,
+} from "@/components/next-top-loader";
 import { Button } from "@/components/ui/button";
 
 export function ManualControls() {
-  const { start, done, setProgress, disable, enable, isEnable } = useNextTopLoaderStore();
+  const { start, done, setProgress, disable, enable, isEnable } =
+    useNextTopLoaderStore();
 
   const handleAsyncOperation = async () => {
     start();
     try {
       // Simulate async operation with progress updates
       setProgress(25);
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       setProgress(50);
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       setProgress(75);
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       done();
     } catch (error) {
       stopLoading(); // Helper function to stop immediately
@@ -218,11 +220,9 @@ export function ManualControls() {
 
   return (
     <div className="space-y-4">
-      <Button onClick={handleAsyncOperation}>
-        Start Async Operation
-      </Button>
-      
-      <Button onClick={() => isEnable ? disable() : enable()}>
+      <Button onClick={handleAsyncOperation}>Start Async Operation</Button>
+
+      <Button onClick={() => (isEnable ? disable() : enable())}>
         {isEnable ? "Disable" : "Enable"} Top Loader
       </Button>
     </div>
@@ -245,23 +245,15 @@ export function Navigation() {
   return (
     <nav className="space-x-4">
       {/* Normal link with top loader */}
-      <Link href="/about">
-        About
-      </Link>
-      
+      <Link href="/about">About</Link>
+
       {/* Link without top loader */}
-      <Link 
-        href="/contact" 
-        data-toploader-disabled="true"
-      >
+      <Link href="/contact" data-toploader-disabled="true">
         Contact (No Loading)
       </Link>
-      
+
       {/* External link (automatically excluded) */}
-      <Link 
-        href="https://example.com" 
-        target="_blank"
-      >
+      <Link href="https://example.com" target="_blank">
         External Link
       </Link>
     </nav>
@@ -303,28 +295,28 @@ export default function ThemedLayout({ children }) {
 
 ### NextTopLoader Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `color` | `string` | `"#3b82f6"` | Color of the loading bar and spinner |
-| `height` | `number` | `3` | Height of the loading bar in pixels |
-| `showSpinner` | `boolean` | `true` | Whether to show the spinner indicator |
-| `speed` | `number` | `200` | Animation speed in milliseconds |
-| `delay` | `number` | `0` | Delay before showing the loader in milliseconds |
+| Prop          | Type      | Default     | Description                                     |
+| ------------- | --------- | ----------- | ----------------------------------------------- |
+| `color`       | `string`  | `"#3b82f6"` | Color of the loading bar and spinner            |
+| `height`      | `number`  | `3`         | Height of the loading bar in pixels             |
+| `showSpinner` | `boolean` | `true`      | Whether to show the spinner indicator           |
+| `speed`       | `number`  | `200`       | Animation speed in milliseconds                 |
+| `delay`       | `number`  | `0`         | Delay before showing the loader in milliseconds |
 
 ### Store Methods
 
-| Method | Parameters | Description |
-|--------|------------|-------------|
-| `start()` | - | Start the loading animation |
-| `done()` | - | Complete the loading animation |
-| `setProgress(progress)` | `number` (0-100) | Set specific progress value |
-| `enable()` | - | Enable the top loader |
-| `disable()` | - | Disable the top loader |
+| Method                  | Parameters       | Description                    |
+| ----------------------- | ---------------- | ------------------------------ |
+| `start()`               | -                | Start the loading animation    |
+| `done()`                | -                | Complete the loading animation |
+| `setProgress(progress)` | `number` (0-100) | Set specific progress value    |
+| `enable()`              | -                | Enable the top loader          |
+| `disable()`             | -                | Disable the top loader         |
 
 ### Helper Functions
 
-| Function | Description |
-|----------|-------------|
+| Function        | Description                               |
+| --------------- | ----------------------------------------- |
 | `stopLoading()` | Immediately stop and hide the loading bar |
 
 ## Notes
@@ -333,4 +325,4 @@ export default function ThemedLayout({ children }) {
 - External links and same-page anchor links are handled appropriately
 - The loading bar is rendered using React portals for proper z-index layering
 - Progress automatically increments with realistic timing until navigation completes
-- The component is fully SSR compatible and handles hydration properly 
+- The component is fully SSR compatible and handles hydration properly

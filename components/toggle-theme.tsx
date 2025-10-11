@@ -14,7 +14,7 @@ export function ToggleTheme() {
         "relative flex size-8 rounded-full items-center justify-center outline-none",
         "focus-visible:ring-1 focus-visible:ring-neutral-300/80 dark:focus-visible:ring-neutral-800 bg-background",
         "border border-border/60 dark:border-border/50 dark:hover:bg-main-foreground/20 dark:hover:border-white/10",
-        "focus-visible:ring-1 focus-visible:ring-neutral-300/80 dark:focus-visible:ring-neutral-800 ease-linear duration-150"
+        "focus-visible:ring-1 focus-visible:ring-neutral-300/80 dark:focus-visible:ring-neutral-800 ease-linear duration-150",
       )}
     >
       <Icons.lamp />

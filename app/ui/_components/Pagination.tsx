@@ -70,7 +70,7 @@ function ChevronIconGlitch({
           "absolute left-0 top-0 text-neutral-400 transition-transform duration-300 ease-in-out hover:duration-150",
           direction === "left"
             ? "group-hover:-translate-x-full"
-            : "group-hover:translate-x-full"
+            : "group-hover:translate-x-full",
         )}
       >
         {direction === "left" ? (
@@ -82,7 +82,7 @@ function ChevronIconGlitch({
       <span
         className={cn(
           "absolute left-0 top-0 text-neutral-400 transition-transform duration-300 ease-in-out hover:duration-150 group-hover:translate-x-0",
-          direction === "left" ? "translate-x-full" : "-translate-x-full"
+          direction === "left" ? "translate-x-full" : "-translate-x-full",
         )}
       >
         {direction === "left" ? (

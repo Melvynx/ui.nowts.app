@@ -54,13 +54,13 @@ export function Header() {
         {
           "bg-background dark:bg-background/40 backdrop-blur-md border-border dark:border-[#262626]/50":
             !isDocsPage && isScrolled,
-        }
+        },
       )}
     >
       <nav
         className={cn(
           "flex h-full items-center justify-between gap-6 px-6 max-w-7xl mx-auto",
-          isDocsPage && "horizontal-dotted"
+          isDocsPage && "horizontal-dotted",
         )}
       >
         <Link
@@ -79,7 +79,7 @@ export function Header() {
                   "text-sm p-1 rounded font-[460] leading-none outline-none focus-visible:ring-1 focus-visible:ring-neutral-300/80 dark:focus-visible:ring-neutral-800",
                   pathname === slug
                     ? "text-primary"
-                    : "duration-200 text-foreground hover:text-primary"
+                    : "duration-200 text-foreground hover:text-primary",
                 )}
               >
                 {name}

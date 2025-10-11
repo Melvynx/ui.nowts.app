@@ -4,9 +4,7 @@
   "type": "registry:component",
   "title": "Next Top Loader",
   "description": "A Next.js compatible top loading bar component with automatic navigation detection and customizable progress indicators.",
-  "dependencies": [
-    "zustand"
-  ],
+  "dependencies": ["zustand"],
   "registryDependencies": [],
   "files": [
     {

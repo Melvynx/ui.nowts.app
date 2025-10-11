@@ -4,11 +4,7 @@
   "type": "registry:block",
   "title": "Better Auth OTP",
   "description": "A component for signing in with email OTP.",
-  "dependencies": [
-    "motion",
-    "react-use-measure",
-    "@hookform/resolvers"
-  ],
+  "dependencies": ["motion", "react-use-measure", "@hookform/resolvers"],
   "registryDependencies": [
     "button",
     "input",

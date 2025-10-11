@@ -13,8 +13,8 @@ A production-ready sign-in component with support for multiple authentication me
 <div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
 
 <TabsList>
-	<TabsTrigger value="preview">Preview</TabsTrigger>
-	<TabsTrigger value="code">Code</TabsTrigger>
+  <TabsTrigger value="preview">Preview</TabsTrigger>
+  <TabsTrigger value="code">Code</TabsTrigger>
 </TabsList>
 
 <CopyCode
@@ -139,10 +139,10 @@ The **Better Auth Sign In** component provides a complete authentication experie
 ### 1. Install the component
 
 <CommandBlock
-	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
-	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
-	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
-	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
+  npmCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
+  pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
+  yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
+  bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/better-auth-signin.json"
 />
 
 This will also install the `better-auth-otp` component and all required dependencies.
@@ -486,16 +486,19 @@ export default function SignIn() {
 ## Troubleshooting
 
 ### OTP not working
+
 - Ensure `better-auth-otp` is properly installed
 - Check that email sending is configured in Better Auth
 - Verify OTP expiration settings
 
 ### Provider sign-in fails
+
 - Check OAuth credentials in environment variables
 - Verify redirect URLs in provider settings
 - Ensure social providers are enabled in Better Auth
 
 ### Forms don't submit
+
 - All callback props (`onSendOtp`, `onVerifyOtp`, etc.) are required
 - Check that callbacks are async functions
 - Verify error handling in callbacks

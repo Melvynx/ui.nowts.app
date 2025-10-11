@@ -145,6 +145,7 @@ export default [
       "src/generated",
       ".claude",
       ".conductor",
+      "test-registry",
     ],
   },
 ];

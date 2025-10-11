@@ -4,11 +4,7 @@
   "type": "registry:block",
   "title": "Form Management",
   "description": "A comprehensive form management system with auto-save, unsaved changes warning, and sticky action bar for enhanced UX.",
-  "dependencies": [
-    "motion",
-    "react-hotkeys-hook",
-    "lucide-react"
-  ],
+  "dependencies": ["motion", "react-hotkeys-hook", "lucide-react"],
   "registryDependencies": [
     "button",
     "tooltip",

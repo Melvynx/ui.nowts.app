@@ -35,7 +35,7 @@ const TabsList = ({
     ref={ref}
     className={cn(
       "inline-flex h-[44px] gap-5 w-full items-center justify-start rounded-t-lg bg-background pl-3",
-      className
+      className,
     )}
     {...props}
   />
@@ -76,7 +76,7 @@ const TabsTrigger = ({
       ref={triggerRef}
       className={cn(
         "group relative inline-flex h-10 items-center justify-center rounded-none bg-transparent py-1 pt-2 pb-2 text-sm font-medium whitespace-nowrap transition-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 text-neutral-500 data-[state=active]:text-primary",
-        className
+        className,
       )}
       {...props}
     >
@@ -86,7 +86,7 @@ const TabsTrigger = ({
             layoutId={`underline-${tabsId}`}
             className={cn(
               "absolute -bottom-[3.5px] flex h-0.5 w-full justify-center",
-              classNameIndicator
+              classNameIndicator,
             )}
             transition={{
               type: "spring",
@@ -114,7 +114,7 @@ const TabsContent = ({
     ref={ref}
     className={cn(
       "pt-4 relative rounded-md ring-offset-blue-50 focus-visible:outline-none",
-      className
+      className,
     )}
     {...props}
   />

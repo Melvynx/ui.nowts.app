@@ -10,8 +10,8 @@ type: "hook"
 <div className="flex items-center justify-between border-b dark:border-neutral-800/60 border-neutral-300/50 pr-3">
 
 <TabsList>
-	<TabsTrigger value="preview">Preview</TabsTrigger>
-	<TabsTrigger value="code">Code</TabsTrigger>
+  <TabsTrigger value="preview">Preview</TabsTrigger>
+  <TabsTrigger value="code">Code</TabsTrigger>
 </TabsList>
 
 <CopyCode 
@@ -20,18 +20,18 @@ type: "hook"
 export function MyComponent() {
   const isClient = useIsClient();
 
-  if (!isClient) {
-    return <div>Loading...</div>;
-  }
+if (!isClient) {
+return <div>Loading...</div>;
+}
 
-  return (
-    <div>
-      {/* Client-only content */}
-      <p>This renders only on the client!</p>
-    </div>
-  );
+return (
+<div>
+{/* Client-only content */}
+<p>This renders only on the client!</p>
+</div>
+);
 }`}
-	mode="text"
+mode="text"
 />
 
 </div>
@@ -74,7 +74,7 @@ export function MyComponent() {
       </p>
       <div className="flex items-center gap-2">
         <button
-          onClick={() => setCount(c => c + 1)}
+          onClick={() => setCount((c) => c + 1)}
           className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
         >
           Count: {count}
@@ -111,11 +111,11 @@ The **useIsClient** hook is a simple utility that helps you determine if your Re
 
 ## Installation
 
-<CommandBlock 
-	npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-is-client.json" 
-	pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-is-client.json" 
-	yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-is-client.json" 
-	bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-is-client.json" 
+<CommandBlock
+  npmCommand="npx shadcn@latest add https://ui.nowts.app/r/use-is-client.json"
+  pnpmCommand="pnpm dlx shadcn@latest add https://ui.nowts.app/r/use-is-client.json"
+  yarnCommand="npx shadcn@latest add https://ui.nowts.app/r/use-is-client.json"
+  bunCommand="bunx --bun shadcn@latest add https://ui.nowts.app/r/use-is-client.json"
 />
 
 ## Usage
@@ -160,11 +160,13 @@ export function GeolocationComponent() {
     if (isClient && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLocation(`${position.coords.latitude}, ${position.coords.longitude}`);
+          setLocation(
+            `${position.coords.latitude}, ${position.coords.longitude}`,
+          );
         },
         (error) => {
           setLocation("Location unavailable");
-        }
+        },
       );
     }
   }, [isClient]);
@@ -196,28 +198,28 @@ export function EnhancedButton() {
   const [interactionCount, setInteractionCount] = useState(0);
 
   const handleClick = () => {
-    setInteractionCount(prev => prev + 1);
-    
+    setInteractionCount((prev) => prev + 1);
+
     // Client-only enhancements
     if (isClient) {
       // Haptic feedback on mobile
-      if ('vibrate' in navigator) {
+      if ("vibrate" in navigator) {
         navigator.vibrate(50);
       }
-      
+
       // Analytics tracking
-      gtag?.('event', 'button_click', {
-        interaction_count: interactionCount + 1
+      gtag?.("event", "button_click", {
+        interaction_count: interactionCount + 1,
       });
     }
   };
 
   return (
-    <button 
+    <button
       onClick={handleClick}
       className="px-4 py-2 bg-blue-500 text-white rounded"
     >
-      Click me {isClient ? `(${interactionCount})` : ''}
+      Click me {isClient ? `(${interactionCount})` : ""}
     </button>
   );
 }
@@ -234,18 +236,14 @@ import { useIsClient } from "@/hooks/use-is-client";
 
 export function DynamicContent() {
   const isClient = useIsClient();
-  
+
   // This would cause hydration mismatch without useIsClient
   const randomId = Math.random().toString(36).substr(2, 9);
-  
+
   return (
     <div>
       <h2>Dynamic Content</h2>
-      {isClient ? (
-        <p>Random ID: {randomId}</p>
-      ) : (
-        <p>Random ID: Loading...</p>
-      )}
+      {isClient ? <p>Random ID: {randomId}</p> : <p>Random ID: Loading...</p>}
     </div>
   );
 }
@@ -274,7 +272,7 @@ export function UserPreferences() {
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
-    
+
     if (isClient) {
       localStorage.setItem("theme", newTheme);
     }
@@ -285,7 +283,9 @@ export function UserPreferences() {
   }
 
   return (
-    <div className={`p-4 ${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"}`}>
+    <div
+      className={`p-4 ${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"}`}
+    >
       <h3>Theme: {theme}</h3>
       <button onClick={toggleTheme}>
         Switch to {theme === "light" ? "dark" : "light"} theme
