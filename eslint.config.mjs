@@ -132,6 +132,7 @@ export default [
       "*.mjs",
       "zod",
       "*/**.mjs",
+      "test/security/*.test.mjs",
       "vitest.config.ts",
       "next-env.d.ts",
       ".next",
