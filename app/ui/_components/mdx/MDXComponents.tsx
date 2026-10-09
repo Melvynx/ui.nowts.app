@@ -1,13 +1,10 @@
+import { mdxRemoteOptions } from "@/lib/mdx/mdx-options.mjs";
 import { cn } from "@/lib/utils";
 import type { MDXComponents } from "mdx/types";
 import { MDXRemote, type MDXRemoteProps } from "next-mdx-remote/rsc";
 import Image from "next/image";
 import Link from "next/link";
 import type { JSX } from "react";
-import rehypePrettyCode from "rehype-pretty-code";
-import rehypeSlug from "rehype-slug";
-import remarkGfm from "remark-gfm";
-import type { PluggableList } from "unified";
 import { BlurImage } from "../BlurImage";
 import { CodeBlock } from "../CodeBlock";
 import { CommandBlock } from "../CommandBlock";
@@ -163,25 +160,7 @@ export function MDX(props: JSX.IntrinsicAttributes & MDXRemoteProps) {
   return (
     <MDXRemote
       components={components}
-      options={{
-        mdxOptions: {
-          remarkPlugins: [remarkGfm],
-          rehypePlugins: [
-            rehypeSlug,
-            [
-              rehypePrettyCode,
-              {
-                theme: {
-                  dark: "github-dark",
-                  light: "github-light",
-                },
-                keepBackground: false,
-                defaultLang: "tsx",
-              },
-            ],
-          ] as PluggableList,
-        },
-      }}
+      options={mdxRemoteOptions}
       {...props}
     />
   );
