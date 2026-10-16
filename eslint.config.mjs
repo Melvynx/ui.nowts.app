@@ -146,6 +146,7 @@ export default [
       ".claude",
       ".conductor",
       "test-registry",
+      "test/",
     ],
   },
 ];
